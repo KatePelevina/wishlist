@@ -1,6 +1,8 @@
 import { createStore } from 'vuex'
+import auth from './modules/auth';
+import axios from "axios";
 
-export default createStore({
+const store = createStore({
   state: {
   },
   getters: {
@@ -8,7 +10,17 @@ export default createStore({
   mutations: {
   },
   actions: {
+    register(credentials) {
+      return axios.post('//localhost:3000/register', credentials)
+      .then(({data}) => {
+        console.log('user data is:', data)
+      })
+    }
   },
   modules: {
+    auth
   }
-})
+});
+
+export default store;
+

@@ -1,0 +1,97 @@
+$white: #fff;
+$black: #000;
+$bg: #F6F7FF;
+$active: #6069E0;
+
+$border-radius: 10px;
+
+@mixin flex {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+@mixin button {
+    background-color: #6069E0;
+    color: #fff;
+    border-radius: 10px;
+    padding: 15px;
+    display: block;
+    text-align: center;
+    border: none;
+    cursor: pointer;
+}
+
+@mixin photo {
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+    background-color: "#ссс";
+    margin-right: 10px;
+    background-size: 40px;
+    background-position: center;
+}
+
+@mixin hover {
+    display: block;
+    position: fixed;
+    opacity: 0.4;
+    width: 100vw;
+    height: 100vh;
+    background-color: black;
+    left: 0;
+    top: 0;
+    z-index: 1;
+}
+
+@mixin modal {
+    position: relative;
+    background-color: #fff;
+    display: block;
+    width: 100%;
+    padding: 15px;
+    z-index: 3;
+    border-radius: 8px;
+}
+
+@mixin box {
+    flex-basis: 49%;
+    height: 200px;
+    border-radius: 10px;
+    overflow: hidden;
+    position: relative;
+    margin-bottom: 10px;
+    img {
+        height: 210px;
+    }
+}
+@mixin box-inner {
+    background-color: #fff;
+    text-align: center;
+    position: relative;
+    p {
+        opacity: 0;
+    }
+}
+
+@mixin input {
+    display: block;
+    padding: 15px;
+    border-radius: 10px;
+    border: 1px solid #ccc;
+    margin-bottom: 10px;
+    width: 100%;
+}
+@mixin page {
+    background-color: #fff;
+    padding: 15px;
+    border-radius: 10px;
+}
+
+@mixin add-box {
+    width: 50%;
+    margin-left: auto;
+    margin-right: auto;
+}
+
+
