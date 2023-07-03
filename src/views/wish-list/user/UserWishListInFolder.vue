@@ -1,48 +1,35 @@
 <template>
-    <!-- <UserPage /> -->
+    <div class="page">
 
-    <my-input
-        v-model="searchQuery"
-        placeholder="Поиск..."
-    />
 
-   
-
-    <!-- <div class="items" v-if="wishes.length">
-        <div class="item" v-for="(wish,index) in wishes" :key="index">
-            <div class="box" @click="$router.push(`/user-wish-list-item/${wish.id}`)">
-                <div class="box-inner">
-                    <span v-if="wish.price" class="span">{{ wish.price }} руб</span>
-                    <img :src="'/img/' + wish.photo" alt="">
-                </div>
-            </div>
-            <p class="box-inner__hover">{{ wish.name }}</p>
+        <div class="flex">
+            <h1>User Wish List</h1>
+            <img src="@/assets/location.svg" alt="icon" class="nav-item__icon" @click="$router.push(`/user-wish-list-folders/user=${this.$route.params.id}`)"> 
         </div>
-    </div>
-    <div v-else>
-        <p>пока ничего нет</p>
-    </div> -->
 
+        <p v-for="user in users" :key="user.id">{{ user.firstName }} {{ user.secondName }}</p>
 
-
-    <user-wish-list :wishes="sortedAndSearchedPosts"/>
     
+        <my-input
+            v-model="searchQuery"
+            placeholder="Поиск..."
+        />
+
+        <user-wish-list :wishes="sortedAndSearchedPosts"/>
+    
+    </div>
 </template>
 
 <script>
 import axios from 'axios';
-// import UserPage from '@/components/users/UserPage.vue';
-// import ListComponent from '@/components/ListComponent.vue';
 import MyInput from '@/components/layout/MyInput.vue';
 import UserWishList from '@/components/users/UserWishList.vue';
 
 
 export default {
     components: {
-        // UserPage,
-        // ListComponent,
         MyInput,
-        UserWishList
+        UserWishList,
     },
     data() {
         return {
@@ -56,15 +43,24 @@ export default {
         async getWish() {
             let id = this.$route.params.id;
 
-            await axios.get('http://localhost:8085/public/process.php?action=get-user-wishlist&id='+id)
+            await axios.get('http://localhost:8085/public/process.php?action=get-user-wishlist-in-folder&id='+id)
             .then((response)=>{
                 this.wishes = response.data.wishes;
+            })
+        },
+        async getUser() {
+            let id = this.$route.params.id;
+
+            await axios.get('http://localhost:8085/public/process.php?action=get-user-from-folder-wishlist&id='+id)
+            .then((response)=>{
                 this.users = response.data.users;
+                console.log( this.users);
             })
         },
     },
     mounted() {
         this.getWish()
+        this.getUser()
     },
     computed: {
         sortedPosts() {
@@ -142,5 +138,12 @@ export default {
     background-image: url('@/assets/photo.jpg');
     background-size: 40px;
     background-position: center;
+}
+
+.page {
+    @include page;
+}
+.flex {
+    @include flex;
 }
 </style>

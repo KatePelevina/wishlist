@@ -759,6 +759,39 @@
             $result['wishes'] = $wishes;
             
             break; 
+        case 'get-user-wishlist-in-folder':
+            $id = $_GET['id'];
+            
+            $sql = $conn->query(
+            "SELECT *
+            FROM wish
+            LEFT JOIN users_wishlist_folders ON users_wishlist_folders.folder_id  = wish.folder_id
+            WHERE users_wishlist_folders.folder_id = $id");
+
+                $wishes = [];
+                while($row = $sql->fetch_assoc()) {
+                    $wishes[] = $row;
+                }
+                $result['wishes'] = $wishes;
+
+            break; 
+        case 'get-user-bucketlist-in-folder':
+            $id = $_GET['id'];
+            
+            $sql = $conn->query(
+            "SELECT *
+            FROM bucket
+            LEFT JOIN users_bucketlist_folders ON users_bucketlist_folders.folder_id  = bucket.folder_id
+            WHERE users_bucketlist_folders.folder_id = $id");
+
+                $wishes = [];
+                while($row = $sql->fetch_assoc()) {
+                    $wishes[] = $row;
+                }
+                $result['wishes'] = $wishes;
+
+            break; 
+
         case 'get-all-my-wishlist':
             $id = $_GET['id'];
 
@@ -960,6 +993,43 @@
             $result['folders'] = $folders;
             
             break; 
+        case 'get-user-wishlist-folders':
+            $id = $_GET['id'];
+
+            $sql = $conn->query(
+            "SELECT *
+            FROM wishlist_folders
+            LEFT JOIN users_wishlist_folders ON wishlist_folders.id = users_wishlist_folders.folder_id
+            WHERE users_wishlist_folders.user_id = $id
+            ORDER BY `wishlist_folders`.`date` DESC
+            ");
+
+            $folders = [];
+            while($row = $sql->fetch_assoc()) {
+                $folders[] = $row;
+            }
+            $result['folders'] = $folders;
+            
+            break; 
+        case 'get-user-bucketlist-folders':
+            $id = $_GET['id'];
+
+            $sql = $conn->query(
+            "SELECT *
+            FROM bucketlist_folders
+            LEFT JOIN users_bucketlist_folders ON bucketlist_folders.id = users_bucketlist_folders.folder_id
+            WHERE users_bucketlist_folders.user_id = $id
+            ORDER BY `bucketlist_folders`.`date` DESC
+            ");
+
+            $folders = [];
+            while($row = $sql->fetch_assoc()) {
+                $folders[] = $row;
+            }
+            $result['folders'] = $folders;
+            
+            break; 
+          
         case 'get-wishlist-folders-test':
             $id = 1;
 
@@ -1046,7 +1116,6 @@
             $result['folders'] = $folders;
 
             break;
-            
         
         case 'ideas-wishlist':
             // $sql = $conn->query(
@@ -1304,8 +1373,8 @@
             $visible = $_POST['visible'];
 
             $done = $_POST['done'];
-            $wish_list = $_POST['wish_list'];
-            $bucket_list = $_POST['bucket_list'];
+            $wish_list = 1;
+            $bucket_list = 0;
 
             $folder_id = $_GET['id'];
 
@@ -1329,7 +1398,7 @@
             $price = $_POST['price'];
             $done = $_POST['done'];
             
-            echo json_encode($_POST);
+            // echo json_encode($_POST);
             $sql = $conn->query(
              "INSERT INTO `bucket`(`name`, `price`, `description`, `photo`,  `link`, `visible`,`folder_id`, `done`) VALUES ('$name', '$price', '$description', '$photo', '$link', '$visible', '$folder_id', '$done')");
 
@@ -1522,7 +1591,7 @@
                 "SELECT *
                 FROM wish
                 LEFT JOIN users_wishlist
-                ON id = wish_id
+                ON wish.id = users_wishlist.wish_id
                 WHERE users_wishlist.user_id = $id");
 
                 $wishes = [];
@@ -1551,9 +1620,8 @@
             $sql2 = $conn->query(
                 "SELECT *
                 FROM bucket
-                LEFT JOIN users_bucketlist
-                ON id = bucketlist_id
-                WHERE users_bucketlist.user_id = $id");
+                LEFT JOIN users_bucketlist_folders ON users_bucketlist_folders.folder_id  = bucket.folder_id
+                WHERE users_bucketlist_folders.folder_id = $id");
 
                 $wishes = [];
                 while($row = $sql2->fetch_assoc()) {
@@ -1562,6 +1630,37 @@
                 $result['wishes'] = $wishes;
 
             break;
+        case 'get-user-from-folder-bucketlist':
+            $id = $_GET['id'];
+
+            $sql2 = $conn->query(
+            "SELECT * FROM users
+            LEFT JOIN users_bucketlist_folders ON users.id = users_bucketlist_folders.user_id
+            WHERE users_bucketlist_folders.folder_id = $id");
+
+            $users = [];
+                while($row = $sql2->fetch_assoc()) {
+                    $users[] = $row;
+                }
+                $result['users'] = $users;
+
+            break;
+        case 'get-user-from-folder-wishlist':
+            $id = $_GET['id'];
+
+            $sql2 = $conn->query(
+            "SELECT * FROM users
+            LEFT JOIN users_wishlist_folders ON users.id = users_wishlist_folders.user_id
+            WHERE users_wishlist_folders.folder_id = $id");
+
+            $users = [];
+                while($row = $sql2->fetch_assoc()) {
+                    $users[] = $row;
+                }
+                $result['users'] = $users;
+
+            break;
+
         case 'update-wishlist-item':
             $id = $_POST['id'];
             $name = $_POST['name'];
@@ -1671,7 +1770,7 @@
             break;
 
         case 'update-bucketlist-folder':
-            $id = $_GET['id'];
+            $id = $_POST['id'];
             $name = $_POST['name'];
             $description = $_POST['description'];
             

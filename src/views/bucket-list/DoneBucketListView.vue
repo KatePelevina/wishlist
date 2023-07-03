@@ -77,8 +77,9 @@
     },
     methods: {
         async getWishes(){
+            let id = this.$route.params.id;
             
-            await axios.get('http://localhost:8085/public/process.php?action=get-done-bucketlist')
+            await axios.get('http://localhost:8085/public/process.php?action=get-done-bucketlist-in-folder&id='+id)
             .then((response)=>{
                 this.wishes = response.data.wishes; 
                 console.log(this.wishes)

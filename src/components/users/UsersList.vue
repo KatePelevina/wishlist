@@ -1,7 +1,7 @@
 <template>
     
     <div v-if="users.length">
-        <div v-for="user in users" :key="user.id" @click="$router.push(`/user-profile/user=${user.id}`)">
+        <div v-for="user in users" :key="user.id" @click="$router.push(`/user-wish-list/user=${user.id}`)">
             <div class="card" >
                 <div class="card-header">
                     <div class="card-header__left">

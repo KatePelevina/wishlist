@@ -11,6 +11,7 @@
                 </div>
             </div>
             <p class="box-inner__hover">{{ wish.name }}</p>
+            <p class="box-inner__hover">{{ wish.description }}</p>
             <p class="box-inner__hover">date: {{ wish.date }}</p>
             <p class="box-inner__hover">visible: {{ wish.visible }}</p>
             <p class="box-inner__hover">use_id: {{ wish.user_id }}</p>

@@ -4,7 +4,7 @@
         <div>
             <n-breadcrumb>
                 <!-- <n-breadcrumb-item @click="$router.push(`/my-bucket-list-folders`)">Bucket List</n-breadcrumb-item> -->
-                <n-breadcrumb-item @click="$router.push(`/result-bucket-list`)">Bucket List</n-breadcrumb-item>
+                <n-breadcrumb-item @click="$router.push(`/my-bucket-list-folders`)">Bucket List</n-breadcrumb-item>
                 <n-breadcrumb-item>Папка: {{ folder_name }}</n-breadcrumb-item>
             </n-breadcrumb>
         </div>
@@ -28,7 +28,7 @@
             <WantBucketList />
         </n-tab-pane>
         <n-tab-pane name="2" tab="Исполнено">
-            
+            <DoneBucketList />
         </n-tab-pane>
         <n-tab-pane name="з" tab="Все">
             <AllBucketListFolder />
@@ -160,9 +160,6 @@
          <!-- Edit User Model -->
          <div v-if="showEditModal">
             <div class="modal">
-                <n-button @click="showEditModal = true">
-                    Start Me up
-                </n-button>
                 <n-modal v-model:show="showEditModal">
                     <n-card
                     style="width: 600px"
@@ -176,7 +173,7 @@
                     <form method="post">
                         <input type="text" name="name"  placeholder="Название" v-model="currentFolder.name">
                         <input type="text" name="description"  placeholder="Описание" v-model="currentFolder.description">
-                        <button  @click="showEditModal=false; updateFolder(); reload_interval(1000);"  class="button">Обновить</button>
+                        <button  @click="showEditModal=false; updateFolder(); reload_interval(50);"  class="button">Обновить</button>
                     </form>
                     
                     
@@ -235,7 +232,7 @@ import { NInput, NInputNumber } from 'naive-ui';
 
 import WantBucketList from '@/views/bucket-list/WantBucketList.vue';
 import AllBucketListFolder from '@/views/bucket-list/AllBucketListFolder.vue';
-
+import DoneBucketList from '@/views/bucket-list/DoneBucketListView.vue'
 
 
 
@@ -260,6 +257,7 @@ export default defineComponent ({
         NTabPane,
         AllBucketListFolder,
         WantBucketList,
+        DoneBucketList
     },
     data() {
         return {
@@ -319,8 +317,6 @@ export default defineComponent ({
             await axios.get('http://localhost:8085/public/process.php?action=get-done-bucketlist-for-folder&id='+id)
             .then((response)=>{
                 this.done_count = response.data.count; 
-               
-                console.log(response.data);
             })
             .catch((error)=>{
                 console.log(error)

@@ -176,7 +176,7 @@
                             </n-space>
 
                            <!-- <button class="button" @click="showModal=false; addWishList(); clearMsg();">Добавить желание</button> -->
-                           <n-button strong secondary type="success" attr-type="submit" class="add-btn" @click="showModal=false; addWishList();">Добавить желание</n-button>
+                           <n-button strong secondary type="success" attr-type="submit" class="add-btn" @click="showModal=false; addBucketList();">Добавить желание</n-button>
                        </form>
                    </div>
                </div>
@@ -392,12 +392,12 @@ export default defineComponent ({
                 console.log(this.folder_description);
             })
         },
-        async addWishList(){
+        async addBucketList(){
             let id = this.$route.params.id;
             let formData = this.toFormData(this.newWish);
         
 
-        axios.post('http://localhost:8085/public/process.php?action=add-wishlist-to-folder&id='+id, formData)
+        axios.post('http://localhost:8085/public/process.php?action=add-bucketlist-to-folder&id='+id, formData)
 
         .then((response)=>{
             this.newWish = {name: "", price: "", description: "", photo: "", link: "", visible: "", folder_id: "", done: "", wish_list: "", bucket_list: "" };

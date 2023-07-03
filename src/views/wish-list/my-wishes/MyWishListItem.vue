@@ -86,24 +86,26 @@
                         <a :href="wish.link" class="link">Ссылка</a>
                     </n-tag>
                 </n-space>
+
+                <n-space class="visible">
+                    <n-tag type="info">
+                        Желание видят все пользователи
+                    </n-tag>
+                </n-space>
+
+                <div> 
+                    <p class="card-description">{{ wish.description }}</p>
+                    <p class="card-book">Это желание забронировано (имя / анонимно): исполню сам(а)</p>
+                </div>
+
+
+                <n-button @click="done()" secondary type="success" class="btn">Иполнено</n-button>
             
             </div>      
         </div>
 
 
-        <n-space class="visible">
-            <n-tag type="info">
-                Желание видят все пользователи
-            </n-tag>
-        </n-space>
-
-        <div> 
-            <p class="card-description">{{ wish.description }}</p>
-            <!-- <p class="card-book">Это желание забронировано (имя / анонимно): исполню сам(а)</p> -->
-        </div>
-
-
-        <n-button @click="done()" secondary type="success" class="btn">Иполнено</n-button>
+        
     </div>
 
     

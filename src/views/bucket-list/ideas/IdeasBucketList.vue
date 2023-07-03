@@ -12,6 +12,10 @@
         placeholder="Поиск..."
     />
 
+    <n-space vertical>
+          <n-select v-model:value="selectedSort" :options="options" />
+      </n-space>
+
     <!-- <div class="items">
         <div class="item" v-for="wish in wishes" :key="wish.id">
             <div class="box"  @click="$router.push(`/idea-bucketlist-item/${wish.id}`)">
@@ -39,17 +43,21 @@
   
   <script>
   import axios from 'axios';
+  import { defineComponent } from "vue";
+
   import MyInput from '@/components/layout/MyInput.vue';
 
   import IdeasBucketlist from '@/components/wishes/IdeasBucketlist.vue';
+  import { NSpace, NSelect } from 'naive-ui';
   // import ListComponent from '@/components/wishes/ListComponent.vue';
   
-  export default {
+  export default defineComponent ({
     name: 'AllBucketListView',
     components: {
       MyInput,
       // ListComponent,
       IdeasBucketlist,
+      NSpace, NSelect
     },
     data() {
         return {
@@ -88,7 +96,55 @@
             return this.sortedPosts.filter(wish => wish.name.toLowerCase().includes(this.searchQuery.toLowerCase()))
         }
     },
-  }
+    setup() {
+        return {
+            
+            options: [
+                {
+                label: "Сортировать по",
+                value: "",
+                disabled: true
+                },
+                {
+                label: "По названию",
+                value: "name",
+                },
+                {
+                label: "По цене",
+                value: "price"
+                },
+                {
+                label: "По дате создания",
+                value: "date"
+                },
+                {
+                label: "По visible",
+                value: "visible"
+                },
+            ],
+            visible: [
+            {
+                label: "видят все пользователи",
+                value: "2"
+                },
+                {
+                label: "вижу только я",
+                value: "1",
+                },
+            ],
+            done: [
+                {
+                    label: "Хочу",
+                    value: 0,
+                },
+                {
+                    label: "Done",
+                    value: 1,
+                }
+            ]
+        };
+    }
+  })
   </script>
   
   

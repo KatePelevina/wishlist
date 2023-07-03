@@ -65,10 +65,6 @@
 
         
             
-        
-       
-        
-
         <FoldersList :folders="sortedAndSearchedPosts"/>
     
   

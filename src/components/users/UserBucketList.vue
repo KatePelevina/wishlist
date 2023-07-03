@@ -1,10 +1,16 @@
 <template>
+
+
+
     <div class="items" v-if="wishes.length" >
         <div class="item" v-for="(wish,index) in wishes" :key="index">
             <div class="box" @click="$router.push(`/user-bucket-list-item/${wish.id}`)">
                 <div class="box-inner">
                     <span v-if="wish.price" class="span">{{ wish.price }}</span>
-                    <img :src="'/img/' + wish.photo" alt="">
+                    <img :src="'/img/' + wish.photo" alt="" v-if="wish.photo">
+                    <div v-else>
+                        <n-empty size="large" description="Нет данных" class="empty"></n-empty>
+                    </div>
                 </div>
             </div>
             <p class="box-inner__hover">{{ wish.name }}</p>
@@ -19,12 +25,18 @@
 </template>
 
 <script>
+
+import { NEmpty } from 'naive-ui';
+
 export default {
     props: {
         wishes: {
             type: Array,
             required: true
         }
+    },
+    components: {
+        NEmpty
     }
 
 }
@@ -109,6 +121,10 @@ export default {
 .button {
     @include button;
     width: 100%;
+}
+
+.empty {
+    @include empty;
 }
 
 </style>

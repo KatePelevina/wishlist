@@ -2,10 +2,10 @@
     <div>
         <n-tabs type="segment">
             <n-tab-pane name="wish-list" tab="Wish List">
-               <UserWishListVue />
+               <UserWishList />
             </n-tab-pane>
             <n-tab-pane name="bucket-list" tab="Bucket List">
-                <UserBucketListVue />
+                <UserBucketList />
             </n-tab-pane>
         </n-tabs>
     </div>
@@ -13,8 +13,8 @@
 
 <script>
 import { NTabs, NTabPane } from 'naive-ui'
-import UserWishListVue from '@/views/wish-list/UserWishList.vue';
-import UserBucketListVue from '@/views/bucket-list/UserBucketList.vue';
+import UserWishList from '@/views/wish-list/UserWishList.vue';
+import UserBucketList from '@/views/bucket-list/user/UserBucketList.vue';
 
 
 export default {
@@ -22,8 +22,8 @@ export default {
     components: {
         NTabs, 
         NTabPane,
-        UserWishListVue,
-        UserBucketListVue
+        UserWishList,
+        UserBucketList
     }
 }
 </script>

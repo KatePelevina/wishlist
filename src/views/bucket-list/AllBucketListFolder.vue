@@ -111,7 +111,6 @@
           :wishes="sortedAndSearchedPosts"
           />
 
-          <div v-intersection="loadMorePosts" class="observer"></div>
   
           <div v-if="showModal">
              <n-modal v-model:show="showModal">
@@ -208,17 +207,6 @@
           }
       },
       methods: {
-        //   async getAllPlaces(){
-        //       await axios.get('http://localhost:8085/public/process.php?action=get-all-wishlist')
-    
-        //       .then((response)=>{
-        //           this.wishes = response.data.wishes; 
-        //           console.log(this.wishes);
-        //       })
-        //       .catch((error)=>{
-        //           console.log(error)
-        //       })
-        //   },
           async getAllBucketList() {
               let id = this.$route.params.id;
   
@@ -232,24 +220,6 @@
                   console.log(error)
               })
           },
-          // async loadMorePosts() {
-          //   try {
-          //       const response = await axios.post('http://localhost:8085/public/process.php?action=get-all-my-bucketlist&id='+id, this.toFormData({
-          //           offset: this.page
-          //       }))
-          //       this.wishes = [...this.wishes, ...response.data.wishes];
-          //       this.page += 1;
-          //   } catch(e) {
-          //       alert('Ошибка')
-          //   } 
-          // }, 
-          // toFormData(obj){
-          //     let fd = new FormData();
-          //     for(let i in obj){
-          //         fd.append(i,obj[i]);
-          //     }
-          //     return fd;
-          // },
           async getCountDoneWishList() {
               let id = this.$route.params.id;
   
@@ -292,7 +262,6 @@
               },
           },
         mounted() {
-            // this.getAllPlaces()
             this.getAllBucketList() 
             this.getCountDoneWishList()
         }, 

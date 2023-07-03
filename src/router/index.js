@@ -171,15 +171,31 @@ const routes = [
     meta: {
       layout: 'MainLayout'
     },
-    component: () => import('@/views/wish-list/UserWishList.vue')
+    component: () => import('@/views/wish-list/user/UserWishList.vue')
   },
   {
-    path: '/user-bucket-list/:id',
+    path: '/user-wish-list-in-folder/folder=:id',
+    name: 'user-wish-list-in-folder',
+    meta: {
+      layout: 'MainLayout'
+    },
+    component: () => import('@/views/wish-list/user/UserWishListInFolder.vue')
+  },
+  {
+    path: '/user-bucket-list-in-folder/folder=:id',
+    name: 'user-bucket-list-in-folder',
+    meta: {
+      layout: 'MainLayout'
+    },
+    component: () => import('@/views/bucket-list/user/UserBucketListInFolder.vue')
+  },
+  {
+    path: '/user-bucket-list/folder=:id',
     name: 'user-bucket-list',
     meta: {
       layout: 'MainLayout'
     },
-    component: () => import('@/views/bucket-list/UserBucketList.vue')
+    component: () => import('@/views/bucket-list/user/UserBucketList.vue')
   },
   {
     path: '/followers',
@@ -234,7 +250,7 @@ const routes = [
       layout: 'MainLayout',
       authRequired: false
     },
-    component: () => import('@/views/wish-list/UserWishListItem.vue')
+    component: () => import('@/views/wish-list/user/UserWishListItem.vue')
   },
   {
     path: '/user-bucket-list-item/:id',
@@ -243,7 +259,7 @@ const routes = [
       layout: 'MainLayout',
       authRequired: false
     },
-    component: () => import('@/views/bucket-list/UserBucketListItem.vue')
+    component: () => import('@/views/bucket-list/user/UserBucketListItem.vue')
   },
   {
     path: '/my-wish-list-item/wish=:id',
@@ -345,31 +361,22 @@ const routes = [
     component: () => import('@/views/bucket-list/ideas/IdeaBucketListItem.vue')
   },
   {
-    path: '/user-profile/user=:id',
-    name: 'user-profile',
-    meta: {
-      layout: 'MainLayout',
-      authRequired: false
-    },
-    component: () => import('@/views/users/UserProfile.vue')
-  },
-  {
-    path: '/user-wish-list-folders/folder=:id',
+    path: '/user-wish-list-folders/user=:id',
     name: 'user-wish-list-folders',
     meta: {
       layout: 'MainLayout',
       authRequired: false
     },
-    component: () => import('@/views/wish-list/UserWishlistFolders.vue')
+    component: () => import('@/views/wish-list/user/UserWishlistFolders.vue')
   },
   {
-    path: '/user-bucket-list-folders/:id',
+    path: '/user-bucket-list-folders/user=:id',
     name: 'user-bucket-list-folders',
     meta: {
       layout: 'MainLayout',
       authRequired: false
     },
-    component: () => import('@/views/bucket-list/UserBucketListFolders.vue')
+    component: () => import('@/views/bucket-list/user/UserBucketListFolders.vue')
   },
   {
     path: '/countries',
@@ -415,15 +422,6 @@ const routes = [
       authRequired: false
     },
     component: () => import('@/views/wish-list/my-wishes/MyWishlistTabsDone.vue')
-  },
-  {
-    path: '/my-all-wish-list/folder=:id',
-    name: 'wish-list-main-all',
-    meta: {
-      layout: 'MainLayout',
-      authRequired: false
-    },
-    component: () => import('@/views/wish-list/my-wishes/TEST.vue')
   },
   {
     path: '/result-folder-list',

@@ -11,8 +11,11 @@
 
             <div class="flex">
                 <div class="flex">
-                    <div>
+                    <div v-if="user.img">
                         <img class="photo" :src="'/img/' + user.img" />
+                    </div>
+                    <div v-else>
+                        <img class="photo" :src="'/img/landscape.png'" />
                     </div>
                     <div>
                         <p>{{ user.nickname }}</p>
@@ -45,7 +48,7 @@
 
                             <div v-if="this.statusOut">
                             <button v-if="FolYes" @click="subscribe(); statusOut=false;">Подписаться в ответ</button>
-                            <button  v-else class="subscribe" @click="subscribe(); statusOut=false; testFunction()">Подписаться</button>
+                            <n-button strong secondary type="success" v-else class="subscribe" @click="subscribe(); statusOut=false; testFunction()">Подписаться</n-button>
                         </div>
                         <div v-else>
                             <img src="@/assets/setting.svg" alt="icon" class="nav-item__icon" @click="showModal=true">
@@ -63,33 +66,36 @@
                                     <div class="add-component__modal"> 
                                         <h4>Мои препочтения</h4>
                                         <p>Цветы: розы</p>
-
+                                        <br />
                                         <h4>Стоп-лист</h4>
                                         <p>Сладкое</p>
                                         <p>Алкоголь</p>
-
+                                        <br />
                                         <p>День рождения: 31 августа 1995 г.</p>
                                         <p>Страна: Черногория</p>
                                         <p>Город: Подгорица</p>
-                                        <button  @click="showModal=false; unsubscribeUser(); statusOut=true">Отписаться</button>
+                                        <br />
+                                        <n-button  strong secondary type="error" @click="showModal=false; unsubscribeUser(); statusOut=true">Отписаться</n-button>
                                         
                                     </div>
                                 </n-card>
                             </n-modal>
                     </div> 
                 </div>
-                
             </div>
-            <div class="profile-text">
+            <!-- <div class="profile-text">
                 <p @click="showStopList=true" class="stop">Подробнее</p>
                 <p>День рождения: 31 августа</p>
-            </div>
+            </div> -->
+
+
             <div class="profile-items">
                 <div class="i" @click="showWishlistFolders=true">
                     <p>{{ count_wishlist }} </p>
                     <p>Wish List</p>
                 </div>
-                <div class="i" @click="$router.push(`/user-bucket-list-folders/${user.id}`)">
+                <!-- <div class="i" @click="$router.push(`/user-bucket-list-folders/user=${user.id}`)"> -->
+                <div class="i" @click="$router.push(`/user-bucket-list-folders/user=${user.id}`)">
                     <p>{{ count_bucketlist }}</p>
                     <p>Bucket List</p>
                 </div>
@@ -103,8 +109,13 @@
                 </div>
                 
             </div>
-        
 
+            <!-- <div>
+                <img src="@/assets/location.svg" alt="icon" class="nav-item__icon" @click="$router.push(`/user-bucket-list/user=${user.id}`)"> 
+                <img src="@/assets/location.svg" alt="icon" class="nav-item__icon" @click="$router.push(`/user-bucket-list-folders/user=${user.id}`)"> 
+            </div> -->
+        
+            <hr>
 
             <!-- Delete User Model -->
             <div id="overlay" v-if="showDeleteModal">
@@ -259,6 +270,7 @@
 <script>
 
 import axios from 'axios';
+
 import UserName from '@/components/users/UserName.vue'
 import MsgComponent from '@/components/layout/MsgComponent.vue'
 
@@ -271,7 +283,9 @@ import MsgComponent from '@/components/layout/MsgComponent.vue'
 
 // import UserWishList from '@/views/wish-list/UserWishList.vue';
 
-import { NModal, NCard} from 'naive-ui'
+import { NModal, NCard, NButton } from 'naive-ui';
+
+
 
 
 export default {
@@ -282,6 +296,7 @@ export default {
         MsgComponent,
         NModal,
         NCard,
+        NButton
         // NTabs,
         // NTabPane,
         // BucketList,
@@ -536,7 +551,7 @@ export default {
 .flex {
     @include flex;
     // margin-bottom: 20px;
-    background-color: #ccc;
+    // background-color: #ccc;
 }
 .photo {
     @include photo;
@@ -548,9 +563,6 @@ export default {
 .profile {
     background-color: #fff;
     border-radius: 10px;
-    padding: 15px;
-    
-    
     margin-bottom: 20px;
 }
 .profile-name {
@@ -566,7 +578,7 @@ export default {
     cursor: pointer;
 }
 .i {
-    width: 50%;
+    width: 25%;
     text-align: center;
     margin-bottom: 10px;
     font-size: 12px;
@@ -618,9 +630,13 @@ export default {
         width: 100%;
     }
 }
-.subscribe {
-   padding: 15px 20px;
-   border-radius: 10px;
-   border: none;
+// .subscribe {
+//    padding: 15px 20px;
+//    border-radius: 10px;
+//    border: none;
+// }
+
+.profile-items {
+    margin-top: 30px;
 }
 </style>

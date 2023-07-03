@@ -10,7 +10,7 @@
             <div>
                 <n-breadcrumb>
                     <!-- <n-breadcrumb-item @click="$router.push(`/my-bucket-list-folders`)">Bucket List</n-breadcrumb-item> -->
-                    <n-breadcrumb-item @click="$router.push(`/result-bucket-list`)">Bucket List</n-breadcrumb-item>
+                    <n-breadcrumb-item @click="$router.push(`/my-bucket-list-folders`)">Bucket List</n-breadcrumb-item>
                     <n-breadcrumb-item @click="$router.push(`/my-bucket-list/folder=${wish.folder_id}`)">{{ folder_name }}</n-breadcrumb-item>
                     <n-breadcrumb-item>Желание</n-breadcrumb-item>
                 </n-breadcrumb>

@@ -35,34 +35,31 @@
     
 
 
-    <!-- <n-tabs type="segment">
+    <n-tabs type="segment">
         <n-tab-pane name="want" tab="Хочу">
-            <ResultFolderList />
+            <WantWishList />
         </n-tab-pane>
-        <n-tab-pane name="done" tab="Иполнил(а)">
-            <DoneWishListView />
+        <n-tab-pane name="done" tab="Исполнено">
+            <DoneWishListFolder />
         </n-tab-pane>
         <n-tab-pane name="all" tab="Все">
-            <AllMyWishListView />
+            <AllWishListFolder />
         </n-tab-pane>
-    </n-tabs> -->
+    </n-tabs>
 
-    <!-- <n-card title="Song of" style="margin-bottom: 16px"> -->
-    <!-- <n-card> -->
-        <n-tabs type="line" animated>
+    
+        <!-- <n-tabs type="line" animated>
             <n-tab-pane name="want" tab="Хочу">
                 <WantWishList />
             </n-tab-pane>
             <n-tab-pane name="tdone" tab="Исполнено">
-                <!-- <DoneWishListView /> -->
                 <DoneWishListFolder />
             </n-tab-pane>
             <n-tab-pane name="all" tab="Все желания">
-                <!-- <AllMyWishListView /> -->
                 <AllWishListFolder />
             </n-tab-pane>
-        </n-tabs>
-    <!-- </n-card> -->
+        </n-tabs> -->
+    
 
 
 
@@ -223,7 +220,7 @@
 
 
                         <!-- <button  @click="showEditModal=false; updateFolder(); reload_interval(1000);" class="button">Обновить</button> -->
-                        <n-button strong secondary type="success" attr-type="submit" @click="showEditModal=false; updateFolder(); reload_interval(1000);" class="add-btn">Обновить</n-button>
+                        <n-button strong secondary type="success" attr-type="submit" @click="showEditModal=false; updateFolder(); reload_interval(50);" class="add-btn">Обновить</n-button>
                     </form>
                 </div>
                
@@ -492,7 +489,7 @@ export default defineComponent ({
             });
         },
         selectFolder(folder){
-        this.currentWish = folder;
+            this.currentWish = folder;
         },
     },
     mounted() {

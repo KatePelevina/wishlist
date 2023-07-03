@@ -1,5 +1,7 @@
 <template>
-    <!-- <UserPage />  -->
+    <div class="page">
+
+   
 
     <!-- <div class="flex">
         <h1>Wish List | Сумки</h1>
@@ -28,40 +30,68 @@
         <p>пока ничего нет</p>
     </div> -->
     
+
+
+
+    <div>
+        <h1 class="title">папка:{{ folder_name }}</h1>   
+        <p v-if="folder_description">{{ folder_description }}</p>
+    </div>
+    
+    
+    <p v-for="user in users" :key="user.id">{{ user.firstName }} {{ user.secondName }}</p>
+
+    <div class="flex">
+        <h1>User Bucket List</h1>
+        <img src="@/assets/location.svg" alt="icon" class="nav-item__icon" @click="$router.push(`/user-bucket-list-folders/user=${this.$route.params.id}`)"> 
+    </div>
+
+
     <my-input
         v-model="searchQuery"
         placeholder="Поиск..."
     />
 
-    <user-bucket-list :wishes="sortedAndSearchedPosts"/>
+    <!-- <bucket-list-component
+        :wishes="sortedAndSearchedPosts"
+    /> -->
+
+
+   
+
+    <div class="items" v-if="wishes.length">
+        <div class="item" v-for="(wish,index) in wishes" :key="index">
+            <div class="box" @click="$router.push(`/user-bucket-list-item/${wish.id}`)">
+                <div class="box-inner">
+                    <span v-if="wish.price" class="span">{{ wish.price }} руб</span>
+                    <img :src="'/img/' + wish.photo" alt="">
+                </div>
+            </div>
+            <p class="box-inner__hover">{{ wish.name }}</p>
+        </div>
+    </div>
+
+    </div>
 </template>
 
 <script>
 import axios from 'axios';
-// import UserPage from '@/components/users/UserPage.vue'
-// import ListComponent from '@/components/ListComponent.vue';
 import MyInput from '@/components/layout/MyInput.vue';
-import UserBucketList from '@/components/users/UserBucketList.vue'
 
-
-// import BucketList from '@/components/BucketList.vue'
 
 export default {
     name: 'WishListView',
     components: {
-        // UserPage,
-        // ListComponent,
-        // BucketList
         MyInput,
-        UserBucketList
-        
     },
     data() {
         return {
-            // users:[],
             wishes: [],
             selectedSort: '',
-            searchQuery: ''
+            searchQuery: '',
+            users: [],
+            folder_name: "",
+            folder_description: "",
         }
     },
     methods: {
@@ -73,9 +103,33 @@ export default {
                 this.wishes = response.data.wishes;
             })
         },
+        async getUser() {
+            let id = this.$route.params.id;
+
+            await axios.get('http://localhost:8085/public/process.php?action=get-user-from-folder-bucketlist&id='+id)
+            .then((response)=>{
+                this.users = response.data.users;
+                console.log( this.users);
+            })
+        },
+        async getFolder() {
+            let id = this.$route.params.id;
+
+            await axios.get('http://localhost:8085/public/process.php?action=bucketlist-folder&id='+id)
+            .then((response)=>{
+                this.folders = response.data.folders;
+
+                this.folder_name = response.data.folders[0].name;
+                this.folder_description = response.data.folders[0].description;
+                this.currentFolder = response.data.folders[0];
+            });
+
+        },
     },
     mounted() {
         this.getWish()
+        this.getUser()
+        this.getFolder()
     },
     computed: {
         sortedPosts() {
@@ -142,6 +196,14 @@ export default {
    width: 49%;
    margin-bottom: 10px;
    
+}
+
+.page {
+    @include page;
+}
+
+.flex {
+    @include flex;
 }
 </style>
 
