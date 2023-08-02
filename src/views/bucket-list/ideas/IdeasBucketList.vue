@@ -5,7 +5,7 @@
 
     <p>Всего: {{ wishes.length }}</p>
   
-    <!-- <h1>AllBucketList</h1> -->
+    <h1>Идеи для твоего Bucket List</h1>
 
     <my-input
         v-model="searchQuery"

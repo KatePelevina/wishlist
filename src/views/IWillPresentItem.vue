@@ -1,4 +1,7 @@
 <template>
+    <div class="page">
+        
+   
     <div class="card" v-for="(wish,index) in wishes" :key="index">
         <div class="flex">
             <div>
@@ -43,16 +46,17 @@
     </div>
 </div>
 
-    
+    </div> 
 </template>
 
 <script>
 import axios from 'axios';
 
+
 export default {
   
-    name: 'MyCard',
-    props: ['id','name', 'country', 'city', 'street', 'building', 'description','photo'],
+    name: 'IWillPresentItem',
+    // props: ['id','name', 'country', 'city', 'street', 'building', 'description','photo'],
     data(){
         return {
             showEditModal: false,

@@ -1,8 +1,8 @@
 <template>
   <div class="page">
 
+  <h1>Идеи для твоего Wish List</h1>
   
-  <p>Всего: {{ wishes.length }}</p>
 
   <!-- <n-breadcrumb>
       <n-breadcrumb-item @click="$router.push(`/my-wish-list-folders`)">Wish List</n-breadcrumb-item>

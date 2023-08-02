@@ -4,39 +4,62 @@
 
         <div class="flex">
             <h1>User Wish List</h1>
+            <h2 v-for="folder in folders" :key="folder.id">Папка: {{ folder.name}}</h2>
             <img src="@/assets/location.svg" alt="icon" class="nav-item__icon" @click="$router.push(`/user-wish-list-folders/user=${this.$route.params.id}`)"> 
         </div>
 
         <p v-for="user in users" :key="user.id">{{ user.firstName }} {{ user.secondName }}</p>
-
+        
     
-        <my-input
+        <!-- <my-input
             v-model="searchQuery"
             placeholder="Поиск..."
-        />
+        /> -->
 
-        <user-wish-list :wishes="sortedAndSearchedPosts"/>
+        <!-- <user-wish-list :wishes="sortedAndSearchedPosts"/> -->
+
+        <n-tabs type="segment">
+            <n-tab-pane name="want" tab="Хочет">
+               <UserWantWishList />
+            </n-tab-pane>
+            <n-tab-pane name="done" tab="Исполнено">
+             <UserDoneWishList />
+            </n-tab-pane>
+            <n-tab-pane name="all" tab="Все">
+                <AllUserWishlist />
+            </n-tab-pane>
+        </n-tabs>
     
     </div>
 </template>
 
 <script>
 import axios from 'axios';
-import MyInput from '@/components/layout/MyInput.vue';
-import UserWishList from '@/components/users/UserWishList.vue';
+// import MyInput from '@/components/layout/MyInput.vue';
+// import UserWishList from '@/components/users/UserWishList.vue';
+import { NTabs, NTabPane } from 'naive-ui';
 
+import UserWantWishList from '@/views/wish-list/user/UserWantWishList.vue';
+import UserDoneWishList from '@/views/wish-list/user/UserDoneWishList.vue';
+import AllUserWishlist from '@/views/wish-list/user/AllUserWishlist.vue';
 
 export default {
     components: {
-        MyInput,
-        UserWishList,
+        // MyInput,
+        // UserWishList,
+        NTabs, 
+        NTabPane,
+        UserWantWishList,
+        UserDoneWishList,
+        AllUserWishlist
     },
     data() {
         return {
             users:[],
             wishes: [],
             selectedSort: '',
-            searchQuery: ''
+            searchQuery: '',
+            folders: ''
         }
     },
     methods: {
@@ -57,10 +80,19 @@ export default {
                 console.log( this.users);
             })
         },
+        async getFolder() {
+            let id = this.$route.params.id;
+
+            await axios.get('http://localhost:8085/public/process.php?action=get-folder&id='+id)
+            .then((response)=>{
+                this.folders = response.data.folders;
+            })
+        },
     },
     mounted() {
         this.getWish()
         this.getUser()
+        this.getFolder() 
     },
     computed: {
         sortedPosts() {

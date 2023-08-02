@@ -20,16 +20,21 @@
 
         <div class="flex rrrr">
             <div class="flex-left">
-                <p class="ddddd">Количество желаний: {{ wishes.length }}</p>
+                <p class="ddddd" v-if="wishes.length">Кол-во желаний: {{ wishes.length }}</p>
             </div>
             <div class="flex-right">
                 <n-button @click="showModal=true" class="btn" strong secondary type="success">+ Добавить желание</n-button>
             </div>
+            <!-- <div class="flex-right">
+                <n-space vertical v-if="wishes.length">
+                    <n-select v-model:value="selectedSort" :options="options" />
+                </n-space>
+            </div> -->
         </div>
 
-        <n-space vertical v-if="wishes.length">
+        <!-- <n-space vertical v-if="wishes.length">
             <n-select v-model:value="selectedSort" :options="options" />
-        </n-space>
+        </n-space> -->
 
         <my-input
         v-if="wishes.length"
@@ -49,7 +54,7 @@
 import axios from 'axios';
 import { defineComponent, ref } from "vue";
 
-import { NSpace, NSelect } from 'naive-ui';
+// import { NSpace, NSelect } from 'naive-ui';
 import { NButton } from 'naive-ui';
 
 import DoneWishlist from '@/components/wishes/DoneWishlist.vue';
@@ -63,8 +68,8 @@ export default defineComponent ({
     components: { 
         DoneWishlist,
         MyInput,
-        NSpace,
-        NSelect,
+        // NSpace,
+        // NSelect,
         NButton
         // MySelect
     },

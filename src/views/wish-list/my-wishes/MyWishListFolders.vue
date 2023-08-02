@@ -13,17 +13,6 @@
         
         
         
-        <!-- <div class="flex">
-            <div class="select">
-                <my-select
-                    v-model="selectedSort"
-                    :options="sortOptions" 
-                />
-            </div>
-            <div class="div-button">
-                <button @click="showModal=true" class="button">+ Новая папка</button>
-            </div>
-        </div> -->
     
         <!-- <div class="cards" v-if="folders.length" >
             <div class="card-test" @click="$router.push(`/my-wish-list/${folder.id}`)" v-for="(folder,index) in folders" :key="index" :folders='sortedAndSearchedPosts'>
@@ -187,6 +176,7 @@ export default defineComponent ({
                 {value: 'name', name: 'По названию'},
                 {value: 'date', name: 'По дате создания'},
             ],
+            events: ''
         }
     },
     methods: {
@@ -356,6 +346,8 @@ input {
     box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.25); 
     border: none;
 }
+
+
 
 </style>
 

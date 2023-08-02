@@ -4,7 +4,10 @@
             <div class="box" @click="$router.push(`/i-will-get-item/wish=${wish.id}`)">
                 <div class="box-inner">
                     <span v-if="wish.price" class="span">{{ wish.price }}</span>
-                    <img :src="'/img/' + wish.photo" alt="">
+                    <div>
+                        <img :src="'/img/' + wish.photo" alt="" v-if="wish.photo">
+                        <n-empty v-else size="large" description="Фотографии нет" class="empty"></n-empty>
+                    </div>
                 </div>
             </div>
             <p class="box-inner__hover">{{ wish.name }}</p>
@@ -15,17 +18,22 @@
     </div>
 
     <div v-else>
-        <p>пока ничего нет</p>
+        <n-empty size="large" description="Пока ничего нет" class="empty"></n-empty>
     </div>
 </template>
 
 <script>
+import { NEmpty } from 'naive-ui';
+
 export default {
     props: {
         wishes: {
             type: Array,
             required: true
         }
+    },
+    components: {
+        NEmpty
     }
 
 }
@@ -112,4 +120,7 @@ export default {
     width: 100%;
 }
 
+.empty {
+    @include empty;
+}
 </style>

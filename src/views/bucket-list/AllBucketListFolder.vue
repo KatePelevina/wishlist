@@ -79,16 +79,16 @@
           </div>
   
   
-          <div class="flex">
-              <div class="flex-left">
+          <!-- <div class="flex"> -->
+              <div>
                 <n-space vertical>
                   <n-select v-model:value="selectedSort" :options="options" />
                 </n-space>
               </div>
-              <div class="div-button flex-right">
+              <!-- <div class="div-button flex-right">
                   <n-button @click="showModal=true" class="btn" strong secondary type="success">+ Новое желание</n-button>
-              </div>
-          </div>
+              </div> -->
+          <!-- </div> -->
   
           <!-- <my-select
           v-model="selectedSort"

@@ -11,8 +11,15 @@
         <h1>User Wish List Folders</h1>
         <img src="@/assets/location.svg" alt="icon" class="nav-item__icon" @click="$router.push(`/user-wish-list/user=${this.$route.params.id}`)"> 
     </div>
-    
+
+    <my-input
+        v-if="folders.length"
+        v-model="searchQuery"
+        placeholder="Поиск..."
+    />
     <UserFoldersList :folders="sortedAndSearchedPosts"/>
+
+    
 
     </div>
 </template>
@@ -20,12 +27,17 @@
 <script>
 import axios from 'axios';
 import UserFoldersList from '@/components/folders/UserFoldersList';
-import UserPage from '@/components/users/UserPage.vue'
+import UserPage from '@/components/users/UserPage.vue';
+import MyInput from '@/components/layout/MyInput.vue';
+
+
+
 
 export default {
     components: {
         UserFoldersList,
-        UserPage
+        UserPage,
+        MyInput,
     },
     data() {
         return {

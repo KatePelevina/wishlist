@@ -12,9 +12,12 @@
             </div>
             <p class="box-inner__hover">{{ wish.name }}</p>
             <p class="box-inner__hover">{{ wish.date }}</p>
-            <p class="box-inner__hover">кто видит: {{ wish.visible }}</p>
+            <!-- <p class="box-inner__hover">кто видит: {{ wish.visible }}</p>
             <p class="box-inner__hover">folder_id: {{ wish.folder_id }}</p>
-            <p class="box-inner__hover">done: {{ wish.done }}</p>
+            <p class="box-inner__hover">done: {{ wish.done }}</p> -->
+
+            <p>done: {{ statusToText[wish.done] }}</p>
+            <p>{{ statusOFvisible[wish.visible] }}</p>
         </div>
     </div>
 
@@ -35,6 +38,18 @@ export default {
     },
     components: {
         NEmpty
+    },
+    data() {
+        return {
+            statusOFvisible: {
+                '1': 'вижу только я',
+                '2': 'видят все пользователи'
+            },
+            statusToText: {
+                '0': 'хочу',
+                '1': 'исполнено',
+            }
+        }
     }
 
 }

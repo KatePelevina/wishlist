@@ -16,12 +16,21 @@
         </div>
     
 
-    <div class="flex" @click="showInfo=true">
-        <!-- <h1 class="title">
+    <!-- <div class="flex" @click="showInfo=true">
+        <h1 class="title">
             <img src="@/assets/location.svg" alt="icon" class="nav-item__icon"> 
             Bucket List
-        </h1> -->
+        </h1>
         <p>Кол-во папок: {{ folders.length }}</p>
+    </div> -->
+
+    <div class="flex">
+        <div class="flex-left">
+            <p class="ddddd">Количество папок: {{ folders.length }}</p>
+        </div>
+        <div class="div-button flex-right">
+            <n-button @click="showModal=true" class="btn" strong secondary type="success">+ Новая папка </n-button>
+        </div>
     </div>
 
 
@@ -38,16 +47,16 @@
         </div>
     </div> -->
 
-    <div class="flex">
-        <div class="div-button">
+    <!-- <div class="flex"> -->
+        <!-- <div class="div-button">
             <n-button @click="showModal=true" class="btn" strong secondary type="success">+ Новая папка </n-button>
-        </div>
+        </div> -->
         <div class="select">
             <n-space vertical>
                 <n-select v-model:value="selectedSort" :options="options" />
             </n-space>
         </div>
-    </div>
+    <!-- </div> -->
     
     <!-- <div class="cards" v-if="folders.length">
         <div class="card-test" v-for="(folder,index) in folders" :key="index" @click="$router.push(`/my-bucket-list/${folder.id}`)">
@@ -308,5 +317,17 @@ export default defineComponent ({
 }
 .nav-item__icon, .title {
     cursor: pointer;
+}
+
+.ddddd {
+    text-align: center;
+    background-color: $bg;
+    width: 100%;
+    padding: 6px;
+    border-radius: 5px;
+}
+
+.flex-left, .flex-right {
+    flex-basis: 49%;
 }
 </style>

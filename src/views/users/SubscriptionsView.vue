@@ -22,7 +22,7 @@
         </div> -->
 
         <!-- <h1>Мои подписки {{ users.length }}</h1> -->
-        <h1>Мои подписки</h1>
+        <h1>Мои подписки: {{ subs }}</h1>
 
         <n-space vertical v-if="users.length">
             <n-select v-model:value="selectedSort" :options="options" />
@@ -74,7 +74,8 @@ export default defineComponent  ({
             users:[],
             selectedSort: '',
             searchQuery: '',
-            page: 0
+            page: 0,
+            subs: ''
             // sortOptions: [
             //     {value: 'title', name: 'По названию'},
             //     {value: 'body', name: 'По содержимому'},
@@ -103,6 +104,15 @@ export default defineComponent  ({
                 alert('Ошибка')
             } 
         },
+        async getCountSubscriptions(){
+            await axios.get('http://localhost:8085/public/process.php?action=count-subscriptions')
+            .then((response)=>{
+                this.subs = response.data.count; 
+            })
+            .catch((error)=>{
+                console.log(error)
+            })
+        },
         toFormData(obj){
             let fd = new FormData();
             for(let i in obj){
@@ -113,6 +123,7 @@ export default defineComponent  ({
     },
     mounted() {
         // this.getSubscriptions()
+        this.getCountSubscriptions()
     },
     computed: {
         sortedPosts() {

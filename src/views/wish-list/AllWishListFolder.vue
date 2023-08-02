@@ -55,7 +55,7 @@
           </div> -->
   
   
-          <div class="flex rrrr">
+          <!-- <div class="flex rrrr">
               <div class="flex-left">
                   <p class="ddddd">Кол-во желаний: {{ wishes.length }}</p> 
               </div>
@@ -63,10 +63,37 @@
                   <p class="ddddd">Кол-во исполненных: {{ done_count  }}</p>
                   
               </div>
-          </div>
+          </div> -->
   
+          
+  
+  
+          <div class="flex">
+            <div class="progress ddddd percent flex-left">
+                <p>Исполнено: {{ done_count  }} / {{ wishes.length }}</p>
+              
+                <!-- <n-space vertical>
+                    <n-progress
+                    type="line"
+                    :percentage="getPercent()"
+                    :indicator-placement="'inside'"
+                    :border-radius="4"
+                    />
+                </n-space> -->
+            </div>
+              <!-- <div class="flex-right">
+                <n-space vertical>
+                  <n-select v-model:value="selectedSort" :options="options" />
+                </n-space>
+              </div> -->
+              <div class="div-button flex-right">
+                  <n-button @click="showModal=true" class="btn" strong secondary type="success">+ Новое желание</n-button>
+              </div>
+              
+          </div>
+
           <div class="progress ddddd percent">
-              <p>Исполнено: {{ done_count  }} / {{ wishes.length }}</p>
+              <!-- <p>Исполнено: {{ done_count  }} / {{ wishes.length }}</p> -->
              
               <n-space vertical>
                   <n-progress
@@ -78,22 +105,7 @@
               </n-space>
           </div>
   
-  
-          <div class="flex">
-              <div class="flex-left">
-                <n-space vertical>
-                  <n-select v-model:value="selectedSort" :options="options" />
-                </n-space>
-              </div>
-              <div class="div-button flex-right">
-                  <n-button @click="showModal=true" class="btn" strong secondary type="success">+ Новое желание</n-button>
-              </div>
-          </div>
-  
-          <!-- <my-select
-          v-model="selectedSort"
-          :options="sortOptions" 
-          /> -->
+          
   
           <!-- <div class="select">
             <n-space vertical>
@@ -158,7 +170,6 @@
   
     import WishListComponent from '@/components/wishes/WishListComponent.vue';
     import MyInput from '@/components/layout/MyInput.vue';
-    // import MySelect from '@/components/layout/MySelect.vue';
   
     
     export default defineComponent ({
@@ -173,9 +184,7 @@
         NModal, 
         NCard,
         NInput, 
-        NInputNumber 
-        // MySelect
-       
+        NInputNumber        
       },
       data() {
           return {
@@ -196,12 +205,6 @@
                  wish_list: '1',
                  bucket_list: '0'
              },
-            // sortOptions: [
-            //       {value: 'name', name: 'По name'},
-            //       {value: 'date', name: 'По date'},
-            //       {value: 'price', name: 'По price'},
-            //       {value: 'visible', name: 'По visible'},
-            // ],
           }
       },
       methods: {

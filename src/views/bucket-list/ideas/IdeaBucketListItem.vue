@@ -1,12 +1,12 @@
 <template>
-    <div>
+    <div class="page">
         <div>
             <n-breadcrumb>
                 <n-breadcrumb-item @click="$router.push(`/ideas-bucket-list`)">Идеи для Bucket List / </n-breadcrumb-item>
             </n-breadcrumb>
         </div>
 
-        <div class="card" v-for="(wish,index) in wishes" :key="index">
+        <div v-for="(wish,index) in wishes" :key="index">
             <div class="card-body">
                 <h3 class="card-title">{{ wish.name }}</h3>
                 <div class="card-body__header">
@@ -42,11 +42,60 @@
                     <button>Зарезервировать</button> -->
                     <div class="flex">
                         <button class="button">Я подарю</button>
-                        <button class="btn">+ Добавить в свой Bucket List</button>
+                        <button class="btn" @click="showModal=true; selectWish(wish); openForm()">+ Добавить в свой Bucket List</button>
                     </div>
                     
                     
                 </div>
+            </div>
+        </div>
+
+
+
+        <!--  User Model -->
+        <div v-if="showModal">
+            <div class="modal">
+                <n-modal v-model:show="showModal">
+                    <n-card
+                    style="width: 600px"
+                    title="Modal"
+                    :bordered="false"
+                    size="huge"
+                    role="dialog"
+                    aria-modal="true"
+                    >
+                    
+                    <form method="post">
+                        <!-- <input type="text" name="name"  placeholder="Название" v-model="currentWish.name"> -->
+                        <n-input v-model:value="currentWish.name" type="text" placeholder="Название"/>
+
+                        <!-- <input type="text" name="name"  placeholder="Цена" v-model="currentWish.price"> -->
+                        <n-input-number  v-model:value="currentWish.price" type="text" placeholder="Цена"/>
+
+
+                        <!-- <input type="text" name="name"  placeholder="Описание" v-model="currentWish.description"> -->
+                        <n-input v-model:value="currentWish.description" type="text" placeholder="Описание"/>
+
+
+                        <!-- <input type="text" name="name"  placeholder="Ссылка" v-model="currentWish.link"> -->
+                        <n-input v-model:value="currentWish.link" type="text" placeholder="Ссылка"/>
+
+
+                        <!-- <select name="folder_id" id="folder_id" v-model="currentWish.folder_id">
+                            <option disabled selected value="">Сохранить в папку</option>
+                            <option v-for="(folder,index) in folders" :key="index" :value="folder.id">{{ folder.name }}</option> 
+                        </select> -->
+
+                        <n-space vertical class="select">
+                            <n-select  v-model:value="currentWish.my_folder_id" :options="folderSelector"/>
+                        </n-space>
+
+                        <button  @click="showModal=false; addToMyBucketList();" class="button">Добавить в свой Bucket List</button>
+                    </form>
+                    
+                    
+                    </n-card>
+                </n-modal>
             </div>
         </div>
     </div>
@@ -56,17 +105,32 @@
 
 import axios from 'axios';
 import { NBreadcrumb, NBreadcrumbItem  } from 'naive-ui';
+import {  NModal, NCard } from 'naive-ui'
+import { defineComponent, ref } from "vue";
+import { NInput, NInputNumber,  NSpace, NSelect  } from 'naive-ui';
 
 
-export default {
+
+export default defineComponent({
     name: 'IdeaWishlistItem',
     components: {
         NBreadcrumb, 
-        NBreadcrumbItem
+        NBreadcrumbItem,
+        NModal, 
+        NCard,
+        NInput, 
+        NInputNumber,  
+        NSpace, 
+        NSelect 
     },
     data(){
         return {
-            wishes: []
+            wishes: [],
+            currentWish: {
+                my_folder_id: ""
+            },
+            showModal: false,
+            folders: [],
         }
     },
     methods: {
@@ -77,15 +141,88 @@ export default {
             await axios.get('http://localhost:8085/public/process.php?action=get-bucketlist-item&id='+id)
             .then((response)=>{
                 this.wishes = response.data.wishes;
-                console.log(response.data.wishes)
+                console.log(response.data.wishes);
             })
         },
+        async addToMyBucketList() {
+           
+           let formData = this.toFormData(this.currentWish);
+           console.log(this.currentWish);
+
+           await axios.post('http://localhost:8085/public/process.php?action=add-userwish-to-my-bucketlist', formData)
+
+           .then((response)=>{
+               this.currentWish = {};
+               if(response.data.error){
+                   this.errorMsg = response.data.message;
+               }else {
+                   this.successMsg = response.data.message;
+               }
+               });
+        },
+        selectWish(wish){
+          this.currentWish = wish;
+        },
+        async getFolders() {
+            await axios.get('http://localhost:8085/public/process.php?action=get-bucketlist-folders')
+            .then((response)=>{
+                
+                this.folders = response.data.folders; 
+            })
+            .catch((error)=>{
+                console.log(error)
+            })
+        },
+        toFormData(obj){
+            let fd = new FormData();
+            for(let i in obj){
+                fd.append(i,obj[i]);
+            }
+            return fd;
+        },
+        openForm() {
+          this.folders.forEach(element => {
+            this.folderSelector.push({
+              label: element.name,
+              value: element.id,
+            });
+          });
+        }
     },
     mounted() {
         this.getWish()
+        this.getFolders()
+        this.openForm() 
+    },
+    setup() {
+        return {
+            value: ref(null),
+            visible: [
+                {
+                label: "Кто видит желание",
+                value: "",
+                disabled: true
+                },
+                {
+                label: "вижу только я",
+                value: "1",
+                },
+                {
+                label: "видят все пользователи",
+                value: "2"
+                }
+            ],
+            folderSelector: [
+                {
+                  label: "Добавить в папку",
+                  value: "",
+                  disabled: true
+                }
+            ]
+        };
     }
 
-}
+})
 
 </script>
 
@@ -93,6 +230,9 @@ export default {
 <style lang="scss" scoped>
 @import "@/styles/_variables.scss";
 
+.page {
+    @include page;
+}
 .card-body__header {
     display: flex;
 }
@@ -107,14 +247,14 @@ export default {
     width: 50%;
 }
 
-.card {
-    background-color: #fff;
-    border-radius: 10px;
-    padding: 15px;
-    margin-bottom: 20px;
-    cursor: pointer;
+// .card {
+//     background-color: #fff;
+//     border-radius: 10px;
+//     padding: 15px;
+//     margin-bottom: 20px;
+//     cursor: pointer;
    
-}
+// }
 .card-body__image {
     margin-right: 20px;
 }

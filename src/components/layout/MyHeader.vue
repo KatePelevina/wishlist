@@ -3,76 +3,80 @@
     <div class="wrapper">
       <div class="header-inner">
         <div class="header-inner__left">
-          <a href="/">
+          <!-- <a href="/">
             <p class="header-link">PelDreams</p>
-          </a>
+          </a> -->
+          <router-link  to="/">
+            PelDreams
+          </router-link>
         </div>
 
         <nav>
           <ul class="navtest">
-            <li class="navtest-item">
-              <router-link to="/my-wish-list-folders">Wish List</router-link>
+            <!-- <li class="navtest-item">
+              <router-link v-if="loggedIn" to="/my-wish-list-folders">Wish List</router-link>
             </li>
             <li class="navtest-item">
-              <router-link to="/my-bucket-list-folders">Bucket List</router-link>
-            </li>
+              <router-link v-if="loggedIn" to="/my-bucket-list-folders">Bucket List</router-link>
+            </li> -->
             <li class="navtest-item">
               <router-link to="/blog">Blog</router-link>
             </li>
+            <li class="navtest-item">
+              <router-link to="/countries">countries</router-link>
+            </li>
+            <li class="navtest-item">
+              <router-link to="/find-user">find-user</router-link>
+            </li>
+            <li class="navtest-item">
+              <router-link to="/ideas-wish-list">ideaWish</router-link>
+            </li>
+            <li class="navtest-item">
+              <router-link to="/ideas-bucket-list">ideaBucket</router-link>
+            </li>
           </ul>
         </nav>
+
         <div class="header-inner__right">
-          <div class="flex">
-            <!-- <div class="header-link">
-              <router-link to="/login">Sign in</router-link>
-            </div> -->
-            <!-- <div class="header-link">
-              <router-link to="/reg">Sign up</router-link>
-            </div> -->
-          </div>
-
-          <div>
-            <div v-if="showModal">
-              <div class="modal" @click="showModal=false;">
-                <ul>
-                  <li>
-                    <router-link to="/">Выйти</router-link>
-                  </li>
-                  <li>
-                    <router-link to="/edit-profile" >Редактировать профиль</router-link>
-                  </li>
-                </ul>
-              </div>
-              <div class="hover" @click="showModal=false;"></div>
-            </div>
-
-            <div v-else @click="showModal=true">
-              <a href="#" class="header-link">Катя Пелевина</a>
-            </div>
-            
-          </div>
-
+          <!-- <a href="#" class="header-link">Катя Пелевина</a> -->
+          <router-link v-if="!loggedIn"  to="/login" class="btn">
+            Login
+          </router-link>
+          <button v-else type="button" class="btn" @click="logout">
+            Logout
+          </button>
         </div>
+
       </div>
     </div>
   </div>
 </template>
 
 <script>
+import { authComputed } from '../../vuex/helpers.js';
 
 export default {
-  name: 'MeHeader',
+  name: 'MyHeader',
   data() {
     return {
       showModal: false,
     }
   },
+  computed: {
+    ...authComputed
+  },
+  methods: {
+    logout() {
+      this.$store.dispatch('logout')
+    }
+  }
 }
 </script>
 
 
 <style lang="scss" scoped>
 @import "@/styles/_variables.scss";
+
 
 .navtest {
   display: flex;
@@ -133,4 +137,14 @@ ul {
   }
 }
 
+.btn {
+  background-color: #fff;
+  border-radius: 5px;
+  padding: 10px 15px;
+
+}
+
+a.btn {
+    color: $active;
+}
 </style>

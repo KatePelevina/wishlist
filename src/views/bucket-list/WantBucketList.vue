@@ -54,6 +54,12 @@
         
         <p class="count">Количество желаний: {{ wishes.length }}</p>
 
+        <div class="select" v-if="wishes.length">
+            <n-space vertical>
+                <n-select v-model:value="selectedSort" :options="options" />
+            </n-space>
+        </div>
+
         <div v-if="wishes.length">
             <my-input
             v-model="searchQuery"
@@ -61,19 +67,19 @@
         </div>
 
         
-        <div class="flex rrrr">
+        <!-- <div class="flex rrrr"> -->
             <!-- <div class="select">
                 <p>Количество желаний: {{ wishes.length }}</p>
             </div> -->
-            <div class="div-button">
+            <!-- <div class="div-button">
                 <n-button @click="showModal=true" class="btn" strong secondary type="success">+ Добавить желание в папку</n-button>
-            </div>
-            <div class="select" v-if="wishes.length">
-            <n-space vertical>
-                <n-select v-model:value="selectedSort" :options="options" />
-            </n-space>
-        </div>
-        </div>
+            </div> -->
+            <!-- <div class="select" v-if="wishes.length">
+                <n-space vertical>
+                    <n-select v-model:value="selectedSort" :options="options" />
+                </n-space>
+            </div> -->
+        <!-- </div> -->
 
         <!-- <div class="select" v-if="wishes.length">
             <n-space vertical>
@@ -127,7 +133,8 @@
             </div>
         </div> -->
 
-       
+        <n-button @click="showModal=true" class="btn" strong secondary type="success">+ Добавить желание</n-button>
+
        
        <bucket-list-component
         :wishes="sortedAndSearchedPosts"
@@ -174,6 +181,20 @@
                             <n-space vertical class="select">
                                 <n-select v-model:value="newWish.done" :options="done" />
                             </n-space>
+
+                            <n-upload 
+            
+                                action="http://localhost:8085/public/process.php?action=add-bucketlist-to-folder&id=id"
+                                :data="{
+                                    'id': 'folder_id'
+                                }"
+                                accept= ".png, .jpg, .jpeg, .webp, .HEIC"
+                                
+                            >
+                                <n-button>Загрузить фото</n-button>
+                        
+                            </n-upload>
+
 
                            <!-- <button class="button" @click="showModal=false; addWishList(); clearMsg();">Добавить желание</button> -->
                            <n-button strong secondary type="success" attr-type="submit" class="add-btn" @click="showModal=false; addBucketList();">Добавить желание</n-button>
@@ -267,7 +288,8 @@ import axios from 'axios';
 
 import { NModal, NButton, NCard} from 'naive-ui';
 import { NSpace, NSelect } from 'naive-ui';
-import { NInput, NInputNumber } from 'naive-ui';
+import { NInput, NInputNumber,  } from 'naive-ui';
+import {  NUpload } from 'naive-ui';
 // import { NTabs, NTabPane } from 'naive-ui';
 
 // import { NTag } from 'naive-ui';
@@ -301,6 +323,7 @@ export default defineComponent ({
        NSelect,
        NInput,
        NInputNumber,
+       NUpload
     //    NTabs, 
     //    NTabPane,
     //    DoneWishListView,
@@ -339,16 +362,12 @@ export default defineComponent ({
             },
             selectedSort: '',
             searchQuery: '',
-            // sortOptions: [
-            //     {value: 'name', name: 'По name'},
-            //     {value: 'date', name: 'По date'},
-            //     {value: 'price', name: 'По price'},
-            //     {value: 'visible', name: 'По visible'},
-            // ],
+            
             folder_name: '',
             folder_description: '',
             successMsg: '',
-            errorMsg: ''
+            errorMsg: '',
+            folder_id: ''
        }
     },
     methods: {
@@ -388,6 +407,7 @@ export default defineComponent ({
                 this.folder_name = response.data.folders[0].name;
                 this.folder_description = response.data.folders[0].description;
                 this.currentFolder = response.data.folders[0];
+                this.folder_id = response.data.folders[0].id;
 
                 console.log(this.folder_description);
             })
@@ -397,21 +417,21 @@ export default defineComponent ({
             let formData = this.toFormData(this.newWish);
         
 
-        axios.post('http://localhost:8085/public/process.php?action=add-bucketlist-to-folder&id='+id, formData)
+            axios.post('http://localhost:8085/public/process.php?action=add-bucketlist-to-folder&id='+id, formData)
 
-        .then((response)=>{
-            this.newWish = {name: "", price: "", description: "", photo: "", link: "", visible: "", folder_id: "", done: "", wish_list: "", bucket_list: "" };
-            
-            if (response.data.error) {
-                console.log(response.data);
-                // this.errorMsg = response.data.message;
+            .then((response)=>{
+                this.newWish = {name: "", price: "", description: "", photo: "", link: "", visible: "", folder_id: "", done: "", wish_list: "", bucket_list: "" };
+                
+                if (response.data.error) {
+                    console.log(response.data);
+                    // this.errorMsg = response.data.message;
 
-            } else {
-                console.log(response.data);
-                // this.successMsg = response.data.message;
-                this.getWishes();              
-            }
-        });
+                } else {
+                    console.log(response.data);
+                    // this.successMsg = response.data.message;
+                    this.getWishes();              
+                }
+            });
         },
         toFormData(obj){
             let fd = new FormData();

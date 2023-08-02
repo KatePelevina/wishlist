@@ -1,5 +1,5 @@
 <template>
-    <div>
+    <div class="page">
         <!-- <div class="items" v-if="wishes.length" >
             <div class="item" v-for="(wish,index) in wishes" :key="index">
                 <div class="box" @click="$router.push(`/i-will-present-item/${wish.id}`)">
@@ -15,6 +15,7 @@
         </div> -->
 
         <my-input
+        v-if="wishes.length"
         v-model="searchQuery"
         placeholder="Поиск..."
         />
@@ -122,5 +123,8 @@ export default {
 .item {
    width: 49%;
    margin-bottom: 10px;
+}
+.page {
+    @include page;
 }
 </style>

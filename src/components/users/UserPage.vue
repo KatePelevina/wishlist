@@ -91,21 +91,21 @@
 
             <div class="profile-items">
                 <div class="i" @click="showWishlistFolders=true">
-                    <p>{{ count_wishlist }} </p>
                     <p>Wish List</p>
+                    <p>{{ count_wishlist }} </p>
                 </div>
                 <!-- <div class="i" @click="$router.push(`/user-bucket-list-folders/user=${user.id}`)"> -->
-                <div class="i" @click="$router.push(`/user-bucket-list-folders/user=${user.id}`)">
-                    <p>{{ count_bucketlist }}</p>
+                <div class="i" @click="$router.push(`/user-bucket-list/user=${user.id}`)">
                     <p>Bucket List</p>
+                    <p>{{ count_bucketlist }}</p>
                 </div>
                 <div class="i active" @click="showUserSubs=true">
-                    <p>{{subsCount}}</p>
                     <p>Подписки</p>
+                    <p>{{subsCount}}</p>
                 </div>
                 <div class="i active" @click="showUserFollowers=true">
-                    <p>{{followersCount}}</p>
                     <p>Подписчики</p>
+                    <p>{{followersCount}}</p>
                 </div>
                 
             </div>
@@ -578,7 +578,7 @@ export default {
     cursor: pointer;
 }
 .i {
-    width: 25%;
+    width: 50%;
     text-align: center;
     margin-bottom: 10px;
     font-size: 12px;

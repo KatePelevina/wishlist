@@ -47,7 +47,7 @@
     
     />
     
-    <div v-intersection="loadMorePosts" class="observer"></div>
+    <div v-intersection="loadMoreUsers" class="observer"></div>
     
 
 <!-- <n-pagination v-model:page="page" :page-count="pageCount" :click-handler="changePage" /> -->
@@ -105,7 +105,7 @@ export default defineComponent ({
         // },
 
         //перестать загружать посты, когда дошли до конца 
-        async loadMorePosts() {
+        async loadMoreUsers() {
             try {
                 const response = await axios.post('http://localhost:8085/public/process.php?action=read-users', this.toFormData({
                     offset: this.page

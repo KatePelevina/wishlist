@@ -5,7 +5,7 @@
             <n-breadcrumb>
                 <!-- <n-breadcrumb-item @click="$router.push(`/my-bucket-list-folders`)">Bucket List</n-breadcrumb-item> -->
                 <n-breadcrumb-item @click="$router.push(`/my-bucket-list-folders`)">Bucket List</n-breadcrumb-item>
-                <n-breadcrumb-item>Папка: {{ folder_name }}</n-breadcrumb-item>
+                <n-breadcrumb-item>{{ folder_name }}</n-breadcrumb-item>
             </n-breadcrumb>
         </div>
         <div class="card-header__right flex">
@@ -22,6 +22,9 @@
         <h1 class="title">{{ folder_name }}</h1>   
         <p v-if="folder_description">{{ folder_description }}</p>
     </div>
+
+    <n-button @click="showModal=true" class="btn" strong secondary type="success">+ Добавить желание</n-button>
+
 
     <n-tabs type="segment">
         <n-tab-pane name="f1" tab="Хочу ">
@@ -138,13 +141,26 @@
                                 <option v-for="(visible,index) in visible" :key="index" :value="visible.status">{{ visible.status }}</option> 
                             </select> -->
 
-                            <n-space vertical class="select">
+                            <n-space vertical class="select" required>
                                 <n-select v-model:value="newWish.visible" :options="visible" />
                             </n-space>
 
                             <n-space vertical class="select">
                                 <n-select v-model:value="newWish.done" :options="done" />
                             </n-space>
+
+                            <n-upload 
+            
+                                action="http://localhost:8085/public/process.php?action="
+                                :data="{
+                                    'id': 'wish.id'
+                                }"
+                                accept= ".png, .jpg, .jpeg, .webp, .HEIC"
+                                
+                            >
+                                <n-button>Загрузить фото</n-button>
+                        
+                            </n-upload>
                         
                             <!-- <button class="button add-btn" @click="showModal=false; addBucketList(); clearMsg();">Добавить желание</button> -->
                             <n-button strong secondary type="success" attr-type="submit" class="add-btn" @click="showModal=false; addBucketList();">Добавить желание</n-button>
@@ -219,7 +235,7 @@ import { NTabs, NTabPane } from 'naive-ui';
 import {  NModal, NCard, NButton } from 'naive-ui';
 import { NBreadcrumb, NBreadcrumbItem} from 'naive-ui';
 import { NSpace, NSelect } from 'naive-ui';
-import { NInput, NInputNumber } from 'naive-ui';
+import { NInput, NInputNumber, NUpload } from 'naive-ui';
 // import { NProgress} from 'naive-ui';
 
 
@@ -257,7 +273,8 @@ export default defineComponent ({
         NTabPane,
         AllBucketListFolder,
         WantBucketList,
-        DoneBucketList
+        DoneBucketList,
+        NUpload
     },
     data() {
         return {
@@ -566,6 +583,8 @@ export default defineComponent ({
 }
 .btn {
     width: 100%;
+    margin-top: 30px;
+    margin-bottom: 30px;
 }
 .progress {
     margin-top: 20px;
@@ -581,5 +600,8 @@ export default defineComponent ({
     text-align: center;
 }
 </style>
+
+
+
 
 

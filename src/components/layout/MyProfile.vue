@@ -1,5 +1,5 @@
 <template>
-    <div class="profile">
+    <div class="profile theme-element">
         <div  v-for="user in users" :key="user.id">
 
             <div>
@@ -11,9 +11,16 @@
 
                         <div class="flex">
                             <!-- <img class="photo" src="@/assets/photo.jpg" alt=""> -->
+
+
                             <img :src="'/img/' + user.img" alt="" class="photo" >
+
+
+                            
+
                             <div>
                                 <p>{{ user.username }}</p>
+
                                 <p>{{ user.firstName }} {{ user.secondName }}</p>   
                             </div>
                             
@@ -206,7 +213,7 @@ export default {
         this.getCountBucketList(),
         this.getCountFollowers(),
         this.getCountSubscriptions()
-    }  
+    }
 }
 </script>
 
@@ -245,6 +252,8 @@ export default {
     }
     .photo {
        @include photo;
+       width: 60px;
+       height: 60px;
     }
 
    

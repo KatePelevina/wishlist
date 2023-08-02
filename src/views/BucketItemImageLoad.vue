@@ -7,7 +7,8 @@
             <button v-on:click="submitFile()">Submit</button>
         </div>
 
-        <n-upload
+        <!-- <n-upload
+            v-on:change="handleFileUpload()"
             action="https://www.mocky.io/v2/5e4bafc63100007100d8b70f"
             :headers="{
             'naive-info': 'hello!'
@@ -16,15 +17,15 @@
             'naive-data': 'cool! naive!'
             }"
         >
-            <n-button>Upload File</n-button>
-        </n-upload>
+            <n-button v-on:click="submitFile()">Upload File</n-button>
+        </n-upload> -->
        
     </div>
 </template>
 
 <script>
 import axios from 'axios';
-import { NUpload, NButton} from 'naive-ui'
+// import { NUpload, NButton} from 'naive-ui'
 
 
 
@@ -34,15 +35,17 @@ export default {
             file: ''
         }
     },
-    components: {
-        NUpload,
-        NButton
-    },
+    // components: {
+    //     NUpload,
+    //     NButton
+    // },
     methods: {
         async submitFile(){
+            let id = this.$route.params.id;
+            
             let formData = new FormData();
             formData.append('file', this.file);
-            await axios.post( 'http://localhost:8085/public/process.php?action=image-load',
+            await axios.post( 'http://localhost:8085/public/process.php?action=bucket-wishlist-item-image-load&id=' +id,
                 formData,
                 {
                 headers: {
@@ -50,7 +53,8 @@ export default {
                 }
                 }
             ).then(function(){
-                this.$router('/image-load');
+                // this.$router('/image-load');
+                location.reload();
                 console.log('SUCCESS!!');
             })
             .catch(function(){

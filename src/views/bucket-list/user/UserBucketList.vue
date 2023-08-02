@@ -33,12 +33,10 @@
 
 
 
-    <div>
-        <h1 class="title">папка:{{ folder_name }}</h1>   
-        <p v-if="folder_description">{{ folder_description }}</p>
-    </div>
+
     
-    
+    <UserPage />
+
     <p v-for="user in users" :key="user.id">{{ user.firstName }} {{ user.secondName }}</p>
 
     <div class="flex">
@@ -47,19 +45,25 @@
     </div>
 
 
+    <div class="select" v-if="wishes.length">
+        <n-space vertical>
+            <n-select v-model:value="selectedSort" :options="options" />
+        </n-space>
+    </div>
+
     <my-input
         v-model="searchQuery"
         placeholder="Поиск..."
     />
 
-    <!-- <bucket-list-component
+    <UserBucketList 
         :wishes="sortedAndSearchedPosts"
-    /> -->
+    />
 
 
    
 
-    <div class="items" v-if="wishes.length">
+    <!-- <div class="items" v-if="wishes.length">
         <div class="item" v-for="(wish,index) in wishes" :key="index">
             <div class="box" @click="$router.push(`/user-bucket-list-item/${wish.id}`)">
                 <div class="box-inner">
@@ -68,8 +72,11 @@
                 </div>
             </div>
             <p class="box-inner__hover">{{ wish.name }}</p>
+            <p class="box-inner__hover">{{ wish.date }}</p>
+            <p class="box-inner__hover">{{ wish.visible }}</p>
+            <p class="box-inner__hover">done:{{ wish.done }}</p>
         </div>
-    </div>
+    </div> -->
 
     </div>
 </template>
@@ -77,12 +84,22 @@
 <script>
 import axios from 'axios';
 import MyInput from '@/components/layout/MyInput.vue';
+import UserPage from '@/components/users/UserPage.vue';
+import UserBucketList from '@/components/users/UserBucketList.vue'
+
+import { NSpace, NSelect } from 'naive-ui';
+
+import { defineComponent, ref } from "vue";
 
 
-export default {
+export default defineComponent ({
     name: 'WishListView',
     components: {
         MyInput,
+        UserPage,
+        NSpace, 
+        NSelect,
+        UserBucketList
     },
     data() {
         return {
@@ -90,8 +107,6 @@ export default {
             selectedSort: '',
             searchQuery: '',
             users: [],
-            folder_name: "",
-            folder_description: "",
         }
     },
     methods: {
@@ -106,30 +121,15 @@ export default {
         async getUser() {
             let id = this.$route.params.id;
 
-            await axios.get('http://localhost:8085/public/process.php?action=get-user-from-folder-bucketlist&id='+id)
+            await axios.get('http://localhost:8085/public/process.php?action=get-user&id='+id)
             .then((response)=>{
                 this.users = response.data.users;
-                console.log( this.users);
             })
-        },
-        async getFolder() {
-            let id = this.$route.params.id;
-
-            await axios.get('http://localhost:8085/public/process.php?action=bucketlist-folder&id='+id)
-            .then((response)=>{
-                this.folders = response.data.folders;
-
-                this.folder_name = response.data.folders[0].name;
-                this.folder_description = response.data.folders[0].description;
-                this.currentFolder = response.data.folders[0];
-            });
-
         },
     },
     mounted() {
         this.getWish()
         this.getUser()
-        this.getFolder()
     },
     computed: {
         sortedPosts() {
@@ -139,7 +139,35 @@ export default {
             return this.sortedPosts.filter(wish => wish.name.toLowerCase().includes(this.searchQuery.toLowerCase()))
         }
     },
-}
+    setup() {
+        return {
+            value: ref(null),
+            options: [
+                {
+                label: "Сортировать по",
+                value: "",
+                disabled: true
+                },
+                {
+                label: "По названию",
+                value: "name",
+                },
+                {
+                label: "По цене",
+                value: "price"
+                },
+                {
+                label: "По дате создания",
+                value: "date"
+                },
+                {
+                label: "По visible",
+                value: "visible"
+                },
+            ]            
+        };
+    }
+})
 </script>
 
 <style lang="scss" scoped>

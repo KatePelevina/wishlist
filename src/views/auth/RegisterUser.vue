@@ -8,45 +8,26 @@
         <div class="modal">
             <h1>Reg Page</h1>
             <div class="login-form">
-                <form action="">
-                    <!-- <input 
-                        type="text" 
-                        name="username" 
-                        id="username" 
-                        v-model="username"
-                        placeholder="username"
-                    > -->
-                    <input type="text" placeholder="username" v-model="newUser.nickname">
-                    <!-- <input 
-                        type="text" 
-                        name="Email" 
-                        id="Email" 
-                        v-model="email"
-                        placeholder="Email"
-                    > -->
-                    <!-- <input 
-                        type="password" 
-                        name="password" 
-                        id="password" 
-                        v-model="password"
-                        placeholder="Password"
-                    > -->
-                    <input type="password" placeholder="Password" v-model="newUser.password">
-                    <!-- <input 
-                        type="password" 
-                        name="confirm_password" 
-                        id="password" 
-                        v-model="confirm_password"
-                        placeholder="Password"
-                    > -->
-                    <button class="button" @click="addUser(); routeToDynamicPage(); clearUser(); clearMsg();">Создать аккаунт</button>
+                <form @submit.prevent="register">
+                    <input type="text" placeholder="username" v-model="nickname">
+                    <input type="text" placeholder="email" v-model="email">
+                    <input type="password" placeholder="Password" v-model="password">
+                    <button class="button" type="submit">Создать аккаунт</button>
+
+                    <ul>
+                        <li v-for="(error, index) in errors" :key="index">{{ error }}</li>
+                    </ul>
+
+                    <router-link to="/login">
+                        Уже есть аккаунт? Войти
+                    </router-link>
                 </form>
-                <div>
+                <!-- <div>
                     <p>Уже есть аккаунт?</p>
                     <p>
                         <a href="/login" class="link">Войти</a>
                     </p>
-                </div>
+                </div> -->
                 <div>
                     <p>Google</p>
                 </div>
@@ -57,19 +38,24 @@
 </template>
 
 <script>
-import axios from 'axios';
+// import axios from 'axios';
 import MsgComponent from '@/components/layout/MsgComponent.vue'
-import router from "@/router"; 
+// import router from "@/router"; 
 
 export default {
     data(){
         return {
             errorMsg: "",
             successMsg: "",
-            newUser: {
-                nickname: '',
-                password: '',
-            }
+            // newUser: {
+            //     nickname: '',
+            //     email: '',
+            //     password: '',
+            // }
+            nickname: '',
+            email: '',
+            password: '',
+            errors: null
         }
     },
     components: {
@@ -89,12 +75,13 @@ export default {
         //       console.log(error)
         //     })
         // },
+        /*
         async addUser(){
             let formData = this.toFormData(this.newUser);
 
             await axios.post("http://localhost:8085/public/process.php?action=add-user", formData)
             .then((response)=>{
-                this.newUser = {nickname: "", password: "" };
+                this.newUser = {nickname: "", email: "", password: "" };
                 
                 
 
@@ -107,26 +94,42 @@ export default {
                 }
             });
         },
-        toFormData(obj){
-            let fd = new FormData();
-            for(let i in obj){
-                fd.append(i,obj[i]);
-            }
-            return fd;
-        },
-        routeToDynamicPage() {
-            router.push({
-                name: 'home'
+        */
+        // toFormData(obj){
+        //     let fd = new FormData();
+        //     for(let i in obj){
+        //         fd.append(i,obj[i]);
+        //     }
+        //     return fd;
+        // },
+        register() {
+            console.log('RegisterUser.register')
+            this.$store.dispatch('register', {
+                nickname: this.nickname,
+                email: this.email,
+                password: this.password,
+            })
+            .then( () => {
+                // this.$router.push({ name: 'my-wish-list-folders'})
+            })
+            .catch(err => {
+                this.errors = err.response.data.errors
             })
         },
-        clearMsg(){
-            this.errorMsg = "";
-            this.successMsg = "";
-        },
-        clearUser(){
-            this.nickname = "";
-            this.password = "";
-        },
+        // routeToDynamicPage() {
+        //     router.push({
+        //         name: 'home'
+        //     })
+        // },
+        // clearMsg(){
+        //     this.errorMsg = "";
+        //     this.successMsg = "";
+        // },
+        // clearUser(){
+        //     this.nickname = "";
+        //     this.email = "";
+        //     this.password = "";
+        // },
     }
 }
 

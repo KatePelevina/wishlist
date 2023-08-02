@@ -78,11 +78,28 @@ export default {
 .light-theme {
   background-color: $bg;
   color: #000;
+  .page {
+    background-color: #fff;
+  }
 }
 
 .dark-theme {
   background-color: #030C43;
-  color: #fff;
+  // color: #fff;
+  .theme-element {
+    background-color:#020518;
+    color: #fff;
+    a {
+      color: #fff;
+    }
+  }
+  .page {
+    background-color: #020518;
+    color: #fff;
+    a {
+      color: #fff;
+    }
+  }
 }
 .theme {
   width: 100%;
@@ -92,7 +109,9 @@ export default {
   border: none;
   background-color: $active;
   color: #fff;
+  cursor: pointer;
 }
+
 
 
 .flex {
@@ -119,9 +138,9 @@ export default {
 
 
 @media (max-width: 600px) {
-  // .header{
-  //   display: none;
-  // }
+  .header{
+    display: none;
+  }
   .left-aside {
     display: none;
   }
@@ -133,9 +152,9 @@ export default {
     display: none;
   }
 
-  .flex {
-    display: none;
-  }
+  // .flex {
+  //   display: none;
+  // }
 }
 
 </style>

@@ -63,10 +63,6 @@
               </div>
           </div>
   
-          <!-- <my-select
-          v-model="selectedSort"
-          :options="sortOptions" 
-          /> -->
   
           <div class="select">
             <n-space vertical>
@@ -90,13 +86,10 @@
     <script>
     import axios from 'axios';
     import { defineComponent, ref } from "vue";
-  
     import { NButton } from 'naive-ui';
     import { NSpace, NSelect } from 'naive-ui';
-  
     import WishListComponent from '@/components/wishes/WishListComponent.vue';
     import MyInput from '@/components/layout/MyInput.vue';
-    // import MySelect from '@/components/layout/MySelect.vue';
   
     
     export default defineComponent ({
@@ -106,21 +99,13 @@
         NSpace,
         NSelect,
         WishListComponent,
-        MyInput,
-        // MySelect
-       
+        MyInput,  
       },
       data() {
           return {
             wishes:[],
             selectedSort: '',
             searchQuery: '', 
-            // sortOptions: [
-            //       {value: 'name', name: 'По name'},
-            //       {value: 'date', name: 'По date'},
-            //       {value: 'price', name: 'По price'},
-            //       {value: 'visible', name: 'По visible'},
-            // ],
           }
       },
       methods: {

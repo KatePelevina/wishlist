@@ -44,6 +44,9 @@
             <n-button>Загрузить фото</n-button>
         </n-upload>
 
+
+        <router-link to="/want-and-stop-list">Мои предпочтения</router-link>
+
         <n-button strong secondary type="warning" @click="showEditModal=true; selectUser(user);">
             Редактировать профиль
         </n-button>

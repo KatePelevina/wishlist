@@ -23,6 +23,7 @@
             v-for="wish in wishes" 
             :wish="wish"
             :key="wish.id"
+            :done="done"
             />
         </div>
     </div>
@@ -43,6 +44,9 @@ export default {
         wishes: {
             type: Array,
             required: true
+        },
+        done: {
+            type: Array,
         }
     },
     components: {

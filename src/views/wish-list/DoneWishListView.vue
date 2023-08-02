@@ -13,14 +13,11 @@
             </div>
         </div> -->
 
-        <!-- <my-select
-        v-model="selectedSort"
-        :options="sortOptions" 
-        /> -->
+        
 
         <div class="flex rrrr">
             <div class="flex-left">
-                <p class="ddddd">Количество желаний: {{ wishes.length }}</p>
+                <p class="ddddd" v-if="wishes.length">Количество желаний: {{ wishes.length }}</p>
             </div>
             <div class="flex-right">
                 <n-button @click="showModal=true" class="btn" strong secondary type="success">+ Добавить желание</n-button>
@@ -66,19 +63,12 @@ export default defineComponent ({
         NSpace,
         NSelect,
         NButton
-        // MySelect
     },
     data(){
         return {
             wishes:[],
             selectedSort: '',
             searchQuery: '',
-            // sortOptions: [
-            //     {value: 'name', name: 'По name'},
-            //     {value: 'date', name: 'По date'},
-            //     {value: 'price', name: 'По price'},
-            //     {value: 'visible', name: 'По visible'},
-            // ]
         }
     },
     methods: {

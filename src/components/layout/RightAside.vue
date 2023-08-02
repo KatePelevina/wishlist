@@ -1,5 +1,5 @@
 <template>
-    <div class="aside">
+    <div class="aside theme-element">
 
         <!-- <router-link to="/subscriptions">
             <p class="aside-title">Подписки</p>
@@ -18,7 +18,7 @@
             </div>
         </div>  -->
 
-        <ul class="nav">
+        <ul class="nav theme-element">
             <li class="nav-item">
                 <img src="@/assets/star.svg" alt="icon" class="nav-item__icon">
                 <router-link to="/subscriptions">Подписки</router-link>

@@ -1,6 +1,7 @@
 <template>
     <div>
-        <h1>bjcnswjicnwolc</h1>
+        
+
         <div class="card" v-for="(wish,index) in wishes" :key="index">
 
             <p class="card-title">{{ wish.name }} 999999</p>

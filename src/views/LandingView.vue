@@ -24,14 +24,27 @@
                 <!-- <p>Мечтай. Вдохновляйся. Исполняй.</p>
                 <p>Желай. Вдохновляйся. Дари.</p> -->
                 <!-- <p>Расскажи о чем ты мечтаешь! </p> -->
-                <div class="buttons">
-                    <div class="button-reg">
-                        <a href="/reg" class="button">Создать профиль</a>
-                    </div>
+
+                <!-- <div class="buttons"> -->
+                    <!-- <div class="button-reg">
+                        <a href="/register" class="button">Создать профиль</a>
+                    </div> -->
                     <!-- <div>
                         <a href="/login" class="button">Войти</a>
                     </div> -->
+
+                <!-- </div> -->
+
+                <div v-if="!loggedIn">
+                    <router-link to="/login">
+                        Login
+                    </router-link>
+
+                    <router-link to="/register">
+                        Register
+                    </router-link>
                 </div>
+                
                 
             </div>
             <div class="first-right">
@@ -228,17 +241,23 @@
 </template>
 
 <script>
+import { authComputed } from '../vuex/helpers.js';
 
 export default {
-  name: 'LandingView',
-  methods: {
-
-  }
+    name: 'LandingView',
+    computed: {
+        ...authComputed
+    }
+  
 }
 </script>
 
 <style lang=scss scoped>
 @import "@/styles/_variables.scss";
+
+
+
+
 // .first-title {
 //     text-transform: uppercase;
 // }

@@ -1,0 +1,23 @@
+{
+    "events": [
+        {
+            "id": "1234",
+            "title": "title 1",
+            "time": "12:00",
+            "date": "Feb 22, 2023"
+        },
+        {
+            "id": "5678",
+            "title": "title 2",
+            "time": "13:00",
+            "date": "Feb 23, 2023"
+        },
+        {
+            "id": "1357",
+            "title": "title 3",
+            "time": "14:00",
+            "date": "Feb 24, 2023"
+        }
+
+    ]
+}

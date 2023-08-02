@@ -25,8 +25,15 @@
         <h1>User Wish List</h1>
         <img src="@/assets/location.svg" alt="icon" class="nav-item__icon" @click="$router.push(`/user-wish-list-folders/user=${this.$route.params.id}`)"> 
     </div>
+
+    <div class="select" v-if="wishes.length">
+        <n-space vertical>
+            <n-select v-model:value="selectedSort" :options="options" />
+        </n-space>
+    </div>
     
     <my-input
+        v-if="wishes.length"
         v-model="searchQuery"
         placeholder="Поиск..."
     />
@@ -40,14 +47,21 @@
 import axios from 'axios';
 import MyInput from '@/components/layout/MyInput.vue';
 import UserWishList from '@/components/users/UserWishList.vue';
-import UserPage from '@/components/users/UserPage.vue'
+import UserPage from '@/components/users/UserPage.vue';
+import { NSpace, NSelect } from 'naive-ui';
+
+import { defineComponent, ref } from "vue";
 
 
-export default {
+
+
+export default defineComponent({
     components: {
         MyInput,
         UserWishList,
-        UserPage
+        UserPage,
+        NSpace, 
+        NSelect 
     },
     data() {
         return {
@@ -89,7 +103,35 @@ export default {
             return this.sortedPosts.filter(wish => wish.name.toLowerCase().includes(this.searchQuery.toLowerCase()))
         }
     },
-}
+    setup() {
+        return {
+            value: ref(null),
+            options: [
+                {
+                label: "Сортировать по",
+                value: "",
+                disabled: true
+                },
+                {
+                label: "По названию",
+                value: "name",
+                },
+                {
+                label: "По цене",
+                value: "price"
+                },
+                {
+                label: "По дате создания",
+                value: "date"
+                },
+                {
+                label: "По visible",
+                value: "visible"
+                },
+            ]            
+        };
+    }
+})
 </script>
 
 <style lang="scss" scoped>

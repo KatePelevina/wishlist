@@ -8,9 +8,6 @@
     
 
     <div class="card" v-for="(wish,index) in wishes" :key="index">
-
-        
-
         <div class="flex color">
             <div>
                 <n-breadcrumb>
@@ -56,29 +53,83 @@
         <!-- </div> -->
 
 
+        <!-- <p class="date flex-left">{{wish.date}}</p> -->
+
+        
+            
+        
         
 
-
-            
-        <div class="card-body flex flex-img">
+        <div class="card-body">
+            <p>Исполнено</p>
+            <p>Хочу</p>
             <div class="div-img">
                 <img v-if="wish.photo"  :src="'/img/' + wish.photo" alt="" class="wish-img" @click="showPhoto=true; selectWish(wish);" >
                 <n-empty v-else size="large" description="Нет фото" class="empty"></n-empty>
+
+                <n-button @click="selectWish(wish); showPhoto=true;">+</n-button>
+
+                <n-upload
+                    multiple
+                    directory-dnd
+                    action="http://localhost:8085/public/process.php?action=wishlist-item-image-load&id=id"
+                    :max="5"
+                    :data="{
+                        'id': 'wish.id'
+                    }"
+                    accept= ".png, .jpg, .jpeg, .webp, .HEIC"
+                >
+                    <n-upload-dragger>
+                    <div style="margin-bottom: 12px">
+                        <n-icon size="48" :depth="3">
+                        <archive-icon />
+                        </n-icon>
+                    </div>
+                    <n-text style="font-size: 16px">
+                        <!-- Click or drag a file to this area to upload -->
+                        <n-empty  v-if="!wish.photo" size="large" description="Click or drag a file to this area to upload" class="empty"></n-empty>
+                        <img v-else  :src="'/img/' + wish.photo" alt="" class="wish-img" >
+
+                    </n-text>
+                    <!-- <n-p depth="3" style="margin: 8px 0 0 0">
+                        Strictly prohibit from uploading sensitive information. For example,
+                        your bank card PIN or your credit card expiry date.
+                    </n-p> -->
+                    </n-upload-dragger>
+                </n-upload>
+
+                <div class="flex">
+                    <n-button @click="done()" secondary type="success" class="btn" v-if="wish.done == 0">Подарили</n-button>
+                    <n-button @click="done()" secondary type="success" class="btn" v-if="wish.done == 0">Иполненил(а) сам(а)</n-button>
+                </div>
+                
+                <!-- <n-button @click="done()" secondary type="success" class="btn" v-if="wish.done == 0">Иполнено</n-button> -->
+
+
             </div>   
             <div>
-                <n-space v-if=" wish.price" class="price">
+                <p>Дата создания: {{wish.date}}</p>
+                
+
+                <p>Стоимость: {{ wish.price }} рублей</p>
+                <p>Статус: {{ statusToText[wish.done] }}</p>
+                <p>visible: {{ statusOFvisible[wish.visible] }}</p>
+                <!-- <n-button @click="done()" secondary type="success" class="btn" v-if="wish.done == 0">Иполнено</n-button> -->
+
+                
+                <!-- <n-space v-if=" wish.price" class="price">
                     <n-tag type="success" >
                         Стоимость: {{ wish.price }} рублей
                     </n-tag>
-                </n-space>
-                <n-space class="date">
+                </n-space> -->
+                <!-- <n-space class="date">
                     <n-tag type="info">
                         Дата создания желания:
                     </n-tag>
                     <n-tag type="info">
                         {{wish.date}}
                     </n-tag>
-                </n-space>
+                </n-space> -->
                 
                
                 <n-space v-if="wish.link">
@@ -87,24 +138,45 @@
                     </n-tag>
                 </n-space>
 
-                <n-space class="visible">
+                <!-- <n-space class="visible">
                     <n-tag type="info">
                         Желание видят все пользователи
                     </n-tag>
-                </n-space>
+                </n-space> -->
+
+                <!-- <p>{{ statusOFvisible[wish.visible] }}</p> -->
+                
 
                 <div> 
-                    <p class="card-description">{{ wish.description }}</p>
-                    <p class="card-book">Это желание забронировано (имя / анонимно): исполню сам(а)</p>
+                    
+                    <!-- <p class="card-book">Это желание забронировано (имя / анонимно): исполню сам(а)</p> -->
                 </div>
 
 
-                <n-button @click="done()" secondary type="success" class="btn">Иполнено</n-button>
+                <!-- <n-button @click="done()" secondary type="success" class="btn" v-if="wish.done == 0">Иполнено</n-button> -->
             
-            </div>      
+            </div> 
         </div>
 
+        <p class="card-description">{{ wish.description }}</p>
 
+
+        <!-- <wish-item-image-load /> -->
+
+        <n-upload 
+            
+            action="http://localhost:8085/public/process.php?action=wishlist-item-image-load&id=id"
+            :data="{
+                'id': 'wish.id'
+            }"
+            accept= ".png, .jpg, .jpeg, .webp, .HEIC"
+            
+        >
+            <n-button v-if="!wish.photo">Загрузить фото</n-button>
+            <n-button v-else>Изменить фото</n-button>
+        </n-upload>
+
+        <n-button>Поделиться этим желанием</n-button>
         
     </div>
 
@@ -124,7 +196,9 @@
               >
               
               <div class="modal-form">
-                <form method="post">
+                <form @submit.prevent="updateWish">
+
+                    
                   <!-- <input type="text" name="name"  placeholder="Название" v-model="currentWish.name"> -->
                   <n-input v-model:value="currentWish.name" type="text" placeholder="Название"/>
 
@@ -155,17 +229,62 @@
                     </select> -->
 
 
-                    <select name="folder_id" id="folder_id" v-model="currentWish.folder_id" >
+                    <!-- <select name="folder_id" id="folder_id" v-model="currentWish.folder_id" class="test-class">
                         <option disabled value="">Сохранить в папку</option>
                         <option v-for="(folder,index) in folders" :key="index" :value="folder.id">{{ folder.name }}</option> 
-                    </select>
+                    </select> -->
 
                     
+                    <!-- <n-space vertical class="select">
+                        <n-select v-model:value="values" :options="options" />
+                    </n-space> -->
+
+
+
+                    <n-space vertical class="select">
+                        <n-select  v-model:value="currentWish.folder_id" :options="folderSelector"/>
+                    </n-space>
+
+                    <!-- <form enctype="multipart/form-data" >
+                        <input type="file" @change="onFileUpload($event)">
+                    </form> -->
+                    
+                    <n-upload 
+            
+                        action="http://localhost:8085/public/process.php?action=wishlist-item-image-load&id=id"
+                        :data="{
+                            'id': 'wish.id'
+                        }"
+                        accept= ".png, .jpg, .jpeg, .webp, .HEIC"
+                        
+                    >
+                        <n-button>Загрузить фото</n-button>
+                   
+                    </n-upload>
+                    
+                    <!-- <img :src="imagePreview" alt="imagePreview" v-if="imagePreview" class="imagePreview">
+                    <img  alt="" :src="'/img/' + currentWish.photo" class="imagePreview" v-else>  -->
+
+                    <!-- <img  alt="" :src="'/img/' + currentWish.photo" class="imagePreview">  -->
+
+
+                    <!-- <n-upload
+                        action="https://www.mocky.io/v2/5e4bafc63100007100d8b70f"
+                        :headers="{
+                        'naive-info': 'hello!'
+                        }"
+                        :data="{
+                        'naive-data': 'cool! naive!'
+                        }"
+                    >
+                        <n-button>Upload File</n-button>
+                    </n-upload> -->
                
 
-                  <n-button  strong secondary type="success" attr-type="submit"  @click="showEditModal=false; updateWish(); reload_interval(1000);" class="edit-btn">Обновить</n-button>
+                  <!-- <n-button  strong secondary type="success" attr-type="submit"  @click="showEditModal=false; " class="edit-btn">Обновить</n-button> -->
                   <!-- <button  @click="showEditModal=false; updateWish(); reload_interval(1000);" class="button">Обновить</button> -->
 
+                  <n-button @click="showEditModal=false;"  type="primary">Обновить</n-button>
                 </form>
               </div>
              
@@ -182,21 +301,16 @@
         <div class="modal">
             <n-modal v-model:show="showDeleteModal">
                 <n-card
-                style="width: 600px"
-                title="Modal"
-                :bordered="false"
-                size="huge"
-                role="dialog"
-                aria-modal="true"
+                    style="width: 600px"
+                    title="Modal"
+                    :bordered="false"
+                    size="huge"
+                    role="dialog"
+                    aria-modal="true"
                 >
                 
-                <div>
-                    <h4>Удалить '{{ currentWish.name }}'? </h4>
-                    
-                    <!-- <button @click="showDeleteModal=false; deleteWish(); clearMsg();" class="red">Да</button>
-                    &nbsp;&nbsp;&nbsp;&nbsp;
-                    <button @click="showDeleteModal=false" class="green">Нет</button> -->
-
+                <div class="modal-text">
+                    <h4>Удалить {{ currentWish.name }}? </h4>
                     <n-space>
                         <n-button strong secondary type="success" @click="showDeleteModal=false" >
                             Нет
@@ -242,9 +356,13 @@
 import axios from 'axios';
 import { defineComponent, ref } from "vue";
 
+
+
+
 import { NEmpty } from 'naive-ui';
 import { NSpace, NSelect } from 'naive-ui';
-
+import { NUpload } from 'naive-ui';
+import { NUploadDragger } from 'naive-ui';
 
 import { NModal, NButton, NCard } from 'naive-ui';
 import { NTag } from 'naive-ui';
@@ -252,6 +370,7 @@ import { NBreadcrumb, NBreadcrumbItem } from 'naive-ui';
 import { NInput, NInputNumber  } from 'naive-ui';
 
 import MsgComponent from '@/components/layout/MsgComponent.vue'
+// import WishItemImageLoad from '@/views/WishItemImageLoad.vue';
 // import WishCard from '@/components/WishCard.vue';
 
 
@@ -271,48 +390,90 @@ export default defineComponent ({
             currentWish: {},
             errorMsg: "",
             successMsg: "",
+            statusOFvisible: {
+                '0': 'вижу только я',
+                '1': 'видят все пользователи'
+            },
+            statusToText: {
+                '0': 'хочу',
+                '1': 'исполнено',
+            },
+            // image: File,
+            // imagePreview: '',
+            
         }
     },
     components: {
-      NModal,
-      NButton,
-      NCard,
-      NBreadcrumb,
-      MsgComponent,
-      NBreadcrumbItem,
-      NSpace,
-      NSelect,
-      NTag,
-      NEmpty,
-      NInput,
-      NInputNumber
+        NModal,
+        NButton,
+        NCard,
+        NBreadcrumb,
+        MsgComponent,
+        NBreadcrumbItem,
+        NSpace,
+        NSelect,
+        NTag,
+        NEmpty,
+        NInput,
+        NInputNumber,
+        // WishItemImageLoad,
+        NUpload,
+        NUploadDragger
     //   WishCard
     },
     methods: {
-        async getWish() {
-            let id = this.$route.params.id;
+        onFileUpload(event) {
+            const file = event.target.files[0]
 
-            
-            await axios.get('http://localhost:8085/public/process.php?action=get-wishlist-item&id='+id)
-            .then((response)=>{
-                this.wishes = response.data.wishes;
-                this.folder_name = response.data.folders[0].name;
-                console.log(response.data);
-            })
+            this.image = file
+
+            const reader = new FileReader()
+
+            reader.onload = () => {
+                this.imagePreview = reader.result
+            }
+
+            reader.readAsDataURL(file)
+
         },
-        updateWish(){
-          let formData = this.toFormData(this.currentWish);
+        // uploadFile() {
+        //     const formData = new FormData();
+        //     formData.append('bytes', this.file);
 
-          axios.post("http://localhost:8085/public/process.php?action=update-wishlist-item", formData)
-          .then((response)=>{
+        //     axios.post('http://localhost:8085/public/process.php?action=file-save',
+        //     formData,
+        //     {
+        //         headers: {
+        //             'Content-Type': 'multipart/form-data'
+        //         }
+        //     }
+        //     ).then(function (data) {
+        //         console.log(data.data);
+        //     })
+        //     .catch(function () {
+        //         console.log('FAILURE!!');
+        //     });
+        // },
+        updateWish(){
+            let formData = this.toFormData(this.currentWish);
+
+            // let photo = this.toFormData(this.imagePreview);
+
+            // let image = this.imagePreview;
+
+            // console.log(this.imagePreview);
+
+
+            axios.post("http://localhost:8085/public/process.php?action=update-wishlist-item", formData)
+            .then((response)=>{
             
               this.currentWish = {};
               if(response.data.error){
                   this.errorMsg = response.data.message;
-              }else {
+              } else {
                   this.successMsg = response.data.message;
               }
-          });
+            });
         },
         deleteWish(time){
           let formData = this.toFormData(this.currentWish);
@@ -332,7 +493,18 @@ export default defineComponent ({
                   
               }
           });
-      },
+        },
+        async getWish() {
+            let id = this.$route.params.id;
+
+            
+            await axios.get('http://localhost:8085/public/process.php?action=get-wishlist-item&id='+id)
+            .then((response)=>{
+                this.wishes = response.data.wishes;
+                this.folder_name = response.data.folders[0].name;
+                console.log(response.data);
+            })
+        },
         toFormData(obj){
           let fd = new FormData();
           for(let i in obj){
@@ -371,11 +543,6 @@ export default defineComponent ({
                 location.reload();
             }, time);
         },
-        // toNextPage(time) {
-        //     setTimeout(function(){
-        //         this.$router.push(`/my-wish-list-folders`);
-        //     }, time)
-        // }
     },
     mounted() {
         this.getWish()
@@ -399,6 +566,13 @@ export default defineComponent ({
                 value: "2"
                 }
             ],
+            folderSelector: [
+                {
+                  label: "Переместить в папку",
+                  value: "",
+                  disabled: true
+                }
+            ]
         };
     }
 })
@@ -528,7 +702,14 @@ export default defineComponent ({
         @include input;
     }
     select {
-        @include input;
+        // @include input;
+        width: 100%;
+        padding: 7px;
+        color: #C2C2C2;
+        border:1px solid #C2C2C2;
+        :hover, :focus, :active {
+            border:1px solid green;
+        }
     }
 }
 
@@ -549,6 +730,7 @@ export default defineComponent ({
         width: 100%;
     }
 }
+
 
 .empty {
     border: 1px #ccc solid;
@@ -576,6 +758,7 @@ export default defineComponent ({
 
 .btn {
     width: 100%;
+    width: 49%;
     margin-top: 20px;
     margin-bottom: 20px;
 }
@@ -588,30 +771,56 @@ export default defineComponent ({
 }
 .wish-name {
     font-weight: bold;
+    margin-bottom: 10px;
 }
 .options {
     margin-bottom: 20px;
 }
 
 .wish-img {
+    
+    border: 1px solid #ebebeb;
+    // padding: 10px;
     border-radius: 10px;
     width: 100%; 
+    height: 400px;   
+    // object-fit: contain;
+    object-fit: cover;
+    // object-fit: fill;
+    // object-fit: scale-down;
 }
+
+
 .modal-wish-img {
     width: 100%;
 }
 
-.div-img {
-    margin-right: 20px;
-}
-.flex-img {
-    align-items: start;
-}
-.date {
-    margin-bottom: 10px;
-}
+// .div-img {
+//     margin-right: 20px;
+// }
+// .flex-img {
+//     align-items: start;
+// }
+
 
 .edit-btn {
     width: 100%;
 }
+
+.date {
+    margin-bottom: 30px;
+    // background-color: #ccc;
+    // padding: 5px;
+    // border-radius: 3px;
+}
+
+
+.flex-left, .flex-right {
+    width: 50%;
+}
+
+.imagePreview {
+    width: 100%;
+}
+
 </style>

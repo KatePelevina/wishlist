@@ -64,15 +64,14 @@
         </div>
 
 
-        <div class="flex rrrr">
+        <!-- <div class="flex rrrr">
             <div class="flex-left">
                 <p class="ddddd">Кол-во желаний: {{ wishes.length }}</p> 
             </div>
             <div class="flex-right">
                 <p class="ddddd">Кол-во исполненных: {{ done_count  }}</p>
-                
             </div>
-        </div>
+        </div> -->
 
         <div class="progress ddddd percent">
             <p>Исполнено: {{ done_count  }} / {{ wishes.length }}</p>
@@ -95,7 +94,7 @@
               </n-space>
             </div>
             <div class="div-button flex-right">
-                <n-button @click="showModal=true" class="btn" strong secondary type="success">+ Новое желание</n-button>
+                <n-button @click="showModal=true; openForm()" class="btn" strong secondary type="success">+ Новое желание</n-button>
             </div>
         </div>
 
@@ -143,10 +142,24 @@
                                 <n-select v-model:value="newWish.visible" :options="visible" />
                             </n-space>
 
-                            <select name="folder_id" id="folder_id" v-model="newWish.folder_id" >
+                            <!-- <select name="folder_id" id="folder_id" v-model="newWish.folder_id" >
                                 <option disabled value="" selected>Сохранить в папку</option>
                                 <option v-for="(folder,index) in folders" :key="index" :value="folder.id">{{ folder.name }}</option> 
-                            </select>
+                            </select> -->
+
+
+                            <!-- <n-space vertical class="select">
+                                <n-select :value="folder.name" v-for="folder in folders" :key="folder.id"  />
+                            </n-space> -->
+
+                            <n-space vertical class="select">
+                                <n-select v-model:value="newWish.folder_id" :options="folderSelector"/>
+                            </n-space>
+                            
+
+                            <n-space vertical class="select">
+                                <n-select v-model:value="newWish.done" :options="done" />
+                            </n-space>
 
                            <n-button strong secondary type="success" attr-type="submit" class="add-btn" @click="showModal=false; addWishList();">Добавить желание</n-button>
                        </form>
@@ -210,13 +223,7 @@
                wish_list: '1',
                bucket_list: '0'
           },
-          folders: []
-          // sortOptions: [
-          //       {value: 'name', name: 'По name'},
-          //       {value: 'date', name: 'По date'},
-          //       {value: 'price', name: 'По price'},
-          //       {value: 'visible', name: 'По visible'},
-          // ],
+          folders: [],
         }
     },
     methods: {
@@ -225,7 +232,6 @@
   
             .then((response)=>{
                 this.wishes = response.data.wishes; 
-                console.log(response.data);
             })
             .catch((error)=>{
                 console.log(error)
@@ -250,8 +256,6 @@
             await axios.get('http://localhost:8085/public/process.php?action=get-count-done-wishlist')
             .then((response)=>{
                 this.done_count = response.data.count; 
-               
-                console.log(response.data);
             })
             .catch((error)=>{
                 console.log(error)
@@ -273,11 +277,9 @@
                 if (response.data.error) {
                     this.errorMsg = response.data.message;
                 } else {
-                    
                     // location.reload(); 
                     this.successMsg = response.data.message;
-                    this.getAllWishlist();
-                                  
+                    this.getAllWishlist();         
                 }
             });
         },
@@ -289,15 +291,22 @@
             return fd;
         },
         async getFolders() {
-            await axios.get('http://localhost:8085/public/process.php?action=get-wishlist-folders')
-            .then((response)=>{
-                
+          await axios.get('http://localhost:8085/public/process.php?action=get-wishlist-folders')
+            .then(response => {
                 this.folders = response.data.folders; 
             })
-            .catch((error)=>{
-                console.log(error)
-            })
+            .catch(error => {
+                console.log(error);
+            });
         },
+        openForm() {
+          this.folders.forEach(element => {
+            this.folderSelector.push({
+              label: element.name,
+              value: element.id,
+            });
+          });
+        }
     },
       
     mounted() {
@@ -305,6 +314,7 @@
         // this.getDoneWishList() 
         this.getCountDoneWishList()
         this.getFolders()
+        this.openForm()
     }, 
     computed: {
       sortedPosts() {
@@ -348,13 +358,35 @@
                 },
                 {
                 label: "вижу только я",
-                value: "1",
+                value: "0",
                 },
                 {
                 label: "видят все пользователи",
-                value: "2"
+                value: "1"
                 }
             ],
+            done: [
+              {
+                label: "Статус",
+                value: "",
+                disabled: true
+              },
+              {
+                label: "хочу",
+                value: "0",
+              },
+              {
+                label: "исполнено",
+                value: "1"
+              }
+            ],
+            folderSelector: [
+                {
+                  label: "Добавить в папку",
+                  value: "",
+                  disabled: true
+                }
+            ]
         };
     }
   })

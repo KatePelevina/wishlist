@@ -51,24 +51,36 @@
 
         <div class="flex rrrr">
             <div class="select">
-                <p class="ddddd">Количество желаний: {{ wishes.length }}</p>
+                <p class="ddddd">Кол-во желаний: {{ wishes.length }}</p>
             </div>
+            
+               
+            <!-- <span class="title-span">{{ wishes.length }}</span>
+           -->
+            
             <div class="div-button">
                 <n-button @click="showModal=true" class="btn" strong secondary type="success">+ Добавить желание</n-button>
             </div>
+            <!-- <div class="select" v-if="wishes.length">
+                <n-space vertical>
+                    <n-select v-model:value="selectedSort" :options="options" />
+                </n-space>
+            </div> -->
         </div>
 
-        <div class="select" v-if="wishes.length">
+        <!-- <div class="select" v-if="wishes.length">
             <n-space vertical>
                 <n-select v-model:value="selectedSort" :options="options" />
             </n-space>
-        </div>
+        </div> -->
         
         <div v-if="wishes.length">
             <my-input
             v-model="searchQuery"
             />
         </div>
+
+
     
 
        <!-- <div class="items" v-if="wishes.length" >
@@ -118,6 +130,7 @@
        
        <wish-list-component
         :wishes="sortedAndSearchedPosts"
+        :done="done"
         />
        
        <div v-if="showModal">
@@ -133,7 +146,7 @@
                <div class="add-component__modal">
                    <div class="add-box">
                        <h4 class="add-box-title">Добавить желание в эту папку</h4>
-                       <form class="form" method="post">
+                       <form class="form" method="post" @submit.prevent="addWishList">
                            <!-- <input type="text" name="name" placeholder="Название" v-model="newWish.name"> -->
                            <n-input v-model:value="newWish.name" type="text" placeholder="Название" class="input" />
 
@@ -162,8 +175,26 @@
                                 <n-select v-model:value="newWish.done" :options="done" />
                             </n-space>
 
+                            <n-upload 
+            
+                                action="http://localhost:8085/public/process.php?action=add-wishlist-to-folder&id=id"
+                                :data="{
+                                    'id': 'folder.id'
+                                }"
+                                accept= ".png, .jpg, .jpeg, .webp, .HEIC"
+                                
+                            >
+                                <n-button>
+                                    <img src="@/assets/search.svg" alt="icon" class="nav-item__icon">
+
+                                    Загрузить фото
+
+                                </n-button>
+                        
+                            </n-upload>
+
                            <!-- <button class="button" @click="showModal=false; addWishList(); clearMsg();">Добавить желание</button> -->
-                           <n-button strong secondary type="success" attr-type="submit" class="add-btn" @click="showModal=false; addWishList();">Добавить желание</n-button>
+                           <n-button strong secondary type="success" attr-type="submit" class="add-btn" @click="showModal=false">Добавить желание</n-button>
                        </form>
                    </div>
                </div>
@@ -255,6 +286,8 @@ import axios from 'axios';
 import { NModal, NButton, NCard} from 'naive-ui';
 import { NSpace, NSelect } from 'naive-ui';
 import { NInput, NInputNumber } from 'naive-ui';
+import { NUpload } from 'naive-ui';
+
 // import { NTabs, NTabPane } from 'naive-ui';
 
 // import { NTag } from 'naive-ui';
@@ -281,18 +314,19 @@ export default defineComponent ({
        NButton,
        MsgComponent,
        MyInput,
-    //    MySelect,
-    //    NBreadcrumb,
-    //    NBreadcrumbItem,
        NSpace,
        NSelect,
        NInput,
        NInputNumber,
+       NUpload
     //    NTabs, 
     //    NTabPane,
     //    DoneWishListView,
     //    AllMyWishListView
-    //    NTag
+    //    NTag,
+    //    MySelect,
+    //    NBreadcrumb,
+    //    NBreadcrumbItem,
     },
     data() {
        return {
@@ -303,7 +337,7 @@ export default defineComponent ({
                name: "", 
                price: "",
                description: "",
-               photo: '',
+               photo: "",
                link: "",
                visible: "",
                folder_id: "",
@@ -312,30 +346,19 @@ export default defineComponent ({
                bucket_list: '0'
                
            },
-            // errorMsg: "",
-            // successMsg: "",
             showEditModal: false,
             showDeleteModal: false,
-            // visible: {
-            //         '1': 'вижу только я',
-            //         '2': 'видят все пользователи',
-            // },
             currentFolder: {
                 name: "",
                 description: ""
             },
             selectedSort: '',
             searchQuery: '',
-            // sortOptions: [
-            //     {value: 'name', name: 'По name'},
-            //     {value: 'date', name: 'По date'},
-            //     {value: 'price', name: 'По price'},
-            //     {value: 'visible', name: 'По visible'},
-            // ],
             folder_name: '',
             folder_description: '',
             successMsg: '',
-            errorMsg: ''
+            errorMsg: '',
+            
        }
     },
     methods: {
@@ -384,21 +407,21 @@ export default defineComponent ({
             let formData = this.toFormData(this.newWish);
         
 
-        axios.post('http://localhost:8085/public/process.php?action=add-wishlist-to-folder&id='+id, formData)
+            axios.post('http://localhost:8085/public/process.php?action=add-wishlist-to-folder&id='+id, formData)
 
-        .then((response)=>{
-            this.newWish = {name: "", price: "", description: "", photo: "", link: "", visible: "", folder_id: "", done: "", wish_list: "", bucket_list: "" };
-            
-            if (response.data.error) {
-                console.log(response.data);
-                // this.errorMsg = response.data.message;
+            .then((response)=>{
+                this.newWish = {name: "", price: "", description: "", photo: "", link: "", visible: "", folder_id: "", done: "", wish_list: '1', bucket_list: '0' };
+                
+                if (response.data.error) {
+                    console.log(response.data);
+                    // this.errorMsg = response.data.message;
 
-            } else {
-                console.log(response.data);
-                // this.successMsg = response.data.message;
-                this.getWishes();              
-            }
-        });
+                } else {
+                    console.log(response.data);
+                    // this.successMsg = response.data.message;
+                    this.getWishes();              
+                }
+            });
         },
         toFormData(obj){
             let fd = new FormData();
@@ -464,7 +487,7 @@ export default defineComponent ({
        },
        sortedAndSearchedPosts() {
            return this.sortedPosts.filter(wish => wish.name.toLowerCase().includes(this.searchQuery.toLowerCase()))
-       }
+       },
     },
     setup() {
         return {
@@ -671,4 +694,15 @@ export default defineComponent ({
     padding: 10px;
     margin-bottom: 20px;
 }
+
+
+.title-span {
+    padding: 4px 8px;
+    background-color: $active;
+    color: $white;
+    font-size: 12px;
+    border-radius: 5px;
+}
 </style>
+
+

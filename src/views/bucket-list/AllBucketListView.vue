@@ -35,9 +35,9 @@
         <div class="flex-left">
             <p class="ddddd">Количество желаний: {{ wishes.length }}</p>
         </div>
-        <div class="flex-right">
+        <!-- <div class="flex-right">
             <n-button @click="showModal=true" class="btn" strong secondary type="success">+ Добавить желание</n-button>
-        </div>
+        </div> -->
     </div>
 
     <my-select
@@ -50,6 +50,49 @@
         placeholder="Поиск..."
     /> 
 
+    <n-button @click="showModal=true; openForm()" class="btn" strong secondary type="success">+ Добавить желание</n-button>
+
+    <div v-if="showModal">
+           <n-modal v-model:show="showModal">
+               <n-card
+               style="width: 600px"
+               
+               :bordered="false"
+               size="huge"
+               role="dialog"
+               aria-modal="true"
+               >
+               <div class="add-component__modal">
+                   <div class="add-box">
+                       <h4 class="add-box-title">Добавить желание в эту папку</h4>
+                       <form class="form" method="post">
+                           <n-input v-model:value="newWish.name" type="text" placeholder="Название" class="input" />
+                           <n-input-number  v-model:value="newWish.price" type="text" placeholder="Цена"/>
+                           <n-input v-model:value="newWish.description" type="text" placeholder="Описание" class="input"  />
+                           <n-input v-model:value="newWish.link" type="text" placeholder="Ссылка" class="input" />
+
+                            <n-space vertical class="select">
+                                <n-select v-model:value="newWish.visible" :options="visible" />
+                            </n-space>
+
+                            <n-space vertical class="select">
+                                <n-select v-model:value="newWish.folder_id" :options="folderSelector"/>
+                            </n-space>
+                            
+
+                            <n-space vertical class="select">
+                                <n-select v-model:value="newWish.done" :options="done" />
+                            </n-space>
+
+                           <n-button strong secondary type="success" attr-type="submit" class="add-btn" @click="showModal=false; addBucketList();">Добавить желание</n-button>
+                       </form>
+                   </div>
+               </div>
+               
+               </n-card>
+           </n-modal>
+       </div> 
+
     <bucket-list-component
       :wishes="sortedAndSearchedPosts"
     />
@@ -59,21 +102,31 @@
   
   <script>
   import axios from 'axios';
+  import { NButton } from 'naive-ui';
+  import { NModal, NCard } from 'naive-ui';
+  import { NInput, NInputNumber, NSpace, NSelect } from 'naive-ui';
+  import { defineComponent, ref } from "vue";
 
-  // import { NButton } from 'naive-ui';
+
   import BucketListComponent from '@/components/wishes/BucketListComponent.vue';
   // import MyInput from '@/components/layout/MyInput.vue';
   // import MySelect from '@/components/layout/MySelect.vue';
 
 
   
-  export default {
+  export default defineComponent ({
     name: 'AllBucketListView',
     components: { 
         BucketListComponent,
         // MyInput,
         // MySelect,
-        // NButton
+        NButton,
+        NModal, 
+        NCard,
+        NInput, 
+        NInputNumber,
+        NSpace, 
+        NSelect
     },
     data() {
         return {
@@ -86,6 +139,20 @@
                 {value: 'price', name: 'По price'},
                 {value: 'visible', name: 'По visible'},
             ],
+            showModal: false,
+            newWish: { 
+               name: "", 
+               price: "",
+               description: "",
+               photo: '',
+               link: "",
+               visible: "",
+               folder_id: "",
+               done: "0",
+               wish_list: '1',
+               bucket_list: '0'
+            },
+            folders: []
         }
     },
     methods: {
@@ -106,9 +173,45 @@
           }
           return fd;
       },
+      addBucketList(){
+            let formData = this.toFormData(this.newWish);
+
+            axios.post("http://localhost:8085/public/process.php?action=add-bucketlist", formData)
+            .then((response)=>{
+                this.newWish = {name: "", price: "", description: "", photo: "", link: "", visible: "", folder_id: "", done: "", wish_list: "", bucket_list: "" };
+                
+                if (response.data.error) {
+                    this.errorMsg = response.data.message;
+                } else {
+                    // location.reload(); 
+                    this.successMsg = response.data.message;
+                    this.getAllWishlist();         
+                }
+            });
+      },
+      async getFolders() {
+          await axios.get('http://localhost:8085/public/process.php?action=get-bucketlist-folders')
+            .then(response => {
+                this.folders = response.data.folders; 
+                console.log(this.folders);
+            })
+            .catch(error => {
+                console.log(error);
+            });
+        },
+      openForm() {
+          this.folders.forEach(element => {
+            this.folderSelector.push({
+              label: element.name,
+              value: element.id,
+            });
+          });
+        }
     },
     mounted() {
         this.getAllPlaces()
+        this.getFolders()
+        this.openForm()
     },
     computed: {
       sortedPosts() {
@@ -118,7 +221,72 @@
           return this.sortedPosts.filter(wish => wish.name.toLowerCase().includes(this.searchQuery.toLowerCase()))
       }
     },
-  }
+    setup() {
+        return {
+            value: ref(null),
+            options: [
+                {
+                label: "Сортировать",
+                value: "",
+                disabled: true
+                },
+                {
+                label: "По названию",
+                value: "name",
+                },
+                {
+                label: "По дате создания",
+                value: "date"
+                },
+                {
+                label: "По price",
+                value: "price",
+                },
+                {
+                label: "По visible",
+                value: "visible"
+                }
+            ],
+            visible: [
+                {
+                label: "Кто видит желание",
+                value: "",
+                disabled: true
+                },
+                {
+                label: "вижу только я",
+                value: "0",
+                },
+                {
+                label: "видят все пользователи",
+                value: "1"
+                }
+            ],
+            done: [
+              {
+                label: "Статус",
+                value: "",
+                disabled: true
+              },
+              {
+                label: "хочу",
+                value: "0",
+              },
+              {
+                label: "исполнено",
+                value: "1"
+              }
+            ],
+            folderSelector: [
+                {
+                  label: "Добавить в папку",
+                  value: "",
+                  disabled: true
+                }
+            ]
+        };
+    }
+  })
   </script>
   
   

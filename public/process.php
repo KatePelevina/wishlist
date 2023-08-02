@@ -314,7 +314,6 @@
                 $users[] = $row;
             }
             $result['users'] = $users;
-            
 
             break;
         case 'count-all-users':
@@ -379,6 +378,21 @@
             
 
             break;
+        case 'get-user-by-wish':
+            $id = $_GET['id'];
+
+            $sql = $conn->query(
+            "SELECT * FROM users
+            LEFT JOIN users_wishlist ON users.id = users_wishlist.user_id
+            WHERE users_wishlist.wish_id = $id");
+
+            $users = [];
+            while($row = $sql->fetch_assoc()) {
+                $users[] = $row;
+            }
+            $result['users'] = $users;
+
+            break;
         case 'get-presents':
 
             $id = $_GET['id']; 
@@ -387,7 +401,7 @@
                 "SELECT * FROM users
                 LEFT JOIN i_will_present ON users.id = i_will_present.friend_id
                 LEFT JOIN wish ON wish.id = i_will_present.wish_id
-                AND i_will_present.wish_id=$id");
+                AND i_will_present.wish_id = $id");
     
             $presents = [];
             while($row = $sql->fetch_assoc()) {
@@ -490,16 +504,17 @@
             $result['users'] = $users;
 
             break;
-        case 'add-user':
+        case 'register':
             
             
-            $nickname = $_POST['nickname'];
+            $nickname = $GET['nickname'];
+            $email = $_POST['email'];
             $password = $_POST['password'];
             
             
             try {
                 
-                $sql = $conn->query("INSERT INTO `users`(`nickname`,`password`) VALUES ('$nickname ','$password')");
+                $sql = $conn->query("INSERT INTO `users`(`nickname`,`email`, `password`) VALUES ('$nickname ', '$email', '$password')");
                 
             } catch (Exception $e){
             }
@@ -691,6 +706,38 @@
             }
           
             break;
+        case 'bucket-wishlist-item-image-load':
+            $id = $_GET['id'];
+
+            if(!empty($_FILES['file']['name'] !== '')) {
+                $file = $_FILES['file'];
+                $name = $file['name'];
+                $pathFile = '../public/img/'.$name;
+             
+                if(!move_uploaded_file($file['tmp_name'], $pathFile)) {
+                    echo 'Файл не смог загрузиться';
+                }
+
+                $sql = $conn->query("UPDATE `bucket` SET `photo`='$name' WHERE `id`= $id");
+            }
+          
+            break;
+        case 'wishlist-item-image-load':
+            $id = $_GET['id'];
+
+            if(!empty($_FILES['file']['name'] !== '')) {
+                $file = $_FILES['file'];
+                $name = $file['name'];
+                $pathFile = '../public/img/'.$name;
+             
+                if(!move_uploaded_file($file['tmp_name'], $pathFile)) {
+                    echo 'Файл не смог загрузиться';
+                }
+
+                $sql = $conn->query("UPDATE `wish` SET `photo`='$name' WHERE `id`= $id");
+            }
+          
+            break;
         case 'user-image':
 
             if(!empty($_FILES['file'])) {
@@ -744,12 +791,11 @@
             "SELECT *
             FROM wish 
 
-            LEFT JOIN users_wishlist ON id = wish_id
-            WHERE users_wishlist.user_id = 1
-            AND wish.folder_id = $id
+            LEFT JOIN users_wishlist ON WISH.id = users_wishlist.wish_id
+            -- WHERE users_wishlist.user_id = 1
+            WHERE wish.folder_id = $id
             AND wish.done = 0
             ORDER BY wish.date DESC
-            -- AND wish.wish_list = 1
             ");
 
             $wishes = [];
@@ -759,6 +805,7 @@
             $result['wishes'] = $wishes;
             
             break; 
+        
         case 'get-user-wishlist-in-folder':
             $id = $_GET['id'];
             
@@ -1368,7 +1415,7 @@
             $name = $_POST['name'];
             $price = $_POST['price'];
             $description = $_POST['description'];
-            $photo = $_POST['photo'];
+            // $photo = $_POST['photo'];
             $link = $_POST['link'];
             $visible = $_POST['visible'];
 
@@ -1377,6 +1424,18 @@
             $bucket_list = 0;
 
             $folder_id = $_GET['id'];
+
+            if(!empty($_FILES['file']['name'] !== '')) {
+                $file = $_FILES['file'];
+                $photo = $file['name'];
+                $pathFile = '../public/img/'.$name;
+             
+                if(!move_uploaded_file($file['tmp_name'], $pathFile)) {
+                    echo 'Файл не смог загрузиться';
+                }
+            
+                // $sql = $conn->query("UPDATE `bucket` SET `photo`='$name' WHERE `id`= $id");
+            }
 
             
             $sql = $conn->query("INSERT INTO `wish`(`name`, `price`, `description`, `photo`, `link`, `visible`, `folder_id`, `done`, `wish_list`, `bucket_list`) VALUES ('$name','$price','$description', '$photo', '$link','$visible','$folder_id','$done','$wish_list','$bucket_list')");
@@ -1392,17 +1451,33 @@
             $name = $_POST['name'];
             $description = $_POST['description'];
             $folder_id = $_GET['id'];
-            $photo = $_POST['photo'];
+            // $photo = $_POST['photo'];
             $link = $_POST['link'];
             $visible = $_POST['visible'];
             $price = $_POST['price'];
             $done = $_POST['done'];
+
+
+            if(!empty($_FILES['file']['name'] !== '')) {
+                $file = $_FILES['file'];
+                $photo = $file['name'];
+                $pathFile = '../public/img/'.$name;
+            
+                if(!move_uploaded_file($file['tmp_name'], $pathFile)) {
+                    echo 'Файл не смог загрузиться';
+                }
+
+                // $sql = $conn->query("INSERT INTO `photos`(`path`) VALUES ('$name')");
+
+                // $sql = $conn->query("UPDATE `users` SET `img`='$name' WHERE `id`=1");
+            }
             
             // echo json_encode($_POST);
+
             $sql = $conn->query(
              "INSERT INTO `bucket`(`name`, `price`, `description`, `photo`,  `link`, `visible`,`folder_id`, `done`) VALUES ('$name', '$price', '$description', '$photo', '$link', '$visible', '$folder_id', '$done')");
 
-             $last_id = $conn->insert_id;
+            $last_id = $conn->insert_id;
 
             $sql = $conn->query(
             "INSERT INTO users_bucketlist (user_id, bucketlist_id) VALUES('1','$last_id')");
@@ -1621,7 +1696,7 @@
                 "SELECT *
                 FROM bucket
                 LEFT JOIN users_bucketlist_folders ON users_bucketlist_folders.folder_id  = bucket.folder_id
-                WHERE users_bucketlist_folders.folder_id = $id");
+                WHERE users_bucketlist_folders.user_id = $id");
 
                 $wishes = [];
                 while($row = $sql2->fetch_assoc()) {
@@ -1666,10 +1741,13 @@
             $name = $_POST['name'];
             $price = $_POST['price'];
             $description = $_POST['description'];
+            // $photo = $_POST['photo'];
             $visible = $_POST['visible'];
             $folder_id = $_POST['folder_id'];
+
+            // var_dump($photo);
             
-            $sql = $conn->query("UPDATE wish SET name='$name', price='$price', description='$description', visible='$visible', folder_id='$folder_id'  WHERE id='$id'");
+            $sql = $conn->query("UPDATE wish SET name='$name', price='$price', description='$description',   visible='$visible', folder_id='$folder_id'  WHERE id='$id'");
             
             if ($sql) {
                 $result['message'] = "Данные изменены";
@@ -1908,14 +1986,27 @@
             $name = $_POST['name'];
             $price = $_POST['price'];
             $description = $_POST['description'];
-            $photo = $_POST['photo'];
-            $folder_id = '1';
+            // $photo = $_POST['photo'];
+            $my_folder_id = $_POST['my_folder_id'];
             $done = '0';
             
-            var_dump($_POST);
+            // var_dump($_POST);
+
+            if(!empty($_FILES['file']['name'] !== '')) {
+                $file = $_FILES['file'];
+                $photo = $file['name'];
+                $pathFile = '../public/img/'.$name;
+             
+                if(!move_uploaded_file($file['tmp_name'], $pathFile)) {
+                    echo 'Файл не смог загрузиться';
+                }
+
+                // $sql = $conn->query("INSERT INTO `photos`(`path`) VALUES ('$name')");
+                // $sql = $conn->query("UPDATE `users` SET `img`='$name' WHERE `id`=1");
+            }
             
             $sql = $conn->query(
-                "INSERT INTO `wish`(`name`, `price`, `description`, `photo`, `folder_id`, `done`) VALUES ('$name', '$price', '$description', '$photo', '$folder_id', '$done')");
+                "INSERT INTO `wish`(`name`, `price`, `description`, `photo`, `folder_id`, `done`) VALUES ('$name', '$price', '$description', '$photo', '$my_folder_id', '$done')");
             
             $last_id = $conn->insert_id;
 
@@ -1923,10 +2014,10 @@
             "INSERT INTO users_wishlist (user_id, wish_id) VALUES(1,'$last_id')");
             
             if ($sql) {
-                $result['message'] = "Place updated successfully!";
+                $result['message'] = "Success add to Wish List!";
             } else {
                 $result['error'] = true;
-                $result['message'] = "Failed to update place!";
+                $result['message'] = "Error!";
             }
 
             break;
@@ -1950,13 +2041,13 @@
             $price = $_POST['price'];
             $description = $_POST['description'];
             $photo = $_POST['photo'];
-            $folder_id = '1';
+            // $folder_id = $_POST['folder_id'];
             $done = '0';
-            
-            var_dump($_POST);
+            $my_folder_id = $_POST['my_folder_id'];
+            // var_dump($_POST);
             
             $sql = $conn->query(
-                "INSERT INTO `bucket`(`name`, `price`, `description`, `photo`, `folder_id`, `done`) VALUES ('$name', '$price', '$description', '$photo', '$folder_id', '$done')");
+                "INSERT INTO `bucket`(`name`, `price`, `description`, `photo`, `folder_id`, `done`) VALUES ('$name', '$price', '$description', '$photo', '$my_folder_id', '$done')");
             
             $last_id = $conn->insert_id;
 
@@ -2109,7 +2200,8 @@
     
                 LEFT JOIN users_bucketlist
                 ON id = bucketlist_id
-                WHERE users_bucketlist.user_id = 1");
+                WHERE users_bucketlist.user_id = 1
+                ORDER BY bucket.date DESC");
         
                 $wishes = [];
               
@@ -2140,10 +2232,10 @@
             }
             break;
         case 'add-to-i-will-present':
-            $wish_id = $_POST['wish_id'];
-            $user_id = $_POST['user_id'];
+            $id = $_GET['id'];
+            $user_id = $_POST['id'];
 
-            $sql = $conn->query("INSERT INTO `i_will_present`(`user_id`, `friend_id`, `wish_id`) VALUES (1, $user_id, $wish_id)");
+            $sql = $conn->query("INSERT INTO `i_will_present`(`user_id`, `friend_id`, `wish_id`) VALUES (1, $user_id, $id)");
 
             if ($sql) {
                 $result['message'] = "successfully!";
@@ -2190,6 +2282,75 @@
 
 
             break;
+        case 'get-user-want-wishlist-in-folder':
+
+            $id = $_GET['id'];
+            
+            $sql = $conn->query(
+            "SELECT *
+            FROM wish
+            LEFT JOIN users_wishlist_folders ON users_wishlist_folders.folder_id  = wish.folder_id
+            WHERE users_wishlist_folders.folder_id = $id
+            AND wish.done=0
+            ");
+
+                $wishes = [];
+                while($row = $sql->fetch_assoc()) {
+                    $wishes[] = $row;
+                }
+                $result['wishes'] = $wishes;
+
+            break;
+
+        case 'get-user-done-wishlist-in-folder':
+            $id = $_GET['id'];
+            
+            $sql = $conn->query(
+            "SELECT *
+            FROM wish
+            LEFT JOIN users_wishlist_folders ON users_wishlist_folders.folder_id  = wish.folder_id
+            WHERE users_wishlist_folders.folder_id = $id
+            AND wish.done = 1
+            ");
+
+                $wishes = [];
+                while($row = $sql->fetch_assoc()) {
+                    $wishes[] = $row;
+                }
+                $result['wishes'] = $wishes;
+
+            break;
+        case 'get-folder':
+            $id = $_GET['id'];
+
+            $sql = $conn->query(
+            "SELECT * FROM wishlist_folders
+            WHERE id = $id");
+
+                $folders = [];
+                while($row = $sql->fetch_assoc()) {
+                    $folders[] = $row;
+                }
+                $result['folders'] = $folders;
+
+            break;
+        case 'get-this-folder':
+            $id = $_GET['id'];
+
+            $sql = $conn->query(
+            "SELECT * FROM bucketlist_folders
+            LEFT JOIN bucket ON bucketlist_folders.id = bucket.folder_id
+            WHERE bucket.id = $id"
+            );
+
+            $test = [];
+            while($row = $sql->fetch_assoc()) {
+                $test[] = $row;
+            }
+            $result['test'] = $test;
+
+            break;
+
             
             default:
             # code...

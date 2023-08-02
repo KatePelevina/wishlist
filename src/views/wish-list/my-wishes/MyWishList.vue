@@ -14,7 +14,7 @@
         <div>
             <n-breadcrumb>
                 <n-breadcrumb-item @click="$router.push(`/my-wish-list-folders`)">Wish List</n-breadcrumb-item>
-                <n-breadcrumb-item>Папка</n-breadcrumb-item>
+                <n-breadcrumb-item>{{ folder_name }}</n-breadcrumb-item>
             </n-breadcrumb>
         </div>
         <div class="card-header__right flex">
@@ -27,10 +27,16 @@
         </div>
     </div>
 
-    <div>
-        <h1>{{ folder_name }}</h1>   
-        <p v-if="folder_description">{{ folder_description }}</p>
-    </div>
+
+    <h1 class="title">{{ folder_name }}</h1>   
+
+    <p v-if="folder_description">{{ folder_description }}</p>
+
+    <!-- <n-button @click="showModal=true" class="btn" strong secondary type="success">+ Добавить желание</n-button> -->
+
+    <n-button class="btn"  ghost>Поделиться этим Wish List</n-button>
+
+    
 
     
 
@@ -48,22 +54,6 @@
     </n-tabs>
 
     
-        <!-- <n-tabs type="line" animated>
-            <n-tab-pane name="want" tab="Хочу">
-                <WantWishList />
-            </n-tab-pane>
-            <n-tab-pane name="tdone" tab="Исполнено">
-                <DoneWishListFolder />
-            </n-tab-pane>
-            <n-tab-pane name="all" tab="Все желания">
-                <AllWishListFolder />
-            </n-tab-pane>
-        </n-tabs> -->
-    
-
-
-
-
 
         <!-- <div class="flex rrrr">
             <div class="select">
@@ -137,7 +127,7 @@
         /> -->
        
        
-       <div v-if="showModal">
+        <div v-if="showModal">
            <n-modal v-model:show="showModal">
                <n-card
                style="width: 600px"
@@ -175,14 +165,9 @@
                                 <n-select v-model:value="newWish.visible" :options="visible" />
                             </n-space>
 
-                            <!-- <n-space vertical class="select">
+                            <n-space vertical class="select">
                                 <n-select v-model:value="newWish.done" :options="done" />
-                            </n-space> -->
-
-                            <!-- <select name="done" id="done" v-model="newWish.done">
-                                <option disabled value="">done</option>
-                                <option v-for="(done,index) in done" :key="index" :value="index">{{ done }}</option> 
-                            </select>  -->
+                            </n-space>
 
 
                            <!-- <button class="button" @click="showModal=false; addWishList(); clearMsg();">Добавить желание</button> -->
@@ -361,7 +346,7 @@ export default defineComponent ({
             folder_name: '',
             folder_description: '',
             successMsg: '',
-            errorMsg: ''
+            errorMsg: '',
        }
     },
     methods: {
@@ -388,21 +373,6 @@ export default defineComponent ({
                 console.log(error)
             })
         },
-        //    async getFolder() {
-        //        let id = this.$route.params.id;
-        //        await axios.get('http://localhost:8085/public/process.php?action=wishlist-folder&id='+id)
-
-        //        .then((response)=>{
-                    
-        //             this.folder_name = response.data.folder[0].name;
-        //             this.folder_description = response.data.folder[0].description;
-        //            console.log(response.data);
-                
-        //        })
-        //        .catch((error)=>{
-        //            console.log(error)
-        //        })
-        //    },
         async getFolder() {
             let id = this.$route.params.id;
 
@@ -434,7 +404,9 @@ export default defineComponent ({
                 } else {
                     console.log(response.data);
                     // this.successMsg = response.data.message;
-                    this.getWishes();              
+                    location.reload();
+                    // this.getWishes(); 
+                                 
                 }
             });
         },
@@ -544,6 +516,21 @@ export default defineComponent ({
                 {
                 label: "видят все пользователи",
                 value: "2"
+                }
+            ],
+            done: [
+                {
+                label: "Видимость",
+                value: "",
+                disabled: true
+                },
+                {
+                label: "хочу",
+                value: "0",
+                },
+                {
+                label: "исполнено",
+                value: "1"
                 }
             ],
         };
@@ -700,4 +687,18 @@ export default defineComponent ({
     padding: 10px;
     margin-bottom: 20px;
 }
+
+@media (max-width: 600px) {
+    .btn {
+        width: 100%;
+        margin-bottom: 20px;
+    }
+}
+
+// .title {
+//     text-align: center;
+//     margin-bottom: 20px;
+// }
+
+
 </style>

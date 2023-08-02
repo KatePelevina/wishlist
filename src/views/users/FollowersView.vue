@@ -1,6 +1,7 @@
 <template>
     <div class="page">
         
+      
         
         <!-- <div v-if="users.length">
         
@@ -25,7 +26,7 @@
 
         <div class="page-title">
             <!-- <h1>Мои подписчики {{ users.length }}</h1> -->
-            <h1>Мои подписчики</h1>
+            <h1>Мои подписчики: {{ followers }}</h1>
         </div>
 
         <n-space vertical>
@@ -78,7 +79,8 @@ export default defineComponent( {
             count: "",
             selectedSort: '',
             searchQuery: '', 
-            page: 0 
+            page: 0,
+            followers: ''
         }
     },
     methods: {
@@ -103,6 +105,15 @@ export default defineComponent( {
                 alert('Ошибка')
             } 
         }, 
+        async getCountFollowers(){
+            await axios.get('http://localhost:8085/public/process.php?action=count-followers')
+            .then((response)=>{
+                this.followers = response.data.count;  
+            })
+            .catch((error)=>{
+                console.log(error)
+            })
+        },
         toFormData(obj){
             let fd = new FormData();
             for(let i in obj){
@@ -113,6 +124,7 @@ export default defineComponent( {
     },
     mounted() {
         // this.getFollowers()
+        this.getCountFollowers()
     },
     computed: {
             sortedPosts() {

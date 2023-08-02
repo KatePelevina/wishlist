@@ -8,7 +8,7 @@ const routes = [
     name: 'home',
     meta: {
       layout: 'HeaderLayout',
-      authRequired: false
+      requiresAuth: false
     },
     component: LandingView,
   },
@@ -16,8 +16,8 @@ const routes = [
     path: '/blog',
     name: 'blog',
     meta: {
-      layout: 'MainLayout',
-      authRequired: false
+      layout: 'HeaderLayout',
+      requiresAuth: false
     },
     component: () => import('@/views/blog/BlogView.vue')
   },
@@ -26,35 +26,35 @@ const routes = [
     name: 'article',
     meta: {
       layout: 'HeaderLayout',
-      authRequired: false
+      requiresAuth: false
     },
     component: () => import('@/views/blog/ArticleView.vue')
   },
   // AUTH 
   {
-    path: '/reg',
-    name: 'reg',
+    path: '/register',
+    name: 'register',
     meta: {
       layout: 'HeaderLayout',
-      authRequired: false
+      requiresAuth: false
     },
-    component: () => import('@/views/auth/RegView.vue')
+    component: () => import('@/views/auth/RegisterUser.vue')
   },
   {
     path: '/login',
     name: 'login',
     meta: {
       layout: 'HeaderLayout',
-      authRequired: false
+      requiresAuth: false
     },
-    component: () => import('@/views/auth/LoginView.vue')
+    component: () => import('@/views/auth/LoginUser.vue')
   },
   {
     path: '/edit-profile',
     name: 'edit-profile',
     meta: {
       layout: 'MainLayout',
-      authRequired: true
+      requiresAuth: true
     },
     component: () => import('@/views/EditProfileView.vue')
   },
@@ -64,7 +64,23 @@ const routes = [
     meta: {
       layout: 'MainLayout'
     },
-    component: () => import('@/views/ImageLoad.vue')
+    component: () => import('@/components/ImageLoad.vue')
+  },
+  {
+    path: '/preview-image',
+    name: 'preview-image',
+    meta: {
+      layout: 'MainLayout'
+    },
+    component: () => import('@/components/PreviewImage.vue')
+  },
+  {
+    path: '/bucket-item-image-load',
+    name: 'bucket-item-image-load',
+    meta: {
+      layout: 'MainLayout'
+    },
+    component: () => import('@/views/BucketItemImageLoad.vue')
   },
   // WISHES
   {
@@ -72,7 +88,7 @@ const routes = [
     name: 'my-wish-list',
     meta: {
       layout: 'MainLayout',
-      authRequired: true
+      requiresAuth: true
     },
     component: () => import('@/views/wish-list/my-wishes/MyWishList.vue'),
   },
@@ -81,25 +97,16 @@ const routes = [
     name: 'my-bucket-list',
     meta: {
       layout: 'MainLayout',
-      authRequired: true
+      requiresAuth: true
     },
     component: () => import('@/views/bucket-list/MyBucketList.vue'),
-  },
-  {
-    path: '/test',
-    name: 'test',
-    meta: {
-      layout: 'MainLayout',
-      authRequired: true
-    },
-    component: () => import('@/views/wishes/MyWishesView.vue')
   },
   {
     path: '/done-wish-list',
     name: 'done-wish-list',
     meta: {
       layout: 'MainLayout',
-      authRequired: true
+      // authRequired: true
     },
     component: () => import('@/views/wish-list/DoneWishListView.vue')
   },
@@ -108,7 +115,7 @@ const routes = [
     name: 'done-wish-list-item',
     meta: {
       layout: 'MainLayout',
-      authRequired: true
+      // authRequired: true
     },
     component: () => import('@/views/wish-list/DoneWishListItem.vue')
   },
@@ -117,7 +124,7 @@ const routes = [
     name: 'done-bucket-list',
     meta: {
       layout: 'MainLayout',
-      authRequired: true
+      // authRequired: true
     },
     component: () => import('@/views/bucket-list/DoneBucketListView.vue')
   },
@@ -126,24 +133,16 @@ const routes = [
     name: 'done-bucket-list-item',
     meta: {
       layout: 'MainLayout',
-      authRequired: false
+      // authRequired: false
     },
     component: () => import('@/views/bucket-list/DoneBucketListItem.vue')
-  },
-  {
-    path: '/place/:id',
-    name: 'place',
-    meta: {
-      layout: 'MainLayout'
-    },
-    component: () => import('@/views/wishes/PostView.vue')
   },
   {
     path: '/add-wish-list',
     name: 'add-wish-list',
     meta: {
       layout: 'MainLayout',
-      authRequired: true
+      requiresAuth: true
     },
     component: () => import('@/views/wish-list/AddWishListView.vue')
   },
@@ -152,7 +151,7 @@ const routes = [
     name: 'add-bucket-list',
     meta: {
       layout: 'MainLayout',
-      authRequired: true
+      requiresAuth: true
     },
     component: () => import('@/views/bucket-list/AddBucketListView.vue')
   },
@@ -161,7 +160,8 @@ const routes = [
     path: '/find-user',
     name: 'find-user',
     meta: {
-      layout: 'MainLayout'
+      layout: 'MainLayout',
+      requiresAuth: false
     },
     component: () => import('@/views/users/FindUserView.vue')
   },
@@ -190,7 +190,7 @@ const routes = [
     component: () => import('@/views/bucket-list/user/UserBucketListInFolder.vue')
   },
   {
-    path: '/user-bucket-list/folder=:id',
+    path: '/user-bucket-list/user=:id',
     name: 'user-bucket-list',
     meta: {
       layout: 'MainLayout'
@@ -202,7 +202,7 @@ const routes = [
     name: 'followers',
     meta: {
       layout: 'MainLayout',
-      authRequired: true
+      requiresAuth: true
     },
     component: () => import('@/views/users/FollowersView.vue')
    
@@ -212,7 +212,7 @@ const routes = [
     name: 'Subscriptions',
     meta: {
       layout: 'MainLayout',
-      authRequired: true
+      requiresAuth: true
     },
     component: () => import('@/views/users/SubscriptionsView.vue')
   },
@@ -248,7 +248,7 @@ const routes = [
     name: 'user-wish-list-item',
     meta: {
       layout: 'MainLayout',
-      authRequired: false
+      // authRequired: false
     },
     component: () => import('@/views/wish-list/user/UserWishListItem.vue')
   },
@@ -257,7 +257,7 @@ const routes = [
     name: 'user-bucket-list-item',
     meta: {
       layout: 'MainLayout',
-      authRequired: false
+      // authRequired: false
     },
     component: () => import('@/views/bucket-list/user/UserBucketListItem.vue')
   },
@@ -266,7 +266,7 @@ const routes = [
     name: 'my-wish-list-item',
     meta: {
       layout: 'MainLayout',
-      authRequired: false
+      requiresAuth: true
     },
     component: () => import('@/views/wish-list/my-wishes/MyWishListItem.vue')
   },
@@ -275,7 +275,7 @@ const routes = [
     name: 'my-bucket-list-item',
     meta: {
       layout: 'MainLayout',
-      authRequired: false
+      requiresAuth: true
     },
     component: () => import('@/views/bucket-list/MyBucketListItem.vue')
   },
@@ -284,7 +284,7 @@ const routes = [
     name: 'i-will-present',
     meta: {
       layout: 'MainLayout',
-      authRequired: true
+      requiresAuth: true
     },
     component: () => import('@/views/IWillPresent.vue')
   },
@@ -293,7 +293,7 @@ const routes = [
     name: 'i-will-present-item',
     meta: {
       layout: 'MainLayout',
-      authRequired: false
+      requiresAuth: true
     },
     component: () => import('@/views/IWillPresentItem.vue')
   },
@@ -302,7 +302,7 @@ const routes = [
     name: 'i-will-get',
     meta: {
       layout: 'MainLayout',
-      authRequired: false
+      requiresAuth: true
     },
     component: () => import('@/views/IWillGet.vue')
   },
@@ -311,7 +311,7 @@ const routes = [
     name: 'i-will-get-item',
     meta: {
       layout: 'MainLayout',
-      authRequired: false
+      requiresAuth: true
     },
     component: () => import('@/views/IWillGetItem.vue')
   },
@@ -320,7 +320,7 @@ const routes = [
     name: 'my-wish-list-folders',
     meta: {
       layout: 'MainLayout',
-      authRequired: false
+      requiresAuth: true
     },
     component: () => import('@/views/wish-list/my-wishes/MyWishListFolders.vue')
   },
@@ -329,7 +329,7 @@ const routes = [
     name: 'my-bucket-list-folders',
     meta: {
       layout: 'MainLayout',
-      authRequired: false
+      requiresAuth: true
     },
     component: () => import('@/views/bucket-list/MyBucketListFolders.vue')
   },
@@ -338,7 +338,7 @@ const routes = [
     name: 'stop-list',
     meta: {
       layout: 'MainLayout',
-      authRequired: false
+      // authRequired: false
     },
     component: () => import('@/views/y/StopListView.vue')
   },
@@ -347,7 +347,7 @@ const routes = [
     name: 'idea-wishlist-item',
     meta: {
       layout: 'MainLayout',
-      authRequired: false
+      // authRequired: false
     },
     component: () => import('@/views/wish-list/ideas/IdeaWishlistItem.vue')
   },
@@ -356,7 +356,7 @@ const routes = [
     name: 'idea-bucketlist-item',
     meta: {
       layout: 'MainLayout',
-      authRequired: false
+      // authRequired: false
     },
     component: () => import('@/views/bucket-list/ideas/IdeaBucketListItem.vue')
   },
@@ -365,7 +365,7 @@ const routes = [
     name: 'user-wish-list-folders',
     meta: {
       layout: 'MainLayout',
-      authRequired: false
+      // authRequired: false
     },
     component: () => import('@/views/wish-list/user/UserWishlistFolders.vue')
   },
@@ -374,7 +374,7 @@ const routes = [
     name: 'user-bucket-list-folders',
     meta: {
       layout: 'MainLayout',
-      authRequired: false
+      // authRequired: false
     },
     component: () => import('@/views/bucket-list/user/UserBucketListFolders.vue')
   },
@@ -382,26 +382,17 @@ const routes = [
     path: '/countries',
     name: 'countries',
     meta: {
-      layout: 'MainLayout',
-      authRequired: false
+      layout: 'HeaderLayout',
+      requiresAuth: false
     },
     component: () => import('@/views/y/CountriesView.vue')
-  },
-  {
-    path: '/wish-list-main',
-    name: 'wish-list-main',
-    meta: {
-      layout: 'MainLayout',
-      authRequired: false
-    },
-    component: () => import('@/views/wish-list/my-wishes/WishListTabsWant.vue')
   },
   {
     path: '/checklist',
     name: 'checklist',
     meta: {
       layout: 'MainLayout',
-      authRequired: false
+      // authRequired: false
     },
     component: () => import('@/views/y/MyChecklist.vue')
   },
@@ -410,25 +401,43 @@ const routes = [
     name: 'my-wishlist-want',
     meta: {
       layout: 'MainLayout',
-      authRequired: false
+      // authRequired: false
     },
     component: () => import('@/views/wish-list/my-wishes/MyWishlistWant.vue')
   },
   {
-    path: '/wish-list-tabs-done',
-    name: 'wish-list-tabs-done',
+    path: '/user-wishlist-want/folder=:id',
+    name: 'user-wishlist-want',
     meta: {
       layout: 'MainLayout',
-      authRequired: false
+      // authRequired: false
     },
-    component: () => import('@/views/wish-list/my-wishes/MyWishlistTabsDone.vue')
+    component: () => import('@/views/wish-list/user/UserWantWishList.vue')
+  },
+  {
+    path: '/user-wishlist-done/folder=:id',
+    name: 'user-wishlist-done',
+    meta: {
+      layout: 'MainLayout',
+      // authRequired: false
+    },
+    component: () => import('@/views/wish-list/user/UserDoneWishList.vue')
+  },
+  {
+    path: '/user-wishlist-all/folder=:id',
+    name: 'user-wishlist-all',
+    meta: {
+      layout: 'MainLayout',
+      // authRequired: false
+    },
+    component: () => import('@/views/wish-list/user/AllUserWishlist.vue')
   },
   {
     path: '/result-folder-list',
     name: 'result-folder-list',
     meta: {
       layout: 'MainLayout',
-      authRequired: false
+      // authRequired: false
     },
     component: () => import('@/views/wish-list/my-wishes/WantWishList.vue')
   },
@@ -437,7 +446,7 @@ const routes = [
     name: 'all-wishlist-view',
     meta: {
       layout: 'MainLayout',
-      authRequired: false
+      requiresAuth: true
     },
     component: () => import('@/views/wish-list/AllWishListView.vue')
   },
@@ -446,20 +455,13 @@ const routes = [
     name: 'all-bucketlist-view',
     meta: {
       layout: 'MainLayout',
-      authRequired: false
+      requiresAuth: true
     },
     component: () => import('@/views/bucket-list/AllBucketListView.vue')
-  },
-  
-
-  
-  
-  
-  
-  
-  
-
+  }
 ]
+
+
 
 
 const router = createRouter({
@@ -467,5 +469,13 @@ const router = createRouter({
   routes
 })
 
+router.beforeEach( (to, from, next) => {
+  const loggedIn = localStorage.getItem('user')
+
+  if (to.matched.some(record => record.meta.requiresAuth) && !loggedIn) {
+    next('/')
+  } 
+  next()
+})
 
 export default router

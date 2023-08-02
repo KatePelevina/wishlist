@@ -11,6 +11,7 @@
 
     
         <my-input
+            v-if="wishes.length"
             v-model="searchQuery"
             placeholder="Поиск..."
         />

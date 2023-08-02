@@ -2,22 +2,35 @@ import { createApp } from 'vue'
 import App from './App.vue'
 import './registerServiceWorker'
 import router from './router'
-import store from './store'
+import store from './vuex/store'
 
-// import directives from "@/directives";
+
+
+
 import VIntersection from "@/directives/VIntersection";
 
-// import * as appRouter from '../appRouter';
+
 
 
 const app = createApp(App);
+
+
  
 app.directive('intersection', VIntersection)
+
+
 
 app
     .use(store)
     .use(router)
-    // .use(appRouter)
+    //     created() {
+    //         const userString = localStorage.getItem('user')
+
+    //         if (userString) {
+    //             const userData = JSON.parse(userString)
+    //             this.$store.commit('SET_USER_DATA', userData)
+    //         }
+    //     }
+
     .mount('#app')
 
-// createApp(App).use(store).use(router).mount('#app')

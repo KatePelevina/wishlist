@@ -1,10 +1,12 @@
 <template>
-    <div>
+    <div class="wrapper">
         <h1>CountriesView.vue</h1>
         <p>Страны</p>
         <ul>
+            <li class="card">
+                <router-link to="/checklist">Дубай</router-link>
+            </li>
             <li class="card">Бали</li>
-            <li class="card">Дубай</li>
             <li class="card">Мальдивы</li>
             <li class="card">США</li>
             <li></li>

@@ -14,14 +14,14 @@
         :options="sortOptions" 
         /> -->
 
-        <div class="flex rrrr">
+        <!-- <div class="flex rrrr"> -->
             <div class="flex-left">
                 <p class="ddddd">Количество желаний: {{ wishes.length }}</p>
             </div>
-            <div class="flex-right">
+            <!-- <div class="flex-right">
                 <n-button @click="showModal=true" class="btn" strong secondary type="success">+ Добавить желание</n-button>
-            </div>
-        </div>
+            </div> -->
+        <!-- </div> -->
 
         <n-space vertical>
             <n-select v-model:value="selectedSort" :options="options" />
@@ -35,6 +35,7 @@
         <DoneBucketlist
         :wishes="sortedAndSearchedPosts"
         />
+        
 
     </div>
 </template>
@@ -44,11 +45,12 @@
   import { defineComponent, ref } from "vue";
 
   import { NSpace, NSelect } from 'naive-ui';
-  import { NButton } from 'naive-ui';
+//   import { NButton } from 'naive-ui';
 
   import DoneBucketlist from '@/components/wishes/DoneBucketlist.vue';
   import MyInput from '@/components/layout/MyInput.vue';
 //   import MySelect from '@/components/layout/MySelect.vue';
+
 
 
 
@@ -59,7 +61,7 @@
         MyInput,
         NSpace,
         NSelect,
-        NButton
+        // NButton
         // MySelect
     },
     data(){

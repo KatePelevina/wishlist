@@ -6,8 +6,8 @@
 
     <div class="card" v-for="(wish,index) in wishes" :key="index">
 
-        <div class="flex color">
-            <div>
+        <div class="flex color flex-breadcrumb">
+            <div class="breadcrumb">
                 <n-breadcrumb>
                     <!-- <n-breadcrumb-item @click="$router.push(`/my-bucket-list-folders`)">Bucket List</n-breadcrumb-item> -->
                     <n-breadcrumb-item @click="$router.push(`/my-bucket-list-folders`)">Bucket List</n-breadcrumb-item>
@@ -30,12 +30,12 @@
             <h1 class="wish-name">{{ wish.name }}</h1>
         </div>
 
-        <div class="card-body flex flex-img">
-            <div class="div-img flex-left">
+        <div class="card-body">
+            <div class="div-img">
                 <img v-if="wish.photo"  :src="'/img/' + wish.photo" alt="" class="wish-img" @click="showPhoto=true; selectWish(wish);" >
                 <n-empty v-else size="large" description="Нет фото" class="empty"></n-empty>
             </div>   
-            <div class="flex-right">
+            <div>
                 <div>
                     <n-space v-if=" wish.price" class="price">
                         <n-tag type="success" >
@@ -57,7 +57,9 @@
                 <div>
                     <n-space class="visible">
                         <n-tag type="info">
-                            Желание видят все пользователи
+                            
+                            <p>{{ statusOFvisible[wish.visible] }}</p>
+                            <p>done: {{ statusToText[wish.done] }}</p>
                         </n-tag>
                     </n-space>
                 </div>
@@ -72,7 +74,7 @@
                 </div>
                 
                 <div>
-                    <n-button @click="done()" secondary type="success" class="btn">Иполнено</n-button>
+                    <n-button @click="done()" secondary type="success" class="btn" v-if="wish.done == 0">Иполнено</n-button>
                 </div>
             </div>      
         </div>
@@ -82,7 +84,32 @@
             <!-- <p class="card-book">Это желание забронировано (имя / анонимно): исполню сам(а)</p> -->
         </div>
 
+        <!-- <div>
+            <label>File
+                <input type="file" id="file" ref="file" v-on:change="handleFileUpload()"/>
+            </label>
+            <button v-on:click="submitFile()">Submit</button>
+        </div> -->
 
+        <!-- <bucket-item-image-load /> -->
+
+        <n-upload 
+            
+            action="http://localhost:8085/public/process.php?action=bucket-wishlist-item-image-load&id=id"
+            :data="{
+                'id': 'wish.id'
+            }"
+            accept= ".png, .jpg, .jpeg, .webp, .HEIC"
+            
+        >
+            <n-button>
+                <img src="@/assets/search.svg" alt="icon" class="nav-item__icon">
+
+                Загрузить фото
+
+            </n-button>
+       
+        </n-upload>
     </div>
 
 
@@ -200,10 +227,11 @@ import { NModal, NButton, NCard} from 'naive-ui';
 import { NBreadcrumb, NBreadcrumbItem } from 'naive-ui';
 import { NEmpty } from 'naive-ui';
 import { NInput, NInputNumber  } from 'naive-ui';
-import { NSpace, NSelect } from 'naive-ui';
+import { NSpace, NSelect, NTag, NUpload } from 'naive-ui';
 
 
 import MsgComponent from '@/components/layout/MsgComponent.vue';
+// import BucketItemImageLoad from '@/views/BucketItemImageLoad.vue'
 // import WishCard from '@/components/WishCard.vue';
 
 
@@ -223,10 +251,15 @@ export default {
             currentWish: {},
             errorMsg: "",
             successMsg: "",
-            // visible: {
-            //     '1': 'вижу только я',
-            //     '2': 'видят все пользователи',
-            // }
+            statusOFvisible: {
+                '0': 'вижу только я',
+                '1': 'видят все пользователи'
+            },
+            statusToText: {
+                '0': 'хочу',
+                '1': 'исполнено',
+            },
+            file: ''
         }
     },
     components: {
@@ -240,7 +273,10 @@ export default {
       NInput,
       NInputNumber,
       NSpace, 
-      NSelect 
+      NSelect,
+      NTag,
+    //   BucketItemImageLoad,
+      NUpload
     //   WishCard
     },
     methods: {
@@ -318,7 +354,32 @@ export default {
                   this.successMsg = response.data.message;
               }
           });
-        }
+        },
+        // async submitFile(){
+        //     let id = this.$route.params.id;
+
+        //     let formData = new FormData();
+        //     formData.append('file', this.file);
+        //     await axios.post( 'http://localhost:8085/public/process.php?action=bucket-wishlist-item-image-load',
+        //         formData,
+        //         {
+        //         headers: {
+        //             'Content-Type': 'multipart/form-data'
+        //         }
+        //         }
+        //     ).then(function(){
+        //         // this.$router('/image-load');
+        //         // location.reload();
+        //         console.log('SUCCESS!!');
+        //     })
+        //     .catch(function(){
+        //         console.log('FAILURE!!');
+        //     });
+        // },
+        // handleFileUpload(){
+        //     this.file = this.$refs.file.files[0];
+        //     console.log(this.file);
+        // },
     },
     mounted() {
         this.getWish()
@@ -353,7 +414,6 @@ export default {
 .card {
        background-color: #fff;
        border-radius: 10px;
-       
        padding: 15px;
        margin-bottom: 10px;
        cursor: pointer;
@@ -399,9 +459,17 @@ export default {
 }
 .flex {
     @include flex;
+
     p {
         margin-right: 10px;
     }
+}
+.flex-breadcrumb {
+    // flex-wrap: wrap;
+    width: 100%;
+}
+.n-breadcrumb {
+   flex-basis: 80%;
 }
 
 .card-body {
@@ -490,9 +558,9 @@ export default {
     button {
         width: 100%;
     }
-    .n-tag__content {
-        width: 100%;
-    }
+    // .n-tag__content {
+    //     width: 100%;
+    // }
 }
 
 .empty {
@@ -541,6 +609,10 @@ export default {
 .wish-img {
     border-radius: 10px;
     width: 100%;
+    width: 100%; 
+    height: 400px;   
+    // object-fit: contain;
+    object-fit: cover;
     
 }
 .modal-wish-img {
