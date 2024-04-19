@@ -1,6 +1,6 @@
 <template>
   <div class="page">
-
+  <p  v-if="wishes.length">Всего: {{ wishes.length }}</p>
   <h1>Идеи для твоего Wish List</h1>
   
 
@@ -62,12 +62,13 @@
       </div> -->
 
       <my-input
+        v-if="wishes.length"
         v-model="searchQuery"
         placeholder="Поиск..."
       />
 
       
-      <n-space vertical>
+      <n-space vertical  v-if="wishes.length">
           <n-select v-model:value="selectedSort" :options="options" />
       </n-space>
 

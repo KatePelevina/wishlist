@@ -51,7 +51,7 @@
         <!-- <div class="div-button">
             <n-button @click="showModal=true" class="btn" strong secondary type="success">+ Новая папка </n-button>
         </div> -->
-        <div class="select">
+        <div class="select"  v-if="folders.length">
             <n-space vertical>
                 <n-select v-model:value="selectedSort" :options="options" />
             </n-space>
@@ -71,6 +71,7 @@
     :key="folder.id"  /> -->
 
     <my-input
+        v-if="folders.length"
         v-model="searchQuery"
         placeholder="Поиск..."
     />
@@ -95,6 +96,8 @@
                 <form action="">
                     <!-- <input type="text" placeholder="Название папки" v-model="newFolder.name" required> -->
                     <n-input v-model:value="newFolder.name" type="text" placeholder="Название папки"/>
+                    <n-input v-model:value="newFolder.description" type="text" placeholder="Описание папки"/>
+
 
                     <n-button strong secondary type="success" @click="showModal=false; addFolder();" class="add-btn">Создать папку</n-button>
                     <!-- <button class="button" @click="showModal=false; addFolder();">Создать папку</button> -->
@@ -164,7 +167,9 @@ export default defineComponent ({
             showModal: false,
             showInfo: false,
             newFolder: {
-                name: ""
+                name: "",
+                type: "my-bucket-list",
+                description: ""
             },
             selectedSort: '',
             searchQuery: '',
@@ -194,15 +199,16 @@ export default defineComponent ({
 
             await axios.post("http://localhost:8085/public/process.php?action=add-bucket-folder", formData)
             .then((response)=>{
-                this.newFolder = {name: ""};
+                this.newFolder = {name: "", type: "my-bucket-list", description: ""};
 
 
                 if(response.data.error){
                     this.errorMsg = response.data.message;
-                }else {
+                } else {
                     this.successMsg = response.data.message;
                     // this.$router.push('/my-bucket-list-folders'); 
-                    location.reload();               
+                    // location.reload();    
+                    this.getFolders();           
                 }
             });
         },

@@ -367,7 +367,8 @@ export default defineComponent ({
                     this.successMsg = response.data.message;
                     // this.$router.push('/'); 
                     // location.reload();   
-                    this.getBucketList();                
+                    this.getBucketList();
+                    this.$router.reload()                
                 }
             });
         },

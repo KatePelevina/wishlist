@@ -20,7 +20,7 @@
 
         <div class="flex rrrr">
             <div class="flex-left">
-                <p class="ddddd" v-if="wishes.length">Кол-во желаний: {{ wishes.length }}</p>
+                <p class="ddddd">Кол-во желаний: {{ wishes.length }}</p>
             </div>
             <div class="flex-right">
                 <n-button @click="showModal=true" class="btn" strong secondary type="success">+ Добавить желание</n-button>

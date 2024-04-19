@@ -13,6 +13,8 @@
             </div>  
         </div> -->
 
+        <h1>Я подарю</h1>
+
         <my-input
         v-if="wishes.length"
         v-model="searchQuery"

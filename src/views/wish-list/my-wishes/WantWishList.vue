@@ -179,7 +179,7 @@
             
                                 action="http://localhost:8085/public/process.php?action=add-wishlist-to-folder&id=id"
                                 :data="{
-                                    'id': 'folder.id'
+                                    'id': 'folder.id',
                                 }"
                                 accept= ".png, .jpg, .jpeg, .webp, .HEIC"
                                 
@@ -193,8 +193,7 @@
                         
                             </n-upload>
 
-                           <!-- <button class="button" @click="showModal=false; addWishList(); clearMsg();">Добавить желание</button> -->
-                           <n-button strong secondary type="success" attr-type="submit" class="add-btn" @click="showModal=false">Добавить желание</n-button>
+                           <n-button strong secondary type="success" attr-type="submit" class="add-btn" @click="showModal=false; addWishList()">Добавить желание</n-button>
                        </form>
                    </div>
                </div>

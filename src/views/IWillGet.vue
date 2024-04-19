@@ -14,6 +14,8 @@
             </div>  
         </div> -->
 
+        <h1>Мне подарят</h1>
+
         <my-input
         v-if="wishes.length"
         v-model="searchQuery"

@@ -70,7 +70,7 @@
   
           <div class="flex">
             <div class="progress ddddd percent flex-left">
-                <p>Исполнено: {{ done_count  }} / {{ wishes.length }}</p>
+                <p >Исполнено: {{ done_count  }} / {{ wishes.length }}</p>
               
                 <!-- <n-space vertical>
                     <n-progress
@@ -92,10 +92,10 @@
               
           </div>
 
-          <div class="progress ddddd percent">
+          <div class="progress ddddd percent" v-if="wishes.length">
               <!-- <p>Исполнено: {{ done_count  }} / {{ wishes.length }}</p> -->
              
-              <n-space vertical>
+              <n-space vertical >
                   <n-progress
                   type="line"
                   :percentage="getPercent()"
@@ -115,6 +115,7 @@
           
   
           <my-input
+          v-if="wishes.length"
           v-model="searchQuery"
           placeholder="Поиск..."
           />

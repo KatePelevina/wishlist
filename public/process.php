@@ -507,14 +507,15 @@
         case 'register':
             
             
-            $nickname = $GET['nickname'];
+            // $nickname = $_POST['nickname'];
             $email = $_POST['email'];
             $password = $_POST['password'];
             
             
+            
             try {
                 
-                $sql = $conn->query("INSERT INTO `users`(`nickname`,`email`, `password`) VALUES ('$nickname ', '$email', '$password')");
+                $sql = $conn->query("INSERT INTO `users`(`firstName`, `secondName`, `nickname`, `about`, `img`, `password`, `email`) VALUES ('','','','','','$password','$email')");
                 
             } catch (Exception $e){
             }
@@ -1040,6 +1041,24 @@
             $result['folders'] = $folders;
             
             break; 
+        case 'get-wishlist-folders-name':
+            $id = 1;
+
+            $sql = $conn->query(
+            "SELECT name
+            FROM wishlist_folders
+            LEFT JOIN users_wishlist_folders ON wishlist_folders.id = users_wishlist_folders.folder_id
+            WHERE users_wishlist_folders.user_id = $id
+            ORDER BY `wishlist_folders`.`date` DESC
+            ");
+
+            $folders_names = [];
+            while($row = $sql->fetch_assoc()) {
+                $folders_names[] = $row;
+            }
+            $result['folders_names'] = $folders_names;
+            
+            break; 
         case 'get-user-wishlist-folders':
             $id = $_GET['id'];
 
@@ -1413,37 +1432,36 @@
         case 'add-wishlist-to-folder':
             
             $name = $_POST['name'];
-            $price = $_POST['price'];
             $description = $_POST['description'];
+            $folder_id = $_GET['id'];
             // $photo = $_POST['photo'];
             $link = $_POST['link'];
             $visible = $_POST['visible'];
-
+            $price = $_POST['price'];
             $done = $_POST['done'];
-            $wish_list = 1;
-            $bucket_list = 0;
 
-            $folder_id = $_GET['id'];
 
-            if(!empty($_FILES['file']['name'] !== '')) {
-                $file = $_FILES['file'];
-                $photo = $file['name'];
-                $pathFile = '../public/img/'.$name;
-             
-                if(!move_uploaded_file($file['tmp_name'], $pathFile)) {
-                    echo 'Файл не смог загрузиться';
-                }
+            // if(!empty($_FILES['file']['name'] !== '')) {
+            //     $file = $_FILES['file'];
+            //     $photo = $file['name'];
+            //     $pathFile = '../public/img/'.$name;
             
-                // $sql = $conn->query("UPDATE `bucket` SET `photo`='$name' WHERE `id`= $id");
-            }
+            //     if(!move_uploaded_file($file['tmp_name'], $pathFile)) {
+            //         echo 'Файл не смог загрузиться';
+            //     }
 
+                // $sql = $conn->query("INSERT INTO `photos`(`path`) VALUES ('$name')");
+
+                // $sql = $conn->query("UPDATE `users` SET `img`='$name' WHERE `id`=1");
+            // }
             
-            $sql = $conn->query("INSERT INTO `wish`(`name`, `price`, `description`, `photo`, `link`, `visible`, `folder_id`, `done`, `wish_list`, `bucket_list`) VALUES ('$name','$price','$description', '$photo', '$link','$visible','$folder_id','$done','$wish_list','$bucket_list')");
-            
+            // echo json_encode($_POST);
+
+            $sql = $conn->query("INSERT INTO `wish`(`name`, `price`, `description`, `photo`,  `link`, `visible`,`folder_id`, `done`) VALUES ('$name', '$price', '$description', '', '$link', '$visible', '$folder_id', '$done')");
+
             $last_id = $conn->insert_id;
 
-            $sql = $conn->query(
-            "INSERT INTO users_wishlist (user_id, wish_id) VALUES('1','$last_id')");
+            $sql = $conn->query("INSERT INTO users_wishlist (user_id, wish_id) VALUES('1','$last_id')");
 
 
             break; 
@@ -1506,9 +1524,11 @@
             break; 
         case 'add-bucket-folder':
             $name = $_POST['name'];
+            $description = $_POST['description'];
+            $type = "my-bucket-list";
 
-            $sql = $conn->query(
-                "INSERT INTO `bucketlist_folders`(`name`) VALUES ('$name')");
+
+            $sql = $conn->query("INSERT INTO `bucketlist_folders`(`name`, `type`, `description`) VALUES ('$name', '$type', '$description')");
             
             $last_id = $conn->insert_id;
 
@@ -1522,8 +1542,10 @@
 
             $name = $_POST['name'];
             $description = $_POST['description'];
+            $type = "my-wish-list";
+            
 
-            $sql = $conn->query("INSERT INTO `wishlist_folders`(`name`, `description`) VALUES ('$name', '$description')");
+            $sql = $conn->query("INSERT INTO `wishlist_folders`(`name`, `type`, `description`) VALUES ('$name', '$type', '$description')");
             
             $last_id = $conn->insert_id;
 

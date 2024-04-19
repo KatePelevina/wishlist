@@ -3,16 +3,17 @@
 
     
 
-    <p>Всего: {{ wishes.length }}</p>
+    <p  v-if="wishes.length">Всего: {{ wishes.length }}</p>
   
     <h1>Идеи для твоего Bucket List</h1>
 
     <my-input
+        v-if="wishes.length"
         v-model="searchQuery"
         placeholder="Поиск..."
     />
 
-    <n-space vertical>
+    <n-space vertical  v-if="wishes.length">
           <n-select v-model:value="selectedSort" :options="options" />
       </n-space>
 

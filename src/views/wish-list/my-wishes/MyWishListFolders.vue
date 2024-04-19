@@ -42,19 +42,20 @@
         
 
        
-        <div class="select">
+        <div class="select"  v-if="folders.length">
             <n-space vertical>
                 <n-select v-model:value="selectedSort" :options="options" />
             </n-space>
         </div>
         
         <my-input
+            v-if="folders.length"
             v-model="searchQuery"
         />
 
         
             
-        <FoldersList :folders="sortedAndSearchedPosts"/>
+        <FoldersList :folders="sortedAndSearchedPosts" />
     
   
         
@@ -73,7 +74,6 @@
                     <form action="">
                         <!-- <input type="text" placeholder="Название папки" v-model="newFolder.name" required> -->
                         <n-input v-model:value="newFolder.name" type="text" placeholder="Название папки"/>
-
                         <n-input v-model:value="newFolder.description" type="text" placeholder="Описание"/>
 
                         <!-- <button @click="showModal=false; addFolder();" class="button">Создать папку</button> -->
@@ -168,6 +168,7 @@ export default defineComponent ({
             folders: [],
             newFolder: {
                 name: "",
+                type: "my-wish-list",
                 description: ""
             },
             selectedSort: '',
@@ -195,12 +196,12 @@ export default defineComponent ({
 
             await axios.post("http://localhost:8085/public/process.php?action=add-wishlist-folder", formData)
             .then((response)=>{
-                this.newFolder = {name: "", description: ""};
+                this.newFolder = {name: "", type: "my-wish-list", description: ""};
 
 
                 if(response.data.error){
                     this.errorMsg = response.data.message;
-                }else {
+                } else {
                     this.successMsg = response.data.message;
                     // this.$router.push('/my-wish-list-folders');
                     this.getFolders();           

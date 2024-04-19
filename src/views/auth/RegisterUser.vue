@@ -9,10 +9,12 @@
             <h1>Reg Page</h1>
             <div class="login-form">
                 <form @submit.prevent="register">
-                    <input type="text" placeholder="username" v-model="nickname">
-                    <input type="text" placeholder="email" v-model="email">
-                    <input type="password" placeholder="Password" v-model="password">
-                    <button class="button" type="submit">Создать аккаунт</button>
+                    <!-- <input type="text" placeholder="nickname" v-model="nickname"> -->
+                    <input type="text" placeholder="email" v-model="newUser.email">
+                    <input type="password" placeholder="Password" v-model="newUser.password">
+                    <!-- <button class="button" type="submit" @click="register()">Создать аккаунт</button> -->
+                    <n-button @click="reg()">reg</n-button>
+
 
                     <ul>
                         <li v-for="(error, index) in errors" :key="index">{{ error }}</li>
@@ -38,84 +40,100 @@
 </template>
 
 <script>
-// import axios from 'axios';
+import axios from 'axios';
 import MsgComponent from '@/components/layout/MsgComponent.vue'
 // import router from "@/router"; 
+import { NButton } from 'naive-ui';
+
 
 export default {
     data(){
         return {
             errorMsg: "",
             successMsg: "",
-            // newUser: {
-            //     nickname: '',
-            //     email: '',
-            //     password: '',
-            // }
-            nickname: '',
-            email: '',
-            password: '',
+            newUser: {
+                // nickname: '',
+                email: '',
+                password: '',
+            },
+            // users: [],
+            // nickname: '',
+            // email: '',
+            // password: '',
             errors: null
         }
     },
     components: {
-        MsgComponent
+        MsgComponent,
+        NButton
     },
     methods: {
-        // reg() {
-        //     axios.post("http://localhost:8085/public/process.php?action=create-user", {
-        //         nickName: this.nickName,
-        //         password: this.password
-        //     })
-        //     .then((response)=>{
-        //         console.log(response);
-        //         this.$router.push('/add-wish-list');
-        //     })
-        //     .catch((error) => {
-        //       console.log(error)
-        //     })
-        // },
-        /*
-        async addUser(){
+        async reg(){
             let formData = this.toFormData(this.newUser);
 
-            await axios.post("http://localhost:8085/public/process.php?action=add-user", formData)
+            await axios.post("http://localhost:8085/public/process.php?action=register", formData)
             .then((response)=>{
-                this.newUser = {nickname: "", email: "", password: "" };
-                
-                
+                this.newUser = {email: "", password: ""};
 
-                if (response.data.error){
+
+                if(response.data.error){
                     this.errorMsg = response.data.message;
                 } else {
-                    this.successMsg = response.data.message; 
-                    // this.$router.push('/');   
-                    // this.$router.push({name: '/stop-list'});            
+                    this.successMsg = response.data.message;
+                    // this.$router.push('/my-wish-list-folders');
+                    // this.getFolders();           
                 }
             });
         },
-        */
-        // toFormData(obj){
-        //     let fd = new FormData();
-        //     for(let i in obj){
-        //         fd.append(i,obj[i]);
-        //     }
-        //     return fd;
-        // },
-        register() {
-            console.log('RegisterUser.register')
-            this.$store.dispatch('register', {
-                nickname: this.nickname,
-                email: this.email,
-                password: this.password,
-            })
-            .then( () => {
-                // this.$router.push({ name: 'my-wish-list-folders'})
-            })
-            .catch(err => {
-                this.errors = err.response.data.errors
-            })
+        toFormData(obj){
+            let fd = new FormData();
+            for(let i in obj){
+                fd.append(i,obj[i]);
+            }
+            return fd;
         },
+        
+        
+        // async addUser(){
+        //     let formData = this.toFormData(this.newUser);
+
+        //     await axios.post("http://localhost:8085/public/process.php?action=add-user", formData)
+        //     .then((response)=>{
+        //         this.newUser = {nickname: "", email: "", password: "" };
+                
+                
+
+        //         if (response.data.error){
+        //             this.errorMsg = response.data.message;
+        //         } else {
+        //             this.successMsg = response.data.message; 
+        //             // this.$router.push('/');   
+        //             // this.$router.push({name: '/stop-list'});            
+        //         }
+        //     });
+        // },
+        
+        
+
+
+
+        // register() {
+        //     console.log('RegisterUser.register')
+        //     this.$store.dispatch('register', {
+        //         nickname: this.nickname,
+        //         email: this.email,
+        //         password: this.password,
+        //     })
+        //     .then( () => {
+        //         // this.$router.push({ name: 'my-wish-list-folders'})
+        //     })
+        //     .catch(err => {
+        //         this.errors = err.response.data.errors
+        //     })
+        // },
+
+
+
         // routeToDynamicPage() {
         //     router.push({
         //         name: 'home'

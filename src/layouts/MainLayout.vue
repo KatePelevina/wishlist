@@ -3,25 +3,47 @@
     <div class="header">
       <MyHeader />
       
+      
     </div>
     
     <div class="flex wrapper">
+
       <div class="left-aside">
         <MyProfile />
         <AddButton />
         <PelNavigation />
       </div>
+
       <div class="center">
           <!-- <SearchInput /> -->
           <div class="cards">
             <router-view />
             <!-- <MyWishListFolders /> -->
           </div>
-          
-          
       </div>
+
       <div class="right-aside">
-        <button @click="changeTheme()" class="theme">Изменить тему</button>
+        <!-- <button @click="changeTheme()" class="theme">Изменить тему</button> -->
+        <!-- <button @click="changeTheme()" >Изменить тему</button> -->
+
+        <!-- <n-space>
+          <n-switch v-model:value="active" @click="changeTheme()" />
+        </n-space> -->
+
+        <div class="switch">
+          <n-space>
+          <n-switch v-model:value="active" size="large" @click="changeTheme()">
+            <template #checked-icon>
+              <n-icon :component="Moon" />
+            </template>
+            <template #unchecked-icon>
+              <n-icon :component="Sunny" />
+            </template>
+          </n-switch>
+          </n-space>
+        </div>
+        
+
         <RightAside />
       </div>
       
@@ -45,8 +67,14 @@ import PelNavigation from '@/components/layout/PelNavigation.vue'
 import RightAside from '@/components/layout/RightAside.vue'
 import MyFooter from '@/components/layout/MyFooter.vue'
 
+import { defineComponent, ref } from "vue";
+import { NSwitch, NIcon } from 'naive-ui';
+import { Sunny, Moon } from "@vicons/ionicons5";
 
-export default {
+
+
+
+export default defineComponent ({
   components: {
     MyHeader,
     MyProfile,
@@ -56,6 +84,11 @@ export default {
     // MyWishListFolders,
     RightAside,
     MyFooter,
+
+    NSwitch,
+    NIcon,
+    // Sunny, 
+    // Moon
   },
   data() {
     return {
@@ -66,8 +99,20 @@ export default {
       changeTheme(){
           this.theme = this.theme === "dark" ? "light" : "dark";
       }
+  },
+  // setup() {
+  //   return {
+  //     active: ref(false)
+  //   };
+  // }
+  setup() {
+    return {
+      active: ref(false),
+      Sunny,
+      Moon
+    };
   }
-}
+})
 
 
 </script>
@@ -134,6 +179,9 @@ export default {
 .right-aside {
   flex-basis: 25%;
   // width: 25%;
+}
+.switch {
+  margin-bottom: 20px;
 }
 
 

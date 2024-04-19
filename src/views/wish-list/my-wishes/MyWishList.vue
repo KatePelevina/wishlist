@@ -34,7 +34,7 @@
 
     <!-- <n-button @click="showModal=true" class="btn" strong secondary type="success">+ Добавить желание</n-button> -->
 
-    <n-button class="btn"  ghost>Поделиться этим Wish List</n-button>
+    <!-- <n-button class="btn"  ghost>Поделиться этим Wish List</n-button> -->
 
     
 
@@ -217,9 +217,9 @@
        <!-- Delete User Model -->
        <div v-if="showDeleteModal">
            <div class="modal">
-               <n-button @click="showDeleteModal = true">
+               <!-- <n-button @click="showDeleteModal = true">
                    Start Me up
-               </n-button>
+               </n-button> -->
                <n-modal v-model:show="showDeleteModal">
                    <n-card
                    style="width: 600px"
@@ -229,21 +229,25 @@
                    aria-modal="true"
                    >
                    
-                   <div>
-                       <h4>Удалить '{{ currentFolder.name }}'? </h4>
+                   <div class="delete-modal">
+                       <h4>Вы уверены, что хотите удалить папку: '{{ currentFolder.name }}'? </h4>
                        
                        <!-- <button @click="showDeleteModal=false; deleteFolder(); clearMsg();" class="red">Да</button>
                        &nbsp;&nbsp;&nbsp;&nbsp;
                        <button @click="showDeleteModal=false" class="green">Нет</button> -->
 
-                       <n-space>
-                        <n-button strong secondary type="success" @click="showDeleteModal=false" >
-                            Нет
-                        </n-button>
-                        <n-button strong secondary type="error" @click="showDeleteModal=false; deleteFolder(); clearMsg();" >
-                            Да
-                        </n-button>
-                    </n-space>
+                       <div class="delete-buttons">
+                        <!-- <n-space> -->
+                            <n-button strong secondary type="success" @click="showDeleteModal=false" class="delete-no" >
+                                Нет
+                            </n-button>
+                            <n-button strong secondary type="error" @click="showDeleteModal=false; deleteFolder(); clearMsg();" >
+                                Да
+                            </n-button>
+                        <!-- </n-space> -->
+
+                       </div>
+                      
                    </div>
                    
                    
@@ -315,11 +319,11 @@ export default defineComponent ({
                description: "",
                photo: '',
                link: "",
-               visible: "",
+               visible: "0",
                folder_id: "",
-               done: "0",
-               wish_list: '1',
-               bucket_list: '0'
+               done: "",
+            //    wish_list: '1',
+            //    bucket_list: '0'
                
            },
             // errorMsg: "",
@@ -395,7 +399,7 @@ export default defineComponent ({
             axios.post('http://localhost:8085/public/process.php?action=add-wishlist-to-folder&id='+id, formData)
 
             .then((response)=>{
-                this.newWish = {name: "", price: "", description: "", photo: "", link: "", visible: "", folder_id: "", done: "", wish_list: "", bucket_list: "" };
+                this.newWish = {name: "", price: "", description: "", photo: "", link: "", visible: "", folder_id: "", done: 0};
                 
                 if (response.data.error) {
                     console.log(response.data);
@@ -405,7 +409,8 @@ export default defineComponent ({
                     console.log(response.data);
                     // this.successMsg = response.data.message;
                     location.reload();
-                    // this.getWishes(); 
+                    this.getWishes(); 
+                    this.$router.reload()
                                  
                 }
             });
@@ -700,5 +705,23 @@ export default defineComponent ({
 //     margin-bottom: 20px;
 // }
 
+.delete-modal {
+    text-align: center;
+}
+.n-space {
+    justify-content: center;
+}
+.delete-center {
+    justify-content: center;
+}
+n-space {
+    justify-content: center;
+}
+.delete-no {
+    margin-right: 20px;
+}
+.delete-buttons {
+    margin-top: 20px;
+}
 
 </style>

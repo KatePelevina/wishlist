@@ -11,23 +11,67 @@
         <div>
             <h2>Добавить желание в Wish List</h2>
             <div class="add-box">
-                <form action="">
-                    <input type="text" name="name" placeholder="Название" v-model="newWish.name">
-                    <input type="text" name="name" placeholder="Цена" v-model="newWish.price">
-                    <input type="text" name="description" placeholder="Описание" v-model="newWish.description">
-                    <input type="text" name="link" placeholder="Ссылка" v-model="newWish.link">
+                <form @submit.prevent="addWishList">
+
+                    <BaseInput
+                        v-model="newWish.name"
+                        label="Название"
+                        type="text" 
+                        error="This input has an error"
+                    />
+                    <!-- <input 
+                        type="text" 
+                        name="name" 
+                        placeholder="Название" 
+                        v-model="newWish.name"
+                    > -->
+
+
+                    <!-- <input type="text" name="name" placeholder="Цена" v-model="newWish.price"> -->
+                    <BaseInput
+                        v-model="newWish.price"
+                        label="Цена"
+                        type="text" 
+                    />
+
+
+                    <!-- <input type="text" name="description" placeholder="Описание" v-model="newWish.description"> -->
+                    <BaseInput
+                        v-model="newWish.description"
+                        label="Описание"
+                        type="text" 
+                    />
+
+                    <!-- <input type="text" name="link" placeholder="Ссылка" v-model="newWish.link"> -->
+                    <BaseInput
+                        v-model="newWish.link"
+                        label="Ссылка"
+                        type="text" 
+                    />
 
                     <select name="folder_id" id="folder_id" v-model="newWish.folder_id" >
                         <option disabled value="" selected>Сохранить в папку</option>
                         <option v-for="(folder,index) in folders" :key="index" :value="folder.id">{{ folder.name }}</option> 
                     </select>
 
+                    <!-- <BaseSelect 
+                        :options="folders_names"
+                        v-model="newWish.folder_id"
+                        label="Сохранить в папку"
+                    /> -->
+
+
                     <select name="visible" id="visible" v-model="newWish.visible">
                         <option disabled value="">Кто видит желание</option>
                         <option v-for="(visible,index) in visible" :key="index" :value="index">{{ visible }}</option> 
                     </select>
 
-                    
+                    <!-- <BaseSelect 
+                        :options="visible"
+                        v-model="newWish.visible"
+                        label="Кто видит желание"
+                    /> -->
+
 
 
                     
@@ -66,7 +110,7 @@
                         <n-button>Загрузить фото</n-button>
                     </n-upload> -->
 
-                    <button class="button" @click="addWishList()">Добавить желание</button>
+                    <button class="button" type="submit">Добавить желание</button>
                 </form>
                 
             </div>
@@ -84,10 +128,17 @@ import MsgComponent from '@/components/layout/MsgComponent.vue';
 // import { NUpload, NButton, NSpace, NInput, NSelect } from 'naive-ui'
 
 
+import BaseInput from '@/components/forms/BaseInput.vue';
+// import BaseSelect from '@/components/forms/BaseSelect.vue';
+
+// import {  NInput } from 'naive-ui'
+
 export default {
     name: 'AddWishListView',
     components: { 
         MsgComponent,
+        BaseInput,
+        // BaseSelect,
         // NTooltip
         // NUpload,
         // NButton,
@@ -114,10 +165,11 @@ export default {
             folders: [
                 {id: "", name: ""},
             ],
-            visible: {
-                '1': 'вижу только я',
-                '2': 'видят все пользователи',
-            }
+            visible: [
+                ['1', 'вижу только я'],
+                ['2', 'видят все пользователи']
+            ],
+            folders_names: []
         }
     },
     methods: {
@@ -160,9 +212,21 @@ export default {
                 console.log(error)
             })
         },
+        async getFoldersName() {
+            await axios.get('http://localhost:8085/public/process.php?action=get-wishlist-folders-name')
+            .then((response)=>{
+                
+                this.folders_names = response.data.folders_names; 
+                
+            })
+            .catch((error)=>{
+                console.log(error)
+            })
+        },
     },
     mounted() {
-        this.getFolders()
+        this.getFolders() 
+        this.getFoldersName()
     }
 }
 </script>
@@ -178,7 +242,7 @@ export default {
     margin-top: 0px;
     margin-left: auto;
     margin-right: auto;
-    text-align: center;
+    // text-align: center;
     h2 {
         margin-bottom: 10px;
     }

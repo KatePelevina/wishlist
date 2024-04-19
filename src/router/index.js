@@ -54,7 +54,7 @@ const routes = [
     name: 'edit-profile',
     meta: {
       layout: 'MainLayout',
-      requiresAuth: true
+      // requiresAuth: true
     },
     component: () => import('@/views/EditProfileView.vue')
   },
@@ -88,7 +88,7 @@ const routes = [
     name: 'my-wish-list',
     meta: {
       layout: 'MainLayout',
-      requiresAuth: true
+      // requiresAuth: true
     },
     component: () => import('@/views/wish-list/my-wishes/MyWishList.vue'),
   },
@@ -97,7 +97,7 @@ const routes = [
     name: 'my-bucket-list',
     meta: {
       layout: 'MainLayout',
-      requiresAuth: true
+      // requiresAuth: true
     },
     component: () => import('@/views/bucket-list/MyBucketList.vue'),
   },
@@ -142,7 +142,7 @@ const routes = [
     name: 'add-wish-list',
     meta: {
       layout: 'MainLayout',
-      requiresAuth: true
+      // requiresAuth: true
     },
     component: () => import('@/views/wish-list/AddWishListView.vue')
   },
@@ -151,7 +151,7 @@ const routes = [
     name: 'add-bucket-list',
     meta: {
       layout: 'MainLayout',
-      requiresAuth: true
+      // requiresAuth: true
     },
     component: () => import('@/views/bucket-list/AddBucketListView.vue')
   },
@@ -202,7 +202,7 @@ const routes = [
     name: 'followers',
     meta: {
       layout: 'MainLayout',
-      requiresAuth: true
+      // requiresAuth: true
     },
     component: () => import('@/views/users/FollowersView.vue')
    
@@ -212,7 +212,7 @@ const routes = [
     name: 'Subscriptions',
     meta: {
       layout: 'MainLayout',
-      requiresAuth: true
+      // requiresAuth: true
     },
     component: () => import('@/views/users/SubscriptionsView.vue')
   },
@@ -266,7 +266,7 @@ const routes = [
     name: 'my-wish-list-item',
     meta: {
       layout: 'MainLayout',
-      requiresAuth: true
+      // requiresAuth: true
     },
     component: () => import('@/views/wish-list/my-wishes/MyWishListItem.vue')
   },
@@ -275,7 +275,7 @@ const routes = [
     name: 'my-bucket-list-item',
     meta: {
       layout: 'MainLayout',
-      requiresAuth: true
+      // requiresAuth: true
     },
     component: () => import('@/views/bucket-list/MyBucketListItem.vue')
   },
@@ -284,7 +284,7 @@ const routes = [
     name: 'i-will-present',
     meta: {
       layout: 'MainLayout',
-      requiresAuth: true
+      // requiresAuth: true
     },
     component: () => import('@/views/IWillPresent.vue')
   },
@@ -293,7 +293,7 @@ const routes = [
     name: 'i-will-present-item',
     meta: {
       layout: 'MainLayout',
-      requiresAuth: true
+      // requiresAuth: true
     },
     component: () => import('@/views/IWillPresentItem.vue')
   },
@@ -302,7 +302,7 @@ const routes = [
     name: 'i-will-get',
     meta: {
       layout: 'MainLayout',
-      requiresAuth: true
+      // requiresAuth: true
     },
     component: () => import('@/views/IWillGet.vue')
   },
@@ -311,7 +311,7 @@ const routes = [
     name: 'i-will-get-item',
     meta: {
       layout: 'MainLayout',
-      requiresAuth: true
+      // requiresAuth: true
     },
     component: () => import('@/views/IWillGetItem.vue')
   },
@@ -320,7 +320,7 @@ const routes = [
     name: 'my-wish-list-folders',
     meta: {
       layout: 'MainLayout',
-      requiresAuth: true
+      // requiresAuth: true
     },
     component: () => import('@/views/wish-list/my-wishes/MyWishListFolders.vue')
   },
@@ -329,7 +329,7 @@ const routes = [
     name: 'my-bucket-list-folders',
     meta: {
       layout: 'MainLayout',
-      requiresAuth: true
+      // requiresAuth: true
     },
     component: () => import('@/views/bucket-list/MyBucketListFolders.vue')
   },
@@ -446,7 +446,7 @@ const routes = [
     name: 'all-wishlist-view',
     meta: {
       layout: 'MainLayout',
-      requiresAuth: true
+      // requiresAuth: true
     },
     component: () => import('@/views/wish-list/AllWishListView.vue')
   },
@@ -455,7 +455,7 @@ const routes = [
     name: 'all-bucketlist-view',
     meta: {
       layout: 'MainLayout',
-      requiresAuth: true
+      // requiresAuth: true
     },
     component: () => import('@/views/bucket-list/AllBucketListView.vue')
   }
