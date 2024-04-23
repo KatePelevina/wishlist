@@ -1,32 +1,22 @@
 <template>
     <div class="page">
-
-        
-
-        <!-- <div class="flex" @click="showInfo=true">
-            <h1 class="title">
-                <img src="@/assets/location.svg" alt="icon" class="nav-item__icon"> 
-                Wish List
-            </h1>
-        </div> -->
-
-        
-        
-        
-    
-        <!-- <div class="cards" v-if="folders.length" >
-            <div class="card-test" @click="$router.push(`/my-wish-list/${folder.id}`)" v-for="(folder,index) in folders" :key="index" :folders='sortedAndSearchedPosts'>
-                <p>{{ folder.name }}</p>
+        <div class="flex color">
+            <div>
+                <n-space @click="$router.push(`/all-wishlist-view`)">
+                    <n-switch v-model:value="active" />
+                </n-space>
             </div>
-        </div>   -->
-
-        <div class="flex" @click="showInfo=true">
+            <div>
+                <n-icon size="25" @click="showInfo=true">
+                    <svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" viewBox="0 0 20 20"><g fill="none"><path d="M10.492 8.91A.5.5 0 0 0 9.5 9v4.502l.008.09a.5.5 0 0 0 .992-.09V9l-.008-.09zm.307-2.16a.75.75 0 1 0-1.5 0a.75.75 0 0 0 1.5 0zM18 10a8 8 0 1 0-16 0a8 8 0 0 0 16 0zM3 10a7 7 0 1 1 14 0a7 7 0 0 1-14 0z" fill="currentColor"></path></g></svg>
+                </n-icon>
+            </div>
+        </div>
+        
+        <div class="flex">
             <h1 class="title">
-                <img src="@/assets/location.svg" alt="icon" class="nav-item__icon"> 
                 Wish List
             </h1>
-
-            <img src="@/assets/location.svg" alt="icon" class="nav-item__icon" @click="$router.push(`/all-wishlist-view`)"> 
         </div>
 
         <div class="flex">
@@ -38,10 +28,6 @@
             </div>
         </div>
 
-
-        
-
-       
         <div class="select"  v-if="folders.length">
             <n-space vertical>
                 <n-select v-model:value="selectedSort" :options="options" />
@@ -53,12 +39,8 @@
             v-model="searchQuery"
         />
 
-        
-            
         <FoldersList :folders="sortedAndSearchedPosts" />
     
-  
-        
         <div v-if="showModal">
             
             <n-modal v-model:show="showModal">
@@ -103,39 +85,17 @@
 
     </div>
 
-    <!-- <n-tabs type="segment">
-        <n-tab-pane name="1" tab="хочу">
-            <MyWishlistWant />
-        </n-tab-pane>
-        <n-tab-pane name="2" tab="done">
-            <DoneWishListView />
-        </n-tab-pane>
-        <n-tab-pane name="3" tab="all">
-            <AllWishListView />
-        </n-tab-pane>
-    </n-tabs> -->
 </template>
 
 <script>
 
 import axios from 'axios';
-import { NModal, NCard } from 'naive-ui';
-import { NSpace, NSelect } from 'naive-ui';
-import { NButton } from 'naive-ui';
-import { NInput } from 'naive-ui';
-// import { NTabs, NTabPane } from 'naive-ui';
+import { NModal, NCard, NSpace, NSelect, NButton, NInput, NSwitch, NIcon} from 'naive-ui';
 
 import FoldersList from '@/components/folders/FoldersList';
 import MyInput from '@/components/layout/MyInput.vue';
-// import MySelect from '@/components/layout/MySelect.vue';
 
 import { defineComponent, ref } from "vue";
-
-// import AllWishListView from '@/views/wish-list/AllWishListView.vue';
-
-// import DoneWishListView  from '@/views/wish-list/DoneWishListView.vue'
-// import MyWishlistWant from '@/views/wish-list/my-wishes/MyWishlistWant.vue'
-// import AllWishListView from '@/views/wish-list/AllWishListView.vue'
 
 export default defineComponent ({
     name: 'MyWishListFolders',
@@ -148,17 +108,8 @@ export default defineComponent ({
         FoldersList,
         NInput,
         MyInput,
-
-        // NTabs,
-        // NTabPane,
-
-        // DoneWishListView,
-        // MyWishlistWant,
-        // AllWishListView
-
-        // AllWishListView
-        
-        // MySelect
+        NIcon,
+        NSwitch
     },
     props: ['id'],
     data() {
@@ -244,7 +195,7 @@ export default defineComponent ({
                 label: "По дате создания",
                 value: "date"
                 }
-            ]
+            ],
         };
     }
 });
@@ -346,6 +297,12 @@ input {
 .card-test:hover {
     box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.25); 
     border: none;
+}
+.color {
+    border: 1px $bg solid;
+    border-radius: 10px;
+    padding: 10px;
+    margin-bottom: 20px;
 }
 
 

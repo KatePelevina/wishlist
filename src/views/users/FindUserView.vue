@@ -31,16 +31,19 @@
     :options="sortOptions" 
     /> -->
 
-    <n-space vertical>
+    <n-space vertical v-if="users.length">
         <n-select v-model:value="selectedSort" :options="options" />
     </n-space>
 
 
-   
-    <my-input
-    v-model="searchQuery"
-    placeholder="Поиск..."
-    />
+    <div v-if="users.length">
+        <label for="my-input">Поиск по никнейму</label>
+        <my-input
+        v-model="searchQuery"
+        placeholder="Поиск..."
+        />
+    </div>
+    
     
     <users-list 
     :users="sortedAndSearchedPosts" 

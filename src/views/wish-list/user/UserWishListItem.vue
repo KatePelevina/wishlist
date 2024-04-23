@@ -10,7 +10,7 @@
         <div class="card" v-for="(user,index) in users" :key="index">
             <img class="photo" :src="'/img/' + user.img" />
             <p>{{ user.nickname }}</p>
-            <button @click="$router.push(`/user-profile/user=${ user.id }`)">Перейти в профиль</button>
+            <button @click="$router.push(`/user-wish-list/user=${ user.id }`)">Перейти в профиль</button>
 
             <div  v-for="(wish,index) in wishes" :key="index">
                 <p class="card-title">{{ wish.name }}</p>
@@ -20,7 +20,7 @@
                         <n-empty v-else size="large" description="Нет фото" class="empty"></n-empty>
                     </div>  
                     <div class="card-body__right">
-                        <p class="card-text">Дата создания: {{wish.date}}</p>
+                        <!-- <p class="card-text">Дата создания: {{wish.date}}</p> -->
                         <p v-if="wish.price" class="card-text">{{ wish.price }}</p>
                     </div>
                 </div>
@@ -29,12 +29,12 @@
                     <a :href="wish.link" class="link">Ссылка</a>
                 </div>
                 <div class="flex">
-                    <button class="button" @click="addToIWillPresent() ">Я подарю</button>
+                    <button class="button" @click="selectUser(user); addToIWillPresent();">Я подарю</button>
                     <button class="btn" @click="showModal=true; selectWish(wish); openForm()">+ Добавить в свой Wish List</button>
 
                 </div>
 
-                <button @click="showForm=true">Скинуться</button>
+                <!-- <button @click="showForm=true">Скинуться</button> -->
 
             </div>
 
@@ -70,7 +70,7 @@
                             <n-select  v-model:value="currentWish.my_folder_id" :options="folderSelector"/>
                         </n-space>
                         
-                        <n-button  @click="showModal=false" class="button">Добавить к себе</n-button>
+                        <n-button  @click="showModal=false; addToMyWishList()" class="button">Добавить к себе</n-button>
                     </form>
                     
                     
@@ -201,10 +201,18 @@ export default {
                 });
         },
         async addToIWillPresent() {
+          
             let id = this.$route.params.id;
+            let formData = this.toFormData(this.currentUser);
 
+            console.log(formData);
 
-            await axios.get('http://localhost:8085/public/process.php?action=add-to-i-will-present&id=' + id )
+         
+            // let iserId = this.$user.id;
+            // let friend = currentUser;
+           
+
+            await axios.post('http://localhost:8085/public/process.php?action=add-to-i-will-present&id=' + id, formData )
 
             .then((response)=>{
                 if(response.data.error){

@@ -61,15 +61,16 @@
         
 
         <div class="card-body">
-            <p>Исполнено</p>
-            <p>Хочу</p>
+            <!-- <p>Исполнено</p>
+            <p>Хочу</p> -->
             <div class="div-img">
-                <img v-if="wish.photo"  :src="'/img/' + wish.photo" alt="" class="wish-img" @click="showPhoto=true; selectWish(wish);" >
-                <n-empty v-else size="large" description="Нет фото" class="empty"></n-empty>
+                <div v-if="wish.photo">
+                    <!-- <img v-if="wish.photo"  :src="'/img/' + wish.photo" alt="" class="wish-img" @click="showPhoto=true; selectWish(wish);" > -->
+                    <n-button @click="selectWish(wish); showPhoto=true;">+</n-button>
+                </div>
 
-                <n-button @click="selectWish(wish); showPhoto=true;">+</n-button>
-
-                <n-upload
+                <div>
+                    <n-upload
                     multiple
                     directory-dnd
                     action="http://localhost:8085/public/process.php?action=wishlist-item-image-load&id=id"
@@ -86,17 +87,26 @@
                         </n-icon>
                     </div>
                     <n-text style="font-size: 16px">
-                        <!-- Click or drag a file to this area to upload -->
                         <n-empty  v-if="!wish.photo" size="large" description="Click or drag a file to this area to upload" class="empty"></n-empty>
                         <img v-else  :src="'/img/' + wish.photo" alt="" class="wish-img" >
 
                     </n-text>
-                    <!-- <n-p depth="3" style="margin: 8px 0 0 0">
+                    <n-p depth="3" style="margin: 8px 0 0 0">
                         Strictly prohibit from uploading sensitive information. For example,
                         your bank card PIN or your credit card expiry date.
-                    </n-p> -->
+                    </n-p>
                     </n-upload-dragger>
-                </n-upload>
+                    </n-upload>
+                </div>
+
+                <!-- <img v-if="wish.photo"  :src="'/img/' + wish.photo" alt="" class="wish-img" @click="showPhoto=true; selectWish(wish);" > -->
+                <!-- <n-empty v-else size="large" description="Нет фото" class="empty"></n-empty> -->
+
+
+                
+
+                <!-- <n-button @click="selectWish(wish); showPhoto=true;">+</n-button> -->
+
 
                 <div class="flex">
                     <n-button @click="done()" secondary type="success" class="btn" v-if="wish.done == 0">Подарили</n-button>
@@ -113,7 +123,7 @@
 
                 <p>Стоимость: {{ wish.price }} рублей</p>
                 <p>Статус: {{ statusToText[wish.done] }}</p>
-                <p>visible: {{ statusOFvisible[wish.visible] }}</p>
+                <p>Кто видит желание: {{ statusOFvisible[wish.visible] }}</p>
                 <!-- <n-button @click="done()" secondary type="success" class="btn" v-if="wish.done == 0">Иполнено</n-button> -->
 
                 
@@ -134,7 +144,7 @@
                
                 <n-space v-if="wish.link">
                     <n-tag type="info" size="large">
-                        <a :href="wish.link" class="link">Ссылка</a>
+                        <a :href="wish.link" target="_blank" class="link">Ссылка</a>
                     </n-tag>
                 </n-space>
 
@@ -147,10 +157,10 @@
                 <!-- <p>{{ statusOFvisible[wish.visible] }}</p> -->
                 
 
-                <div> 
+                <!-- <div>  -->
                     
                     <!-- <p class="card-book">Это желание забронировано (имя / анонимно): исполню сам(а)</p> -->
-                </div>
+                <!-- </div> -->
 
 
                 <!-- <n-button @click="done()" secondary type="success" class="btn" v-if="wish.done == 0">Иполнено</n-button> -->
@@ -163,7 +173,7 @@
 
         <!-- <wish-item-image-load /> -->
 
-        <n-upload 
+        <!-- <n-upload 
             
             action="http://localhost:8085/public/process.php?action=wishlist-item-image-load&id=id"
             :data="{
@@ -174,9 +184,15 @@
         >
             <n-button v-if="!wish.photo">Загрузить фото</n-button>
             <n-button v-else>Изменить фото</n-button>
-        </n-upload>
+        </n-upload> -->
 
-        <n-button>Поделиться этим желанием</n-button>
+        <!-- <form enctype="multipart/form-data" >
+            <p>Загрузить картинку</p> -->
+            <!-- <input type="file" @change="onFileUpload($event)"> -->
+            <!-- <input type="file" @click="uploadFile()">
+        </form> -->
+
+        <!-- <n-button>Поделиться этим желанием</n-button> -->
         
     </div>
 
@@ -246,6 +262,7 @@
                     </n-space>
 
                     <!-- <form enctype="multipart/form-data" >
+                        <p>hhhhhhhhhh</p>
                         <input type="file" @change="onFileUpload($event)">
                     </form> -->
                     
@@ -284,7 +301,7 @@
                   <!-- <n-button  strong secondary type="success" attr-type="submit"  @click="showEditModal=false; " class="edit-btn">Обновить</n-button> -->
                   <!-- <button  @click="showEditModal=false; updateWish(); reload_interval(1000);" class="button">Обновить</button> -->
 
-                  <n-button @click="showEditModal=false;"  type="primary">Обновить</n-button>
+                  <n-button @click="showEditModal=false; updateWish();"  type="primary">Обновить</n-button>
                 </form>
               </div>
              
@@ -436,24 +453,25 @@ export default defineComponent ({
             reader.readAsDataURL(file)
 
         },
-        // uploadFile() {
-        //     const formData = new FormData();
-        //     formData.append('bytes', this.file);
+        uploadFile() {
+            const formData = new FormData();
+            formData.append('bytes', this.file);
 
-        //     axios.post('http://localhost:8085/public/process.php?action=file-save',
-        //     formData,
-        //     {
-        //         headers: {
-        //             'Content-Type': 'multipart/form-data'
-        //         }
-        //     }
-        //     ).then(function (data) {
-        //         console.log(data.data);
-        //     })
-        //     .catch(function () {
-        //         console.log('FAILURE!!');
-        //     });
-        // },
+            axios.post('http://localhost:8085/public/process.php?action=file-save',
+            formData,
+            {
+                headers: {
+                    'Content-Type': 'multipart/form-data'
+                }
+            }
+            ).then(function (data) {
+                console.log(data.data);
+                this.$router.reload();
+            })
+            .catch(function () {
+                console.log('FAILURE!!');
+            });
+        },
         updateWish(){
             let formData = this.toFormData(this.currentWish);
 

@@ -1,5 +1,18 @@
 <template>
   <div class="page">
+
+    <div class="flex color">
+      <div>
+        <n-space @click="$router.push(`/my-bucket-list-folders`)">
+          <n-switch v-model:value="active" />
+        </n-space>
+      </div>
+      <div>
+        <n-icon size="25" @click="showInfo=true">
+          <svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" viewBox="0 0 20 20"><g fill="none"><path d="M10.492 8.91A.5.5 0 0 0 9.5 9v4.502l.008.09a.5.5 0 0 0 .992-.09V9l-.008-.09zm.307-2.16a.75.75 0 1 0-1.5 0a.75.75 0 0 0 1.5 0zM18 10a8 8 0 1 0-16 0a8 8 0 0 0 16 0zM3 10a7 7 0 1 1 14 0a7 7 0 0 1-14 0z" fill="currentColor"></path></g></svg>
+        </n-icon>
+      </div>
+    </div>
     <!-- <p>Всего: {{ wishes.length }}</p> -->
   
     <!-- <h1>Все желания из моего Bucket List</h1> -->
@@ -23,34 +36,64 @@
 
     <div class="flex">
       <h1 class="title">
-        <img src="@/assets/location.svg" alt="icon" class="nav-item__icon"> 
+        <!-- <img src="@/assets/location.svg" alt="icon" class="nav-item__icon">  -->
         Bucket List
     </h1>
-    <img src="@/assets/location.svg" alt="icon" class="nav-item__icon" @click="$router.push(`/my-bucket-list-folders`)"> 
+    <!-- <img src="@/assets/location.svg" alt="icon" class="nav-item__icon" @click="$router.push(`/my-bucket-list-folders`)">  -->
 
     </div>
     
 
-   <div class="flex rrrr">
+   <!-- <div class="flex rrrr">
         <div class="flex-left">
             <p class="ddddd">Количество желаний: {{ wishes.length }}</p>
         </div>
-        <!-- <div class="flex-right">
+        <div class="flex-right">
             <n-button @click="showModal=true" class="btn" strong secondary type="success">+ Добавить желание</n-button>
-        </div> -->
-    </div>
+        </div>
+    </div> -->
 
-    <my-select
+    <!-- <my-select
         v-model="selectedSort"
         :options="sortOptions" 
-    />
+    /> -->
+
+    <div class="progress ddddd percent">
+              <p>Исполнено: {{ done_count  }} / {{ wishes.length }}</p>
+             
+              <n-space vertical>
+                  <n-progress
+                  type="line"
+                  :percentage="getPercent()"
+                  :indicator-placement="'inside'"
+                  :border-radius="4"
+                  />
+              </n-space>
+          </div>
+
+    <div class="flex">
+      <div class="flex-left">
+        <n-space vertical>
+          <n-select v-model:value="selectedSort" :options="options" />
+        </n-space>
+      </div>
+      <div class="div-button flex-right">
+        <n-button @click="showModal=true; openForm()" class="btn" strong secondary type="success">+ Новое желание</n-button>
+      </div>
+    </div>
+
+    <!-- <div class="select"  v-if="folders.length">
+      <n-space vertical>
+          <n-select v-model:value="selectedSort" :options="options" />
+      </n-space>
+    </div> -->
 
     <my-input
         v-model="searchQuery"
         placeholder="Поиск..."
     /> 
 
-    <n-button @click="showModal=true; openForm()" class="btn" strong secondary type="success">+ Добавить желание</n-button>
+    <!-- <n-button @click="showModal=true; openForm()" class="btn" strong secondary type="success">+ Новое желание</n-button> -->
 
     <div v-if="showModal">
            <n-modal v-model:show="showModal">
@@ -91,11 +134,27 @@
                
                </n-card>
            </n-modal>
-       </div> 
+    </div> 
 
     <bucket-list-component
       :wishes="sortedAndSearchedPosts"
     />
+
+    <div v-if="showInfo">
+            <n-modal v-model:show="showInfo">
+                <n-card
+                style="width: 600px"
+                :bordered="false"
+                size="huge"
+                role="dialog"
+                aria-modal="true"
+                >
+                <div>
+                    <p>Bucket List - это</p>
+                </div>
+                </n-card>
+            </n-modal>
+        </div>
     
     </div>
   </template>
@@ -104,12 +163,12 @@
   import axios from 'axios';
   import { NButton } from 'naive-ui';
   import { NModal, NCard } from 'naive-ui';
-  import { NInput, NInputNumber, NSpace, NSelect } from 'naive-ui';
+  import { NInput, NInputNumber, NSpace, NSelect, NSwitch, NIcon, NProgress } from 'naive-ui';
   import { defineComponent, ref } from "vue";
 
 
   import BucketListComponent from '@/components/wishes/BucketListComponent.vue';
-  // import MyInput from '@/components/layout/MyInput.vue';
+  import MyInput from '@/components/layout/MyInput.vue';
   // import MySelect from '@/components/layout/MySelect.vue';
 
 
@@ -118,7 +177,7 @@
     name: 'AllBucketListView',
     components: { 
         BucketListComponent,
-        // MyInput,
+        MyInput,
         // MySelect,
         NButton,
         NModal, 
@@ -126,7 +185,10 @@
         NInput, 
         NInputNumber,
         NSpace, 
-        NSelect
+        NSelect,
+        NSwitch,
+        NIcon,
+        NProgress
     },
     data() {
         return {
@@ -140,6 +202,7 @@
                 {value: 'visible', name: 'По visible'},
             ],
             showModal: false,
+            showInfo: false,
             newWish: { 
                name: "", 
                price: "",
@@ -152,7 +215,9 @@
                wish_list: '1',
                bucket_list: '0'
             },
-            folders: []
+            folders: [],
+            done_count: [],
+            
         }
     },
     methods: {
@@ -189,6 +254,12 @@
                 }
             });
       },
+      getPercent() {          
+            this.percent = Math.round(this.done_count/this.wishes.length * 100);
+
+            console.log(this.percent);
+            return this.percent
+        },
       async getFolders() {
           await axios.get('http://localhost:8085/public/process.php?action=get-bucketlist-folders')
             .then(response => {
@@ -206,12 +277,24 @@
               value: element.id,
             });
           });
-        }
+        },
+        async getCountDoneWishList() {
+            // let id = this.$route.params.id;
+
+            await axios.get('http://localhost:8085/public/process.php?action=get-count-done-bucketlist')
+            .then((response)=>{
+                this.done_count = response.data.count; 
+            })
+            .catch((error)=>{
+                console.log(error)
+            })
+        },
     },
     mounted() {
         this.getAllPlaces()
         this.getFolders()
         this.openForm()
+        this.getCountDoneWishList()
     },
     computed: {
       sortedPosts() {
@@ -453,4 +536,10 @@
   .nav-item__icon {
     cursor: pointer;
   }
+  .color {
+    border: 1px $bg solid;
+    border-radius: 10px;
+    padding: 10px;
+    margin-bottom: 20px;
+}
   </style>

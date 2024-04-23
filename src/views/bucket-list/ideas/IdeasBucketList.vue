@@ -3,9 +3,10 @@
 
     
 
-    <p  v-if="wishes.length">Всего: {{ wishes.length }}</p>
   
     <h1>Идеи для твоего Bucket List</h1>
+    <p  v-if="wishes.length">Всего: {{ wishes.length }}</p>
+
 
     <my-input
         v-if="wishes.length"

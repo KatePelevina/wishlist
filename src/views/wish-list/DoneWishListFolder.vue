@@ -22,7 +22,7 @@
             <div class="flex-left">
                 <p class="ddddd">Кол-во желаний: {{ wishes.length }}</p>
             </div>
-            <div class="flex-right">
+            <div class="div-button">
                 <n-button @click="showModal=true" class="btn" strong secondary type="success">+ Добавить желание</n-button>
             </div>
             <!-- <div class="flex-right">
@@ -44,6 +44,41 @@
         
         <DoneWishlist :wishes="sortedAndSearchedPosts"/>
 
+        <div v-if="showModal">
+           <n-modal v-model:show="showModal">
+               <n-card
+               style="width: 600px"
+               
+               :bordered="false"
+               size="huge"
+               role="dialog"
+               aria-modal="true"
+               >
+               <div class="add-component__modal">
+                   <div class="add-box">
+                       <h4 class="add-box-title">Добавить желание в эту папку</h4>
+                       <form class="form" method="post" @submit.prevent="addWishList">
+                           <n-input v-model:value="newWish.name" type="text" placeholder="Название" class="input" />
+                           <n-input-number  v-model:value="newWish.price" type="text" placeholder="Цена"/>
+                           <n-input v-model:value="newWish.description" type="text" placeholder="Описание" class="input"  />
+                           <n-input v-model:value="newWish.link" type="text" placeholder="Ссылка" class="input" />
+                           
+                            <n-space vertical class="select">
+                                <n-select v-model:value="newWish.visible" :options="visible" />
+                            </n-space>
+
+                            <n-space vertical class="select">
+                                <n-select v-model:value="newWish.done" :options="done" />
+                            </n-space>
+
+                            <n-button strong secondary type="success" attr-type="submit" class="add-btn" @click="showModal=false; addWishList(); addPhoto()">Добавить желание</n-button>
+                       </form>
+                   </div>
+               </div>
+               
+               </n-card>
+           </n-modal>
+       </div> 
       
 
         
@@ -54,8 +89,9 @@
 import axios from 'axios';
 import { defineComponent, ref } from "vue";
 
-// import { NSpace, NSelect } from 'naive-ui';
-import { NButton } from 'naive-ui';
+import { NSpace, NSelect } from 'naive-ui';
+import { NModal, NButton, NCard, NInput, NInputNumber  } from 'naive-ui';
+
 
 import DoneWishlist from '@/components/wishes/DoneWishlist.vue';
 import MyInput from '@/components/layout/MyInput.vue';
@@ -68,16 +104,20 @@ export default defineComponent ({
     components: { 
         DoneWishlist,
         MyInput,
-        // NSpace,
-        // NSelect,
-        NButton
-        // MySelect
+        NButton,
+        NCard,
+        NModal,
+        NInput, 
+        NInputNumber,
+        NSpace, 
+        NSelect 
     },
     data(){
         return {
             wishes:[],
             selectedSort: '',
             searchQuery: '',
+            showModal: false,
             // sortOptions: [
             //     {value: 'name', name: 'По name'},
             //     {value: 'date', name: 'По date'},

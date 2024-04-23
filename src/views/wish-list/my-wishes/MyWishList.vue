@@ -14,7 +14,7 @@
         <div>
             <n-breadcrumb>
                 <n-breadcrumb-item @click="$router.push(`/my-wish-list-folders`)">Wish List</n-breadcrumb-item>
-                <n-breadcrumb-item>{{ folder_name }}</n-breadcrumb-item>
+                <n-breadcrumb-item>{{ folder_name }}</n-breadcrumb-item> 
             </n-breadcrumb>
         </div>
         <div class="card-header__right flex">
@@ -28,18 +28,16 @@
     </div>
 
 
-    <h1 class="title">{{ folder_name }}</h1>   
+    <h1 class="title folder-name">
+        {{ folder_name }} 
+        <span class="title-span">{{ wishes.length }}</span>
+    </h1> 
+    
+            
+
+    
 
     <p v-if="folder_description">{{ folder_description }}</p>
-
-    <!-- <n-button @click="showModal=true" class="btn" strong secondary type="success">+ Добавить желание</n-button> -->
-
-    <!-- <n-button class="btn"  ghost>Поделиться этим Wish List</n-button> -->
-
-    
-
-    
-
 
     <n-tabs type="segment">
         <n-tab-pane name="want" tab="Хочу">
@@ -55,26 +53,13 @@
 
     
 
-        <!-- <div class="flex rrrr">
-            <div class="select">
-                <p class="ddddd">Количество желаний: {{ wishes.length }}</p>
-            </div>
-            <div class="div-button">
-                <n-button @click="showModal=true" class="btn" strong secondary type="success">+ Добавить желание</n-button>
-            </div>
-        </div> -->
-
         <!-- <div class="select" v-if="wishes.length">
             <n-space vertical>
                 <n-select v-model:value="selectedSort" :options="options" />
             </n-space>
-        </div>
-        
-        <div v-if="wishes.length">
-            <my-input
-            v-model="searchQuery"
-            />
         </div> -->
+        
+       
     
 
        <!-- <div class="items" v-if="wishes.length" >
@@ -97,28 +82,16 @@
        
 
     
-       <!-- <div class="flex options">
-            <div class="select">
-                <my-select
-                v-model="selectedSort"
-                :options="sortOptions" 
-                />
-            </div>
-            <div class="div-button">
-            <button class="button" @click="showModal=true" >Добавить желание</button>
-            </div>  
-       </div> -->
+       
 
-       <!-- <div class="flex rrrr">
-            <div class="select">
-                <n-space vertical>
-                    <n-select v-model:value="selectedSort" :options="options" />
-                </n-space>
-            </div>
-            <div class="div-button">
+       <!-- <div class="flex rrrr"> -->
+            <!-- <div class="select">
+                
+            </div> -->
+            <!-- <div class="div-button">
                 <n-button @click="showModal=true" class="btn" strong secondary type="success">+ Добавить желание</n-button>
-            </div>
-        </div> -->
+            </div> -->
+        <!-- </div> -->
 
        
        
@@ -184,9 +157,9 @@
         <!-- Edit User Model -->
        <div v-if="showEditModal">
        <div class="modal">
-           <n-button @click="showEditModal = true">
+           <!-- <n-button @click="showEditModal = true">
                Start Me up
-           </n-button>
+           </n-button> -->
            <n-modal v-model:show="showEditModal">
                <n-card
                style="width: 600px"
@@ -196,6 +169,7 @@
                aria-modal="true"
                >
                <div class="add-box">
+                    <h5 class="modal-title">Редактирование папки</h5>
                     <form method="post" >
                         <!-- <input type="text" name="name"  placeholder="Название" v-model="currentFolder.name"> -->
                         <n-input v-model:value="currentFolder.name" type="text" placeholder="Название" class="input" />
@@ -230,7 +204,8 @@
                    >
                    
                    <div class="delete-modal">
-                       <h4>Вы уверены, что хотите удалить папку: '{{ currentFolder.name }}'? </h4>
+                        <h5 class="modal-title">Удаление папки</h5>
+                       <h4 class="red">Вы уверены, что хотите удалить папку: '{{ currentFolder.name }}'? </h4>
                        
                        <!-- <button @click="showDeleteModal=false; deleteFolder(); clearMsg();" class="red">Да</button>
                        &nbsp;&nbsp;&nbsp;&nbsp;
@@ -255,9 +230,6 @@
                </n-modal>
            </div>
        </div>
-
-
-   
    </div>
 </template>
 
@@ -280,9 +252,6 @@ import MsgComponent from '@/components/layout/MsgComponent.vue'
 import DoneWishListFolder from '@/views/wish-list/DoneWishListFolder.vue';
 import AllWishListFolder from '@/views/wish-list/AllWishListFolder.vue'
 import WantWishList from '@/views/wish-list/my-wishes/WantWishList.vue'
-
-
-
 
 export default defineComponent ({
     name: 'WishList',
@@ -722,6 +691,24 @@ n-space {
 }
 .delete-buttons {
     margin-top: 20px;
+}
+.folder-name {
+    margin-bottom: 20px;
+}
+.modal-title {
+    text-align: center;
+    margin-bottom: 20px;
+    font-size: 20px;
+}
+.red {
+    color: red;
+}
+.title-span {
+    padding: 4px 8px;
+    background-color: $active;
+    color: $white;
+    font-size: 12px;
+    border-radius: 5px;
 }
 
 </style>

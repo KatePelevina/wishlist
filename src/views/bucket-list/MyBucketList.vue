@@ -23,7 +23,7 @@
         <p v-if="folder_description">{{ folder_description }}</p>
     </div>
 
-    <n-button @click="showModal=true" class="btn" strong secondary type="success">+ Добавить желание</n-button>
+    <!-- <n-button @click="showModal=true" class="btn" strong secondary type="success">+ Добавить желание</n-button> -->
 
 
     <n-tabs type="segment">

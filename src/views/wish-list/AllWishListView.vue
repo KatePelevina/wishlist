@@ -1,5 +1,18 @@
 <template>
   <div class="page">
+    
+    <div class="flex color">
+      <div>
+        <n-space @click="$router.push(`/my-wish-list-folders`)">
+          <n-switch v-model:value="active" />
+        </n-space>
+      </div>
+      <div>
+        <n-icon size="25" @click="showInfo=true">
+          <svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" viewBox="0 0 20 20"><g fill="none"><path d="M10.492 8.91A.5.5 0 0 0 9.5 9v4.502l.008.09a.5.5 0 0 0 .992-.09V9l-.008-.09zm.307-2.16a.75.75 0 1 0-1.5 0a.75.75 0 0 0 1.5 0zM18 10a8 8 0 1 0-16 0a8 8 0 0 0 16 0zM3 10a7 7 0 1 1 14 0a7 7 0 0 1-14 0z" fill="currentColor"></path></g></svg>
+        </n-icon>
+      </div>
+    </div>
 
   
     <!-- <p>Всего: {{ wishes.length }}</p> -->
@@ -54,13 +67,26 @@
           </div>
         </div> -->
 
+
+        <!-- <n-space @click="$router.push(`/my-wish-list-folders`)">
+            <n-switch v-model:value="active" size="large">
+                <template #checked-icon>
+                    <n-icon :component="Moon" />
+                </template>
+                <template #unchecked-icon>
+                    <n-icon :component="Sunny" />
+                </template>
+            </n-switch>
+        </n-space> -->
+
+        
+
         <div class="flex" @click="showInfo=true">
             <h1 class="title">
-                <img src="@/assets/location.svg" alt="icon" class="nav-item__icon"> 
+                <!-- <img src="@/assets/location.svg" alt="icon" class="nav-item__icon">  -->
                 Wish List
             </h1>
-
-            <img src="@/assets/location.svg" alt="icon" class="nav-item__icon" @click="$router.push(`/my-wish-list-folders`)"> 
+            <!-- <img src="@/assets/location.svg" alt="icon" class="nav-item__icon" @click="$router.push(`/my-wish-list-folders`)">  -->
         </div>
 
 
@@ -169,6 +195,22 @@
                </n-card>
            </n-modal>
        </div> 
+
+       <div v-if="showInfo">
+            <n-modal v-model:show="showInfo">
+                <n-card
+                style="width: 600px"
+                :bordered="false"
+                size="huge"
+                role="dialog"
+                aria-modal="true"
+                >
+                <div>
+                    <p>Wish List - это</p>
+                </div>
+                </n-card>
+            </n-modal>
+        </div>
     
     </div>
   </template>
@@ -187,6 +229,9 @@
   import MyInput from '@/components/layout/MyInput.vue';
   // import MySelect from '@/components/layout/MySelect.vue';
 
+  import { NSwitch, NIcon } from 'naive-ui';
+// import { Sunny, Moon } from "@vicons/ionicons5";
+
   
   export default defineComponent ({
     name: 'AllWishListView',
@@ -200,9 +245,9 @@
       NModal, 
       NCard,
       NInput, 
-      NInputNumber 
-      // MySelect
-     
+      NInputNumber,
+      NSwitch,
+      NIcon
     },
     data() {
         return {
@@ -211,6 +256,7 @@
           selectedSort: '',
           searchQuery: '',
           showModal: false,
+          showInfo: false,
           newWish: { 
                name: "", 
                price: "",
@@ -386,7 +432,7 @@
                   value: "",
                   disabled: true
                 }
-            ]
+            ],
         };
     }
   })
@@ -431,7 +477,7 @@
     display: flex;
     justify-content: space-between;
     align-items: center;
-    margin-top: 10px;
+    // margin-top: 10px;
     p {
         margin-right: 10px;
     }
@@ -560,4 +606,10 @@
     margin-top: 20px;
     margin-bottom: 20px;
   }
+  .color {
+    border: 1px $bg solid;
+    border-radius: 10px;
+    padding: 10px;
+    margin-bottom: 20px;
+}
   </style>

@@ -13,8 +13,8 @@
             </div>
             <p class="box-inner__hover">{{ wish.name }}</p>
             <p class="box-inner__hover">{{ wish.date }}</p>
-            <p class="box-inner__hover">{{ wish.visible }}</p>
-            <p class="box-inner__hover">done:{{ wish.done }}</p>
+            <p class="box-inner__hover">visible: {{ wish.visible }}</p>
+            <p class="box-inner__hover">done: {{ wish.done }}</p>
             
         </div>
     </div>

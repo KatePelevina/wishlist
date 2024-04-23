@@ -9,12 +9,13 @@
                             <img class="photo" :src="'/img/' + user.img" />
                         </div>
                         <div>
-                            <p class="card-text">{{ user.firstName }} {{ user.secondName }}</p>
+                            <!-- <p class="card-text">{{ user.firstName }} {{ user.secondName }}</p> -->
                             <p class="card-text">{{ user.nickname }}</p>  
                         </div>
                     </div>
                     <div class="card-header__right">
-                        <p class="card-text">user_id: {{ user.id }}</p>  
+                        <!-- <p class="card-text">user_id: {{ user.id }}</p>   -->
+                        <p class="card-text">{{ user.firstName }} {{ user.secondName }}</p>
                     </div>
                 </div>
             </div>        
@@ -59,7 +60,8 @@ export default {
     @include flex;
 }
 .card-header__left {
-    display: flex;
+    
+    @include flex;
 }
 .photo {
     @include photo;

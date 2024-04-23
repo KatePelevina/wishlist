@@ -1,80 +1,26 @@
 <template>
   <div class="page">
-  <p  v-if="wishes.length">Всего: {{ wishes.length }}</p>
-  <h1>Идеи для твоего Wish List</h1>
+
+    <h1>Идеи для твоего Wish List</h1>
+    <p  v-if="wishes.length">Всего идей: {{ wishes.length }}</p>
   
-
-  <!-- <n-breadcrumb>
-      <n-breadcrumb-item @click="$router.push(`/my-wish-list-folders`)">Wish List</n-breadcrumb-item>
-      <n-breadcrumb-item>Идеи для Wish List</n-breadcrumb-item>
-      <n-breadcrumb-item></n-breadcrumb-item>
-  </n-breadcrumb> -->
-
-  
-      <!-- <div class="card" v-for="place in places" :key="place.id" @click="$router.push(`/place/${place.id}`)">
-          <div class="card-header">
-              
-              <div class="card-header__right">
-                  <a href="#"><img src="@/assets/dots.svg" alt="dots-icon"></a>
-                  <img src="@/assets/dots.svg" alt="dots-icon">
-              </div>
-          </div>
-          <div class="card-body">
-              <div class="card-body__right">
-                <div class="card-body__right-img">
-                  <img src="@/assets/paris.jpg" alt="">
-                </div>
-              </div>
-              <div class="card-body__left">
-                  <div>
-                      <p class="card-title">Сумка</p>
-                      <p class="card-text">300$</p>
-                      <p class="card-text"></p>     
-                  </div>
-                  <p>{{ place.description }}</p>
-                  <div class="flex">
-                      <p>11 декабря 2021</p>
-                      <p>Имя автора</p>
-                  </div>
-                  <button>Добавить в свой WishList</button>
-              </div>
-              
-          </div>
-      </div> -->
-
-      <!-- <h1>AllWishList</h1> -->
-
-      <!-- <div class="items">
-        <div class="item" v-for="wish in wishes" :key="wish.id">
-            <div class="box" @click="$router.push(`/idea-wishlist-item/${wish.id}`)">
-                <div class="box-inner">
-                    <span v-if="wish.price" class="span">{{ wish.price }}</span>
-                    <img :src="'/img/' + wish.photo" alt="">
-                </div>
-            </div>
-            <div class="flex">
-              <div>
-                <p class="box-inner__hover">{{wish.name}}</p>
-              </div>
-            </div>
-            
-        </div>
-      </div> -->
-
+    <div class="search">
       <my-input
-        v-if="wishes.length"
-        v-model="searchQuery"
-        placeholder="Поиск..."
+      v-if="wishes.length"
+      v-model="searchQuery"
+      placeholder="Поиск..."
       />
-
-      
+    </div>
+    
+    <div class="sort">
       <n-space vertical  v-if="wishes.length">
-          <n-select v-model:value="selectedSort" :options="options" />
+        <n-select v-model:value="selectedSort" :options="options" />
       </n-space>
+    </div>
+    
 
-      <IdeasWishlist 
-      :wishes="sortedAndSearchedPosts"/>
-  
+    <IdeasWishlist :wishes="sortedAndSearchedPosts"/>
+
   </div>
 </template>
 
@@ -82,15 +28,8 @@
 import axios from 'axios';
 import { defineComponent } from "vue";
 import { NSpace, NSelect } from 'naive-ui';
-
-// import { NTabs, NTabPane} from 'naive-ui'
-
 import IdeasWishlist from '@/components/wishes/IdeasWishlist.vue';
 import MyInput from '@/components/layout/MyInput.vue';
-// import { NBreadcrumb, NBreadcrumbItem} from 'naive-ui';
-
-
-// import { NTooltip, NButton } from 'naive-ui'
 
 export default defineComponent ({
   name: 'AllWishListView',
@@ -99,92 +38,85 @@ export default defineComponent ({
     MyInput,
     NSpace, 
     NSelect
-    // NBreadcrumb,
-    // NBreadcrumbItem
-    // NTabs,
-    // NTabPane
-    // NTooltip,
-    // NButton
   },
   data() {
-      return {
-        wishes:[],
-        selectedSort: '',
-        searchQuery: '',
-      }
+    return {
+      wishes:[],
+      selectedSort: '',
+      searchQuery: '',
+    }
   },
   methods: {
-      async getAllWishes(){
-          await axios.get('http://localhost:8085/public/process.php?action=ideas-wishlist')
+    async getAllWishes(){
+      await axios.get('http://localhost:8085/public/process.php?action=ideas-wishlist')
 
-          .then((response)=>{
-              this.wishes = response.data.wishes; 
-              console.log(this.wishes);
-          })
-          .catch((error)=>{
-              console.log(error)
-          })
-      },
+      .then((response)=>{
+          this.wishes = response.data.wishes; 
+          console.log(this.wishes);
+      })
+      .catch((error)=>{
+          console.log(error)
+      })
+    },
   },
   mounted() {
-      this.getAllWishes()
+    this.getAllWishes()
   },
   computed: {
-        sortedPosts() {
-            return [...this.wishes].sort((wish1, wish2) => wish1[this.selectedSort]?.localeCompare(wish2[this.selectedSort]))
-        },
-        sortedAndSearchedPosts() {
-            return this.sortedPosts.filter(wish => wish.name.toLowerCase().includes(this.searchQuery.toLowerCase()))
-        }
+    sortedPosts() {
+        return [...this.wishes].sort((wish1, wish2) => wish1[this.selectedSort]?.localeCompare(wish2[this.selectedSort]))
     },
-    setup() {
-        return {
-            
-            options: [
-                {
-                label: "Сортировать по",
-                value: "",
-                disabled: true
-                },
-                {
-                label: "По названию",
-                value: "name",
-                },
-                {
-                label: "По цене",
-                value: "price"
-                },
-                {
-                label: "По дате создания",
-                value: "date"
-                },
-                {
-                label: "По visible",
-                value: "visible"
-                },
-            ],
-            visible: [
-            {
-                label: "видят все пользователи",
-                value: "2"
-                },
-                {
-                label: "вижу только я",
-                value: "1",
-                },
-            ],
-            done: [
-                {
-                    label: "Хочу",
-                    value: 0,
-                },
-                {
-                    label: "Done",
-                    value: 1,
-                }
-            ]
-        };
+    sortedAndSearchedPosts() {
+        return this.sortedPosts.filter(wish => wish.name.toLowerCase().includes(this.searchQuery.toLowerCase()))
     }
+  },
+  setup() {
+    return {
+      options: [
+        {
+          label: "Сортировать по",
+          value: "",
+          disabled: true
+        },
+        {
+          label: "По названию",
+          value: "name",
+        },
+        {
+          label: "По цене",
+          value: "price"
+        },
+        {
+          label: "По дате создания",
+          value: "date"
+        },
+        {
+          label: "По visible",
+          value: "visible"
+        },
+      ],
+      visible: [
+        {
+          label: "видят все пользователи",
+          value: "2"
+        },
+        {
+          label: "вижу только я",
+          value: "1",
+        },
+      ],
+      done: [
+        {
+          label: "Хочу",
+          value: 0
+        },
+        {
+          label: "Done",
+          value: 1
+        }
+      ]
+    };
+  }
 })
 </script>
 
@@ -329,4 +261,12 @@ export default defineComponent ({
 //  border-radius: 5px;
 //  color: $white;
 // }
+
+// .search {
+//   margin-bottom: 30px;
+// }
+.sort {
+  margin-bottom: 30px;
+}
+
 </style>

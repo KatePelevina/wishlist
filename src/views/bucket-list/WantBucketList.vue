@@ -32,9 +32,6 @@
         <p v-if="folder_description">{{ folder_description }}</p>
     </div> -->
 
-    
-
-
     <!-- <n-tabs type="segment">
         <n-tab-pane name="want" tab="Хочу">
             <wish-list-component
@@ -51,8 +48,12 @@
 
         
     
+        <div class="flex">
+            <p class="count">Количество желаний: {{ wishes.length }}</p>
+            <n-button @click="showModal=true" class="btn" strong secondary type="success">+ Добавить желание</n-button>
+        </div>
         
-        <p class="count">Количество желаний: {{ wishes.length }}</p>
+
 
         <div class="select" v-if="wishes.length">
             <n-space vertical>
@@ -133,7 +134,6 @@
             </div>
         </div> -->
 
-        <n-button @click="showModal=true" class="btn" strong secondary type="success">+ Добавить желание</n-button>
 
        
        <bucket-list-component
@@ -154,25 +154,10 @@
                    <div class="add-box">
                        <h4 class="add-box-title">Добавить желание в эту папку</h4>
                        <form class="form" method="post">
-                           <!-- <input type="text" name="name" placeholder="Название" v-model="newWish.name"> -->
                            <n-input v-model:value="newWish.name" type="text" placeholder="Название" class="input" />
-
-
-                           <!-- <input type="text" name="name" placeholder="Цена" v-model="newWish.price"> -->
-                           <!-- <n-input v-model:value="newWish.price" type="text" placeholder="Цена" class="input" /> -->
                            <n-input-number  v-model:value="newWish.price" type="text" placeholder="Цена"/>
-
-
-                           <!-- <input type="text" name="description" placeholder="Описание" v-model="newWish.description"> -->
                            <n-input v-model:value="newWish.description" type="text" placeholder="Описание" class="input"  />
-
-                           <!-- <input type="text" name="link" placeholder="Ссылка" v-model="newWish.link"> -->
                            <n-input v-model:value="newWish.link" type="text" placeholder="Ссылка" class="input" />
-
-                           <!-- <select name="visible" id="visible" v-model="newWish.visible">
-                                <option disabled value="">Кто видит желание</option>
-                                <option v-for="(visible,index) in visible" :key="index" :value="index">{{ visible }}</option> 
-                            </select> -->
 
                             <n-space vertical class="select">
                                 <n-select v-model:value="newWish.visible" :options="visible" />
@@ -182,7 +167,7 @@
                                 <n-select v-model:value="newWish.done" :options="done" />
                             </n-space>
 
-                            <n-upload 
+                            <!-- <n-upload 
             
                                 action="http://localhost:8085/public/process.php?action=add-bucketlist-to-folder&id=id"
                                 :data="{
@@ -193,8 +178,7 @@
                             >
                                 <n-button>Загрузить фото</n-button>
                         
-                            </n-upload>
-
+                            </n-upload> -->
 
                            <!-- <button class="button" @click="showModal=false; addWishList(); clearMsg();">Добавить желание</button> -->
                            <n-button strong secondary type="success" attr-type="submit" class="add-btn" @click="showModal=false; addBucketList();">Добавить желание</n-button>
@@ -289,7 +273,7 @@ import axios from 'axios';
 import { NModal, NButton, NCard} from 'naive-ui';
 import { NSpace, NSelect } from 'naive-ui';
 import { NInput, NInputNumber,  } from 'naive-ui';
-import {  NUpload } from 'naive-ui';
+// import {  NUpload } from 'naive-ui';
 // import { NTabs, NTabPane } from 'naive-ui';
 
 // import { NTag } from 'naive-ui';
@@ -323,7 +307,7 @@ export default defineComponent ({
        NSelect,
        NInput,
        NInputNumber,
-       NUpload
+    //    NUpload
     //    NTabs, 
     //    NTabPane,
     //    DoneWishListView,

@@ -253,7 +253,7 @@ const routes = [
     component: () => import('@/views/wish-list/user/UserWishListItem.vue')
   },
   {
-    path: '/user-bucket-list-item/:id',
+    path: '/user-bucket-list-item/wish=:id',
     name: 'user-bucket-list-item',
     meta: {
       layout: 'MainLayout',

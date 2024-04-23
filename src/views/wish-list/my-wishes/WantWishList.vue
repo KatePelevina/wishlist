@@ -55,8 +55,7 @@
             </div>
             
                
-            <!-- <span class="title-span">{{ wishes.length }}</span>
-           -->
+            
             
             <div class="div-button">
                 <n-button @click="showModal=true" class="btn" strong secondary type="success">+ Добавить желание</n-button>
@@ -73,6 +72,10 @@
                 <n-select v-model:value="selectedSort" :options="options" />
             </n-space>
         </div> -->
+
+        <n-space vertical>
+            <n-select v-model:value="selectedSort" :options="options" />
+        </n-space>
         
         <div v-if="wishes.length">
             <my-input
@@ -147,26 +150,11 @@
                    <div class="add-box">
                        <h4 class="add-box-title">Добавить желание в эту папку</h4>
                        <form class="form" method="post" @submit.prevent="addWishList">
-                           <!-- <input type="text" name="name" placeholder="Название" v-model="newWish.name"> -->
                            <n-input v-model:value="newWish.name" type="text" placeholder="Название" class="input" />
-
-
-                           <!-- <input type="text" name="name" placeholder="Цена" v-model="newWish.price"> -->
-                           <!-- <n-input v-model:value="newWish.price" type="text" placeholder="Цена" class="input" /> -->
                            <n-input-number  v-model:value="newWish.price" type="text" placeholder="Цена"/>
-
-
-                           <!-- <input type="text" name="description" placeholder="Описание" v-model="newWish.description"> -->
                            <n-input v-model:value="newWish.description" type="text" placeholder="Описание" class="input"  />
-
-                           <!-- <input type="text" name="link" placeholder="Ссылка" v-model="newWish.link"> -->
                            <n-input v-model:value="newWish.link" type="text" placeholder="Ссылка" class="input" />
-
-                           <!-- <select name="visible" id="visible" v-model="newWish.visible">
-                                <option disabled value="">Кто видит желание</option>
-                                <option v-for="(visible,index) in visible" :key="index" :value="index">{{ visible }}</option> 
-                            </select> -->
-
+                           
                             <n-space vertical class="select">
                                 <n-select v-model:value="newWish.visible" :options="visible" />
                             </n-space>
@@ -175,25 +163,7 @@
                                 <n-select v-model:value="newWish.done" :options="done" />
                             </n-space>
 
-                            <n-upload 
-            
-                                action="http://localhost:8085/public/process.php?action=add-wishlist-to-folder&id=id"
-                                :data="{
-                                    'id': 'folder.id',
-                                }"
-                                accept= ".png, .jpg, .jpeg, .webp, .HEIC"
-                                
-                            >
-                                <n-button>
-                                    <img src="@/assets/search.svg" alt="icon" class="nav-item__icon">
-
-                                    Загрузить фото
-
-                                </n-button>
-                        
-                            </n-upload>
-
-                           <n-button strong secondary type="success" attr-type="submit" class="add-btn" @click="showModal=false; addWishList()">Добавить желание</n-button>
+                            <n-button strong secondary type="success" attr-type="submit" class="add-btn" @click="showModal=false; addWishList(); addPhoto()">Добавить желание</n-button>
                        </form>
                    </div>
                </div>
@@ -285,7 +255,6 @@ import axios from 'axios';
 import { NModal, NButton, NCard} from 'naive-ui';
 import { NSpace, NSelect } from 'naive-ui';
 import { NInput, NInputNumber } from 'naive-ui';
-import { NUpload } from 'naive-ui';
 
 // import { NTabs, NTabPane } from 'naive-ui';
 
@@ -317,7 +286,8 @@ export default defineComponent ({
        NSelect,
        NInput,
        NInputNumber,
-       NUpload
+
+
     //    NTabs, 
     //    NTabPane,
     //    DoneWishListView,
@@ -421,6 +391,27 @@ export default defineComponent ({
                     this.getWishes();              
                 }
             });
+        },
+        addPhoto() {
+            let id = this.$route.params.id;
+            let formData = this.toFormData(this.newWish);
+
+            axios.post('http://localhost:8085/public/process.php?action=add-photo-test&id='+id, formData)
+
+            .then((response)=>{
+                this.newWish = {photo: ""};
+                
+                if (response.data.error) {
+                    console.log(response.data);
+                    // this.errorMsg = response.data.message;
+
+                } else {
+                    console.log(response.data);
+                    // this.successMsg = response.data.message;
+                    // this.getWishes();              
+                }
+            });
+
         },
         toFormData(obj){
             let fd = new FormData();
@@ -530,6 +521,11 @@ export default defineComponent ({
                 }
             ],
             done: [
+                {
+                label: "Статус",
+                value: "",
+                disabled: true
+                },
                 {
                 label: "хочу",
                 value: "0",
@@ -664,7 +660,7 @@ export default defineComponent ({
 
 .rrrr {
     margin-bottom: 10px;
-    margin-top: 20px;
+    margin-top: 8px;
 }
 
 .ddddd {
@@ -695,13 +691,7 @@ export default defineComponent ({
 }
 
 
-.title-span {
-    padding: 4px 8px;
-    background-color: $active;
-    color: $white;
-    font-size: 12px;
-    border-radius: 5px;
-}
+
 </style>
 
 

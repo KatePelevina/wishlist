@@ -1,10 +1,9 @@
 <template>
-    <div>
+    <div class="page">
         
+        <!-- <div class="card" v-for="(wish,index) in wishes" :key="index">
 
-        <div class="card" v-for="(wish,index) in wishes" :key="index">
-
-            <p class="card-title">{{ wish.name }} 999999</p>
+            <p class="card-title">{{ wish.name }}</p>
 
             <div class="card-body flex">
                 <div class="card-body__left">
@@ -23,14 +22,49 @@
                 <button class="button">Я подарю</button>
                 <button class="btn" @click="showModal=true; selectWish(wish);">+ Добавить в свой Bucket List</button>
             </div>
+        </div> -->
+
+        <div class="card" v-for="(user,index) in users" :key="index">
+            <img class="photo" :src="'/img/' + user.img" />
+            <p>{{ user.nickname }}</p>
+            <button @click="$router.push(`/user-wish-list/user=${ user.id }`)">Перейти в профиль</button>
+
+            <div  v-for="(wish,index) in wishes" :key="index">
+                <p class="card-title">{{ wish.name }}</p>
+                <div class="card-body">
+                    <div class="div-img">
+                        <img v-if="wish.photo"  :src="'/img/' + wish.photo" alt="" class="wish-img" @click="showPhoto=true; selectWish(wish);" >
+                        <n-empty v-else size="large" description="Нет фото" class="empty"></n-empty>
+                    </div>  
+                    <div class="card-body__right">
+                        <!-- <p class="card-text">Дата создания: {{wish.date}}</p> -->
+                        <p v-if="wish.price" class="card-text">{{ wish.price }}</p>
+                    </div>
+                </div>
+                <p class="card-description">{{ wish.description }}</p>
+                <div class="card-link" v-if="wish.link">
+                    <a :href="wish.link" class="link">Ссылка</a>
+                </div>
+                <div class="flex">
+                    <button class="button" @click="selectUser(user); addToIWillPresent();">Я подарю</button>
+                    <button class="btn" @click="showModal=true; selectWish(wish); openForm()">+ Добавить в свой Wish List</button>
+
+                </div>
+
+                <!-- <button @click="showForm=true">Скинуться</button> -->
+
+            </div>
+
+          
+
+            
+
         </div>
 
-         <!-- Edit User Model -->
-         <div v-if="showModal">
+
+        <!-- Add to my wishlist -->
+        <div v-if="showModal">
         <div class="modal">
-            <n-button @click="showModal = true">
-                Start Me up
-            </n-button>
             <n-modal v-model:show="showModal">
                 <n-card
                 style="width: 600px"
@@ -41,12 +75,26 @@
                 aria-modal="true"
                 >
                 
-                <form method="post">
+                <form method="post"  @submit.prevent="addToMyWishList">
                     <input type="text" name="name"  placeholder="Название" v-model="currentWish.name">
                     <input type="text" name="price"  placeholder="Цена" v-model="currentWish.price">
                     <input type="text" name="description" placeholder="Описание" v-model="currentWish.description">
+
+                    <n-upload 
+        
+                        action="http://localhost:8085/public/process.php?action=add-userwish-to-my-wishlist"
+                        
+                        accept= ".png, .jpg, .jpeg, .webp, .HEIC"
+                        
+                    >
+                        <n-button>Загрузить фото</n-button>
+                    </n-upload>
+
+                    <n-space vertical class="select">
+                        <n-select  v-model:value="currentWish.my_folder_id" :options="folderSelector"/>
+                    </n-space>
                     
-                    <button  @click="showModal=false; addToMyWishList();" class="button">Добавить к себе</button>
+                    <n-button  @click="showModal=false; addToMyWishList()" class="button">Добавить к себе</n-button>
                 </form>
                 
                 
@@ -54,6 +102,62 @@
             </n-modal>
         </div>
         </div>
+
+        <!-- скинуться -->
+        <div v-if="showForm">
+            <div class="modal modal-inner">
+                <n-modal v-model:show="showForm">
+                    <n-card
+                    style="width: 700px"
+                    :bordered="false"
+                    size="huge"
+                    role="dialog"
+                    aria-modal="true"
+                    >
+                    
+                    
+                    <div>
+                        <p>скинуться</p>
+                        <input type="text" placeholder="Сумма">
+                        <button>скинуться</button>
+                    </div>
+                    
+                    
+                    </n-card>
+                </n-modal>
+            </div>
+        </div>
+
+        <!-- Edit User Model -->
+        <div v-if="showModal">
+        <div class="modal">
+        <n-button @click="showModal = true">
+            Start Me up
+        </n-button>
+        <n-modal v-model:show="showModal">
+            <n-card
+            style="width: 600px"
+            title="Modal"
+            :bordered="false"
+            size="huge"
+            role="dialog"
+            aria-modal="true"
+            >
+            
+            <form method="post">
+                <input type="text" name="name"  placeholder="Название" v-model="currentWish.name">
+                <input type="text" name="price"  placeholder="Цена" v-model="currentWish.price">
+                <input type="text" name="description" placeholder="Описание" v-model="currentWish.description">
+                
+                <button  @click="showModal=false; addToMyWishList();" class="button">Добавить к себе</button>
+            </form>
+            
+            
+            </n-card>
+        </n-modal>
+        </div>
+        </div>
+
     </div>
 </template>
 
@@ -61,6 +165,7 @@
 
 import axios from 'axios';
 import { NModal, NButton, NCard} from 'naive-ui'
+import { NEmpty } from 'naive-ui';
 
 
 export default {
@@ -68,6 +173,7 @@ export default {
     // props: ['id','name', 'description','photo'],
     data(){
         return {
+            users: [],
             wishes: [],
             showModal: false,
             currentWish: {},
@@ -77,6 +183,7 @@ export default {
       NModal,
       NButton,
       NCard,
+      NEmpty
     },
     methods: {
         async getWish() {
@@ -102,6 +209,15 @@ export default {
                 }
                 });
         },
+        // async getUser() {
+        //     let id = this.$route.params.id;
+
+        //     await axios.get('http://localhost:8085/public/process.php?action=get-user-by-bucket&id='+id)
+        //     .then((response)=>{
+        //         this.users = response.data.users;
+        //         // console.log(this.users);
+        //     })
+        // },
         toFormData(obj){
           let fd = new FormData();
           for(let i in obj){
@@ -115,6 +231,7 @@ export default {
     },
     mounted() {
         this.getWish()
+        // this.getUser() 
     }
 
 }
@@ -259,6 +376,12 @@ export default {
     padding: 15px;
     width: 49%;
     cursor: pointer;
+}
+.empty {
+    border: 1px #ccc solid;
+    // border-radius: 10px;
+    border-radius: 5px;
+    padding: 80px;
 }
 
 </style>

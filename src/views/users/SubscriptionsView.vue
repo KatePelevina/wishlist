@@ -28,10 +28,10 @@
             <n-select v-model:value="selectedSort" :options="options" />
         </n-space>
 
-        <div class="div-search">
+        <div class="div-search" v-if="users.length">
             <label for="my-input">Поиск по никнейму</label>
             <my-input
-            v-if="users.length"
+            
             v-model="searchQuery"
             />
 

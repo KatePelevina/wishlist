@@ -135,9 +135,10 @@ export default {
     width: 100%;
 }
 
-// .empty {
-//     padding: 60px;
-//     border: 1px #ccc solid;
-//     border-radius: 10px;
-// }
+.empty {
+    padding-top: 50px;
+    padding-bottom: 50px;
+    // border-radius: 10px;
+    // border: 1px #ccc solid;
+}
 </style>

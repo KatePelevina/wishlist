@@ -4,7 +4,7 @@
             <div class="box-inner">
                 <span v-if="wish.price" class="span">{{ wish.price }} $</span>
                 <div>
-                    <img :src="'/img/' + wish.photo" alt="" v-if="wish.photo">
+                    <img :src="'/img/' + wish.photo" alt="photo" v-if="wish.photo">
                     <n-empty v-else size="large" description="Фотографии нет" class="empty"></n-empty>
                 </div>
                 
@@ -76,9 +76,9 @@ export default {
    border: 1px solid $bg;
    cursor: pointer;
    img {
-       height: 100%;
-       width: 100%;
-       object-fit: cover;
+        height: 100%;
+        width: 100%;
+        object-fit: cover;
    }
 }
 .box:hover {
@@ -154,4 +154,5 @@ export default {
     border-radius: 5px;
     padding: 5px;
 }
+
 </style>

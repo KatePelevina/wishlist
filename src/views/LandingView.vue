@@ -176,29 +176,30 @@
             
         </section>
 
-        <section>
+        <!-- <section>
             <h2>Как создавать список желаний?</h2>
-            <p>1 Создайте список желаний. Add items from any store. 
+            <p>1 Создайте список желаний.
                 ВЫБЕРИТЕ СЕБЕ ПОДАРКИ В ЛЮБОМ МАГАЗИНЕ
-                Вставьте ссылку на товар. Добавтье название, цену и фото.
+                Вставьте ссылку на товар. 
+                Добавтье название, цену и фото.
             </p>
             <img class="width" src="https://img.freepik.com/free-photo/closeup-portrait-charming-lovely-blond-girl-using-mobile-phone-texting-friend-order-online-store-using-smartphone-application-laughing-smiling-pleased-stand-pink-background_1258-100106.jpg?w=1800&t=st=1675424643~exp=1675425243~hmac=73b7cbb5e1647f3aa02012b8bdadf09a1aecf64dcc1ec5a0e67d78b2cf1b0f21" alt="">
 
             <p>
                 Отправьте ссылку друзьям, каждый зарезервирует что-нибудь из списка
             </p>
-        </section>
+        </section> -->
 
-        <section>
+        <!-- <section>
             <p>Формулируй свое желание и запускай его в мир как бумажный самолетик</p>
             <p>Лови самолетики других людей исполняй их желания</p>
-        </section>
+        </section> -->
 
-        <section>
+        <!-- <section>
             <h3>Тарифы</h3>
             <p>Беслатные функции</p>
             <p>Платные функции</p>
-        </section>
+        </section> -->
 
         
 

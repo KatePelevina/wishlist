@@ -38,7 +38,7 @@
         placeholder="Поиск..."
     />
 
-    <user-wish-list :wishes="sortedAndSearchedPosts"/>
+    <user-wish-list :wishes="sortedAndSearchedPosts" />
     
     </div>
 </template>

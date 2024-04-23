@@ -26,30 +26,82 @@
             </div>
         </div>
 
-        <div >
+        <div>
             <h1 class="wish-name">{{ wish.name }}</h1>
         </div>
 
         <div class="card-body">
             <div class="div-img">
-                <img v-if="wish.photo"  :src="'/img/' + wish.photo" alt="" class="wish-img" @click="showPhoto=true; selectWish(wish);" >
-                <n-empty v-else size="large" description="Нет фото" class="empty"></n-empty>
-            </div>   
-            <div>
-                <div>
+                <!-- <img v-if="wish.photo"  :src="'/img/' + wish.photo" alt="" class="wish-img" @click="showPhoto=true; selectWish(wish);" >
+                <n-empty v-else size="large" description="Нет фото" class="empty"></n-empty> -->
+
+                <div class="flex">
                     <n-space v-if=" wish.price" class="price">
-                        <n-tag type="success" >
+                        <n-tag type="success" size="large">
                             Стоимость: {{ wish.price }} рублей
                         </n-tag>
                     </n-space>
+                    
+                    <div v-if="wish.photo">
+                    <!-- <img v-if="wish.photo"  :src="'/img/' + wish.photo" alt="" class="wish-img" @click="showPhoto=true; selectWish(wish);" > -->
+                        <n-button @click="selectWish(wish); showPhoto=true;">
+                            <!-- + -->
+                            <!-- <svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" viewBox="0 0 24 24"><path d="M18 13v7H4V6h5.02c.05-.71.22-1.38.48-2H4c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h14c1.1 0 2-.9 2-2v-5l-2-2zm-1.5 5h-11l2.75-3.53l1.96 2.36l2.75-3.54L16.5 18zm2.8-9.11c.44-.7.7-1.51.7-2.39C20 4.01 17.99 2 15.5 2S11 4.01 11 6.5s2.01 4.5 4.49 4.5c.88 0 1.7-.26 2.39-.7L21 13.42L22.42 12L19.3 8.89zM15.5 9a2.5 2.5 0 0 1 0-5a2.5 2.5 0 0 1 0 5z" fill="currentColor"></path></svg> -->
+
+                            <template #icon>
+                                <n-icon>
+                                    <search-img />
+                                </n-icon>
+                            </template>
+                        </n-button>
+                    </div>
+                </div>
+
+               
+                
+
+                <div>
+                    <n-upload
+                    multiple
+                    directory-dnd
+                    action="http://localhost:8085/public/process.php?action=bucketlist-item-image-load&id=id"
+                    :max="5"
+                    :data="{
+                        'id': 'wish.id'
+                    }"
+                    accept= ".png, .jpg, .jpeg, .webp, .HEIC"
+                >
+                    <n-upload-dragger>
+                    <div style="margin-bottom: 12px">
+                        <n-icon size="48" :depth="3">
+                        <archive-icon />
+                        </n-icon>
+                    </div>
+                    <n-text style="font-size: 16px">
+                        <n-empty  v-if="!wish.photo" size="large" description="Click or drag a file to this area to upload" class="empty"></n-empty>
+                        <img v-else  :src="'/img/' + wish.photo" alt="" class="wish-img" >
+
+                    </n-text>
+                    <!-- <n-p depth="3" style="margin: 8px 0 0 0">
+                        Strictly prohibit from uploading sensitive information. For example,
+                        your bank card PIN or your credit card expiry date.
+                    </n-p> -->
+                    </n-upload-dragger>
+                    </n-upload>
+                </div>
+            </div>   
+            <div>
+                <div>
+                    <!-- <n-space v-if=" wish.price" class="price">
+                        <n-tag type="success" >
+                            Стоимость: {{ wish.price }} рублей
+                        </n-tag>
+                    </n-space> -->
                 </div>
                 <div>
                     <n-space class="date">
                         <n-tag type="info">
-                            Дата создания желания:
-                        </n-tag>
-                        <n-tag type="info">
-                            {{wish.date}}
+                            Дата создания желания: {{wish.date}}
                         </n-tag>
                     </n-space>
                 </div>
@@ -57,9 +109,10 @@
                 <div>
                     <n-space class="visible">
                         <n-tag type="info">
-                            
-                            <p>{{ statusOFvisible[wish.visible] }}</p>
-                            <p>done: {{ statusToText[wish.done] }}</p>
+                            <p>Кто видит желание: {{ statusOFvisible[wish.visible] }}</p>
+                        </n-tag>
+                        <n-tag type="info">
+                            <p>Статус: {{ statusToText[wish.done] }}</p>
                         </n-tag>
                     </n-space>
                 </div>
@@ -93,7 +146,7 @@
 
         <!-- <bucket-item-image-load /> -->
 
-        <n-upload 
+        <!-- <n-upload 
             
             action="http://localhost:8085/public/process.php?action=bucket-wishlist-item-image-load&id=id"
             :data="{
@@ -109,7 +162,7 @@
 
             </n-button>
        
-        </n-upload>
+        </n-upload> -->
     </div>
 
 
@@ -234,8 +287,15 @@ import MsgComponent from '@/components/layout/MsgComponent.vue';
 // import BucketItemImageLoad from '@/views/BucketItemImageLoad.vue'
 // import WishCard from '@/components/WishCard.vue';
 
+// import { CashOutline as CashIcon } from "@vicons/ionicons5";
+import { SearchSharp as SearchImg } from "@vicons/ionicons5";
 
-export default {
+import { NIcon } from "naive-ui";
+import { defineComponent, h } from "vue";
+
+
+
+export default defineComponent({
   
     name: 'MyBucketListItem',
     props: ['id','name', 'description','photo'],
@@ -276,8 +336,11 @@ export default {
       NSelect,
       NTag,
     //   BucketItemImageLoad,
-      NUpload
+      NUpload,
     //   WishCard
+    NIcon,
+    // CashIcon,
+    SearchImg
     },
     methods: {
         async getWish() {
@@ -328,6 +391,25 @@ export default {
                 //   this.$router.push('/'); 
               }
           });
+        },
+        uploadFile() {
+            const formData = new FormData();
+            formData.append('bytes', this.file);
+
+            axios.post('http://localhost:8085/public/process.php?action=file-save',
+            formData,
+            {
+                headers: {
+                    'Content-Type': 'multipart/form-data'
+                }
+            }
+            ).then(function (data) {
+                console.log(data.data);
+                this.$router.reload();
+            })
+            .catch(function () {
+                console.log('FAILURE!!');
+            });
         },
         toFormData(obj){
           let fd = new FormData();
@@ -387,7 +469,6 @@ export default {
     },
     setup() {
         return {
-            
             visible: [
                 {
                 label: "Кто видит желание",
@@ -403,9 +484,14 @@ export default {
                 value: "2"
                 }
             ],
+            renderIcon() {
+                return h(NIcon, null, {
+                default: () => h(SearchImg)
+                });
+            }
         };
     }
-}
+})
 
 </script>
 
@@ -596,9 +682,9 @@ export default {
     margin-right: 10px;
     margin-bottom: 10px;
 }
-.price {
-    margin-bottom: 10px;
-}
+// .price {
+//     margin-bottom: 10px;
+// }
 .wish-name {
     font-weight: bold;
 }
@@ -619,9 +705,9 @@ export default {
     width: 100%;
 }
 
-.div-img {
-    margin-right: 20px;
-}
+// .div-img {
+//     margin-right: 20px;
+// }
 .flex-img {
     align-items: start;
 }
