@@ -1,65 +1,33 @@
 <template>
     
-    <transition class="msg">
-        <msg-component
-        :errorMsg="this.errorMsg"
-        :successMsg="this.successMsg"
-        />
-    </transition>
+    <n-drawer v-model:show="active" :placement="placement">
+        <n-drawer-content closable>
+            <msg-component
+                class="msg"
+                :errorMsg="this.errorMsg"
+                :successMsg="this.successMsg"
+            />
+        </n-drawer-content>
+    </n-drawer>
     
    <div>
 
-
-    <!-- <div class="flex color">
-        <div>
-            <n-breadcrumb>
-                <n-breadcrumb-item @click="$router.push(`/my-wish-list-folders`)">Wish List</n-breadcrumb-item>
-                <n-breadcrumb-item>Папка</n-breadcrumb-item>
-            </n-breadcrumb>
-        </div>
-        <div class="card-header__right flex">
-            <div @click="showEditModal=true; selectFolder(folder)">
-                <img src="@/assets/edit-1.svg" alt="" class="place-btn edit">
-            </div>
-            <div @click="showDeleteModal=true; selectFolder(folder);">
-                <img src="@/assets/delete.svg" alt="">
-            </div>
-        </div>
-    </div> -->
-
-    <!-- <div>
-        <h1>{{ folder_name }}</h1>   
-        <p v-if="folder_description">{{ folder_description }}</p>
-    </div> -->
-
-    <!-- <n-tabs type="segment">
-        <n-tab-pane name="want" tab="Хочу">
-            <wish-list-component
-            :wishes="sortedAndSearchedPosts"
-            />
-        </n-tab-pane>
-        <n-tab-pane name="done" tab="Иполнил(а)">
-            <DoneWishListView />
-        </n-tab-pane>
-        <n-tab-pane name="all" tab="Все">
-            <AllMyWishListView />
-        </n-tab-pane>
-    </n-tabs> -->
-
-        
-    
-        <div class="flex">
-            <p class="count">Количество желаний: {{ wishes.length }}</p>
+        <div class="div-button">
             <n-button @click="showModal=true" class="btn" strong secondary type="success">+ Добавить желание</n-button>
         </div>
-        
 
-
-        <div class="select" v-if="wishes.length">
-            <n-space vertical>
-                <n-select v-model:value="selectedSort" :options="options" />
-            </n-space>
+        <div class="flex items" v-if="wishes.length">
+            <div class="flex-item">
+                <p class="count">Количество желаний: {{ wishes.length }}</p>
+            </div>
+            <div class="select flex-item">
+                <n-space vertical>
+                    <n-select v-model:value="selectedSort" :options="options" />
+                </n-space>
+            </div>
         </div>
+        
+        
 
         <div v-if="wishes.length">
             <my-input
@@ -67,79 +35,11 @@
             />
         </div>
 
-        
-        <!-- <div class="flex rrrr"> -->
-            <!-- <div class="select">
-                <p>Количество желаний: {{ wishes.length }}</p>
-            </div> -->
-            <!-- <div class="div-button">
-                <n-button @click="showModal=true" class="btn" strong secondary type="success">+ Добавить желание в папку</n-button>
-            </div> -->
-            <!-- <div class="select" v-if="wishes.length">
-                <n-space vertical>
-                    <n-select v-model:value="selectedSort" :options="options" />
-                </n-space>
-            </div> -->
-        <!-- </div> -->
-
-        <!-- <div class="select" v-if="wishes.length">
-            <n-space vertical>
-                <n-select v-model:value="selectedSort" :options="options" />
-            </n-space>
-        </div> -->
-        
-        
-    
-
-       <!-- <div class="items" v-if="wishes.length" >
-           <div class="item" v-for="(wish,index) in wishes" :key="index">
-
-               <div class="box" @click="$router.push(`/my-wish-list-item/${wish.id}`)">
-                   <div class="box-inner">
-                       <span v-if="wish.price" class="span">{{ wish.price }} руб</span>
-                       <img :src="'/img/' + wish.photo" alt="">
-                   </div>
-               </div>
-               <p class="box-inner__hover">{{ wish.name }}</p>
-           </div>
-       </div>
-
-       <div v-else>
-           <p>пока ничего нет</p>
-       </div> -->
-
-       
-
-    
-       <!-- <div class="flex options">
-            <div class="select">
-                <my-select
-                v-model="selectedSort"
-                :options="sortOptions" 
-                />
-            </div>
-            <div class="div-button">
-            <button class="button" @click="showModal=true" >Добавить желание</button>
-            </div>  
-       </div> -->
-
-       <!-- <div class="flex rrrr">
-            <div class="select">
-                <n-space vertical>
-                    <n-select v-model:value="selectedSort" :options="options" />
-                </n-space>
-            </div>
-            <div class="div-button">
-                <n-button @click="showModal=true" class="btn" strong secondary type="success">+ Добавить желание</n-button>
-            </div>
-        </div> -->
-
-
-       
        <bucket-list-component
         :wishes="sortedAndSearchedPosts"
         />
        
+        <!-- Add Model -->
        <div v-if="showModal">
            <n-modal v-model:show="showModal">
                <n-card
@@ -154,34 +54,29 @@
                    <div class="add-box">
                        <h4 class="add-box-title">Добавить желание в эту папку</h4>
                        <form class="form" method="post">
-                           <n-input v-model:value="newWish.name" type="text" placeholder="Название" class="input" />
-                           <n-input-number  v-model:value="newWish.price" type="text" placeholder="Цена"/>
-                           <n-input v-model:value="newWish.description" type="text" placeholder="Описание" class="input"  />
-                           <n-input v-model:value="newWish.link" type="text" placeholder="Ссылка" class="input" />
+                            <label>Название*</label>
+                            <n-input v-model:value="newWish.name" type="text" placeholder="Название" class="input" />
 
+                            <label>Цена</label>
+                            <n-input-number  v-model:value="newWish.price" type="text" placeholder="Цена"/>
+                            
+                            <label>Описание</label>
+                            <n-input v-model:value="newWish.description" type="text" placeholder="Описание" class="input"  />
+                            
+                            <label>Ссылка</label>
+                            <n-input v-model:value="newWish.link" type="text" placeholder="Ссылка" class="input" />
+
+                            <label>Кто видит желание*</label>
                             <n-space vertical class="select">
                                 <n-select v-model:value="newWish.visible" :options="visible" />
                             </n-space>
 
+                            <label>Статус*</label>
                             <n-space vertical class="select">
                                 <n-select v-model:value="newWish.done" :options="done" />
                             </n-space>
 
-                            <!-- <n-upload 
-            
-                                action="http://localhost:8085/public/process.php?action=add-bucketlist-to-folder&id=id"
-                                :data="{
-                                    'id': 'folder_id'
-                                }"
-                                accept= ".png, .jpg, .jpeg, .webp, .HEIC"
-                                
-                            >
-                                <n-button>Загрузить фото</n-button>
-                        
-                            </n-upload> -->
-
-                           <!-- <button class="button" @click="showModal=false; addWishList(); clearMsg();">Добавить желание</button> -->
-                           <n-button strong secondary type="success" attr-type="submit" class="add-btn" @click="showModal=false; addBucketList();">Добавить желание</n-button>
+                           <n-button strong secondary type="success" attr-type="submit" class="add-btn" @click="showModal=false; addBucketList(); activate('top'); clearMsg()">Добавить желание</n-button>
                        </form>
                    </div>
                </div>
@@ -190,8 +85,7 @@
            </n-modal>
        </div> 
 
-
-        <!-- Edit User Model -->
+        <!-- Edit Model -->
        <div v-if="showEditModal">
        <div class="modal">
            <n-button @click="showEditModal = true">
@@ -224,7 +118,7 @@
        </div>
        </div>
 
-       <!-- Delete User Model -->
+       <!-- Delete Model -->
        <div v-if="showDeleteModal">
            <div class="modal">
                <n-button @click="showDeleteModal = true">
@@ -262,34 +156,23 @@
            </div>
        </div>
 
-
-   
    </div>
+
 </template>
 
 <script>
 import axios from 'axios';
+import { defineComponent, ref } from "vue";
 
 import { NModal, NButton, NCard} from 'naive-ui';
 import { NSpace, NSelect } from 'naive-ui';
 import { NInput, NInputNumber,  } from 'naive-ui';
-// import {  NUpload } from 'naive-ui';
-// import { NTabs, NTabPane } from 'naive-ui';
 
-// import { NTag } from 'naive-ui';
-// import { NBreadcrumb, NBreadcrumbItem} from 'naive-ui';
+import MsgComponent from '@/components/layout/MsgComponent.vue';
+import { NDrawer, NDrawerContent }  from 'naive-ui';
 
-import { defineComponent, ref } from "vue";
-
-import MsgComponent from '@/components/layout/MsgComponent.vue'
 import BucketListComponent from '@/components/wishes/BucketListComponent.vue';
 import MyInput from '@/components/layout/MyInput.vue';
-// import DoneWishListView from '@/views/wish-list/DoneWishListView.vue';
-// import AllMyWishListView from '@/views/wish-list/AllWishListView.vue';
-// import MySelect from '@/components/layout/MySelect.vue';
-
-
-
 
 export default defineComponent ({
     name: 'WishList',
@@ -307,6 +190,8 @@ export default defineComponent ({
        NSelect,
        NInput,
        NInputNumber,
+       NDrawer, 
+       NDrawerContent
     //    NUpload
     //    NTabs, 
     //    NTabPane,
@@ -325,15 +210,15 @@ export default defineComponent ({
                description: "",
                photo: '',
                link: "",
-               visible: "",
+               visible: "0",
                folder_id: "",
-               done: "",
+               done: "0",
                wish_list: '1',
                bucket_list: '0'
                
            },
-            // errorMsg: "",
-            // successMsg: "",
+            errorMsg: "",
+            successMsg: "",
             showEditModal: false,
             showDeleteModal: false,
             // visible: {
@@ -349,8 +234,6 @@ export default defineComponent ({
             
             folder_name: '',
             folder_description: '',
-            successMsg: '',
-            errorMsg: '',
             folder_id: ''
        }
     },
@@ -407,12 +290,13 @@ export default defineComponent ({
                 this.newWish = {name: "", price: "", description: "", photo: "", link: "", visible: "", folder_id: "", done: "", wish_list: "", bucket_list: "" };
                 
                 if (response.data.error) {
-                    console.log(response.data);
-                    // this.errorMsg = response.data.message;
+                    // console.log(response.data);
+                    this.errorMsg = response.data.message;
 
                 } else {
-                    console.log(response.data);
-                    // this.successMsg = response.data.message;
+                    // console.log(response.data);
+                    this.successMsg = response.data.message;
+                    console.log(response.data.message);
                     this.getWishes();              
                 }
             });
@@ -424,10 +308,10 @@ export default defineComponent ({
             }
             return fd;
         },
-        // clearMsg(){
-        //     this.errorMsg = "";
-        //     this.successMsg = "";
-        // },
+        clearMsg() {
+            this.errorMsg = "";
+            this.successMsg = "";
+        },
         async updateFolder(){
             
             
@@ -484,54 +368,63 @@ export default defineComponent ({
        }
     },
     setup() {
+        const active = ref(false);
+        const placement = ref("right");
+        const activate = (place) => {
+        active.value = true;
+        placement.value = place;
+        };
         return {
             value: ref(null),
+            active,
+            placement,
+            activate,
             options: [
                 {
-                label: "Сортировать по",
-                value: "",
-                disabled: true
+                    label: "Сортировать по",
+                    value: "",
+                    disabled: true
                 },
                 {
-                label: "По названию",
-                value: "name",
+                    label: "По названию",
+                    value: "name",
                 },
                 {
-                label: "По цене",
-                value: "price"
+                    label: "По цене",
+                    value: "price"
                 },
                 {
-                label: "По дате создания",
-                value: "date"
+                    label: "По дате создания",
+                    value: "date"
                 },
                 {
-                label: "По visible",
-                value: "visible"
+                    label: "По visible",
+                    value: "visible"
                 },
             ],
             visible: [
                 {
-                label: "Кто видит желание",
-                value: "",
-                disabled: true
+                    label: "Кто видит желание",
+                    value: "",
+                    disabled: true
                 },
                 {
-                label: "вижу только я",
-                value: "1",
+                    label: "вижу только я",
+                    value: "0",
                 },
                 {
-                label: "видят все пользователи",
-                value: "2"
+                    label: "видят все пользователи",
+                    value: "1"
                 }
             ],
             done: [
                 {
-                label: "хочу",
-                value: "0",
+                    label: "хочу",
+                    value: "0",
                 },
                 {
-                label: "исполнено",
-                value: "1"
+                    label: "исполнено",
+                    value: "1"
                 }
             ],
         };
@@ -693,5 +586,22 @@ export default defineComponent ({
     background-color: $bg;
     padding: 5px;
     border-radius: 2px;
+}
+.btn {
+    width: 100%;
+}
+.flex-item {
+    width: 49%;
+}
+.div-button {
+    margin-bottom: 20px;
+}
+.items {
+    margin-bottom: 20px;
+}
+.msg {
+    width: 50%;
+    margin: 0 auto;
+    padding-top: 50px;
 }
 </style>

@@ -2,61 +2,31 @@
   <div class="page">
 
     <div class="flex color">
-      <div>
-        <n-space @click="$router.push(`/my-bucket-list-folders`)">
-          <n-switch v-model:value="active" />
-        </n-space>
+      <div class="popover">
+        <n-popover trigger="hover">
+            <template #trigger>
+              <n-space @click="$router.push(`/my-bucket-list-folders`)">
+                <n-icon size="25" @click="showInfo=true">
+                  <svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" viewBox="0 0 512 512"><path d="M408 96H252.11a23.89 23.89 0 0 1-13.31-4L211 73.41A55.77 55.77 0 0 0 179.89 64H104a56.06 56.06 0 0 0-56 56v24h416c0-30.88-25.12-48-56-48z" fill="currentColor"></path><path d="M423.75 448H88.25a56 56 0 0 1-55.93-55.15L16.18 228.11v-.28A48 48 0 0 1 64 176h384.1a48 48 0 0 1 47.8 51.83v.28l-16.22 164.74A56 56 0 0 1 423.75 448zm56.15-221.45z" fill="currentColor"></path></svg>                  
+                </n-icon>        
+              </n-space>
+            </template>
+            <span>Просмотр желаний в папках</span>
+        </n-popover>
       </div>
       <div>
-        <n-icon size="25" @click="showInfo=true">
+        <n-icon size="25" @click="showInfo=true" class="nav-item__icon">
           <svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" viewBox="0 0 20 20"><g fill="none"><path d="M10.492 8.91A.5.5 0 0 0 9.5 9v4.502l.008.09a.5.5 0 0 0 .992-.09V9l-.008-.09zm.307-2.16a.75.75 0 1 0-1.5 0a.75.75 0 0 0 1.5 0zM18 10a8 8 0 1 0-16 0a8 8 0 0 0 16 0zM3 10a7 7 0 1 1 14 0a7 7 0 0 1-14 0z" fill="currentColor"></path></g></svg>
         </n-icon>
       </div>
     </div>
-    <!-- <p>Всего: {{ wishes.length }}</p> -->
-  
-    <!-- <h1>Все желания из моего Bucket List</h1> -->
-
-    <!-- <div class="items">
-        <div class="item" v-for="wish in wishes" :key="wish.id">
-            <div class="box"  @click="$router.push(`/my-bucket-list-item/${wish.id}`)">
-                <div class="box-inner">
-                    <span class="span" v-if="wish.price">{{ wish.price }}</span>
-                    <img :src="'/img/' + wish.photo" alt="">
-                </div>
-            </div>
-            <div class="flex">
-              <div>
-                <p class="box-inner__hover">{{wish.name}}</p>
-              </div>
-            </div>
-            
-        </div>
-    </div> -->
-
-    <div class="flex">
-      <h1 class="title">
-        <!-- <img src="@/assets/location.svg" alt="icon" class="nav-item__icon">  -->
-        Bucket List
-    </h1>
-    <!-- <img src="@/assets/location.svg" alt="icon" class="nav-item__icon" @click="$router.push(`/my-bucket-list-folders`)">  -->
-
-    </div>
     
 
-   <!-- <div class="flex rrrr">
-        <div class="flex-left">
-            <p class="ddddd">Количество желаний: {{ wishes.length }}</p>
-        </div>
-        <div class="flex-right">
-            <n-button @click="showModal=true" class="btn" strong secondary type="success">+ Добавить желание</n-button>
-        </div>
-    </div> -->
+   
+      <h1 class="title">Bucket List</h1>
+    
 
-    <!-- <my-select
-        v-model="selectedSort"
-        :options="sortOptions" 
-    /> -->
+
 
     <div class="progress ddddd percent">
               <p>Исполнено: {{ done_count  }} / {{ wishes.length }}</p>
@@ -71,29 +41,25 @@
               </n-space>
           </div>
 
-    <div class="flex">
-      <div class="flex-left">
-        <n-space vertical>
-          <n-select v-model:value="selectedSort" :options="options" />
-        </n-space>
-      </div>
-      <div class="div-button flex-right">
-        <n-button @click="showModal=true; openForm()" class="btn" strong secondary type="success">+ Новое желание</n-button>
-      </div>
-    </div>
 
-    <!-- <div class="select"  v-if="folders.length">
-      <n-space vertical>
-          <n-select v-model:value="selectedSort" :options="options" />
-      </n-space>
-    </div> -->
+          <div class="sort">
+            <n-space vertical>
+              <n-select v-model:value="selectedSort" :options="options" />
+            </n-space>
+          </div>
+         
 
+   
+
+    
+  <div class="search">
     <my-input
-        v-model="searchQuery"
-        placeholder="Поиск..."
-    /> 
+          v-model="searchQuery"
+          placeholder="Поиск..."
+      /> 
+  </div>
+   
 
-    <!-- <n-button @click="showModal=true; openForm()" class="btn" strong secondary type="success">+ Новое желание</n-button> -->
 
     <div v-if="showModal">
            <n-modal v-model:show="showModal">
@@ -154,7 +120,7 @@
                 </div>
                 </n-card>
             </n-modal>
-        </div>
+    </div>
     
     </div>
   </template>
@@ -163,7 +129,7 @@
   import axios from 'axios';
   import { NButton } from 'naive-ui';
   import { NModal, NCard } from 'naive-ui';
-  import { NInput, NInputNumber, NSpace, NSelect, NSwitch, NIcon, NProgress } from 'naive-ui';
+  import { NInput, NInputNumber, NSpace, NSelect, NIcon, NProgress, NPopover } from 'naive-ui';
   import { defineComponent, ref } from "vue";
 
 
@@ -186,9 +152,10 @@
         NInputNumber,
         NSpace, 
         NSelect,
-        NSwitch,
+        // NSwitch,
         NIcon,
-        NProgress
+        NProgress,
+        NPopover
     },
     data() {
         return {
@@ -541,5 +508,23 @@
     border-radius: 10px;
     padding: 10px;
     margin-bottom: 20px;
+}
+.popover {
+    cursor: pointer;
+}
+.nav-item__icon {
+    cursor: pointer;
+}
+.title {
+  margin-bottom: 20px;
+}
+.progress {
+  margin-bottom: 20px;
+}
+.sort {
+  margin-bottom: 20px;
+}
+.search {
+  margin-bottom: 20px;
 }
   </style>

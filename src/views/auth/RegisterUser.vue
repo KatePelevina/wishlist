@@ -1,39 +1,53 @@
 <template>
-     <msg-component
-        :errorMsg="this.errorMsg"
-        :successMsg="this.successMsg"
-    />
+    <div class="msg">
+        <router-link to="/my-wish-list-folders" >
+            <msg-component class="link"
+            :errorMsg="this.errorMsg"
+            :successMsg="this.successMsg"
+            />            
+        </router-link>
+    </div>
+     
 
     <div class="wrapper">
         <div class="modal">
-            <h1>Reg Page</h1>
+           
             <div class="login-form">
+                <h1 class="form-title">Регистрация</h1>
                 <form @submit.prevent="register">
-                    <!-- <input type="text" placeholder="nickname" v-model="nickname"> -->
-                    <input type="text" placeholder="email" v-model="newUser.email">
-                    <input type="password" placeholder="Password" v-model="newUser.password">
-                    <!-- <button class="button" type="submit" @click="register()">Создать аккаунт</button> -->
-                    <n-button @click="reg()">reg</n-button>
+
+                    <n-input 
+                        label="Email"
+                        type="email" 
+                        v-model:value="newUser.email" 
+                        class="email-input"
+                        placeholder="Email"
+                    />
+
+                    <n-input 
+                        label="Password"
+                        type="password" 
+                        v-model:value="newUser.password" 
+                        class="password-input"
+                        placeholder="Password"
+                    />
 
 
-                    <ul>
+                    <n-button strong secondary type="success" @click="reg()" class="form-button">Зарегистрироваться</n-button>
+
+
+                    <!-- <ul>
                         <li v-for="(error, index) in errors" :key="index">{{ error }}</li>
-                    </ul>
+                    </ul> -->
 
-                    <router-link to="/login">
-                        Уже есть аккаунт? Войти
-                    </router-link>
-                </form>
-                <!-- <div>
-                    <p>Уже есть аккаунт?</p>
-                    <p>
-                        <a href="/login" class="link">Войти</a>
-                    </p>
-                </div> -->
-                <div>
-                    <p>Google</p>
-                </div>
-                
+                    <div class="form-text">
+                        <p>Уже есть аккаунт?</p>
+                        <router-link to="/login" class="link">
+                            Войти
+                        </router-link>
+                    </div>
+                   
+                </form>        
             </div>
         </div>
     </div>
@@ -43,6 +57,9 @@
 import axios from 'axios';
 import MsgComponent from '@/components/layout/MsgComponent.vue'
 // import router from "@/router"; 
+
+import { NInput } from 'naive-ui';
+
 import { NButton } from 'naive-ui';
 
 
@@ -56,15 +73,13 @@ export default {
                 email: '',
                 password: '',
             },
-            // users: [],
-            // nickname: '',
-            // email: '',
-            // password: '',
+            // users: [],        
             errors: null
         }
     },
     components: {
         MsgComponent,
+        NInput,
         NButton
     },
     methods: {
@@ -80,6 +95,7 @@ export default {
                     this.errorMsg = response.data.message;
                 } else {
                     this.successMsg = response.data.message;
+                    
                     // this.$router.push('/my-wish-list-folders');
                     // this.getFolders();           
                 }
@@ -113,10 +129,7 @@ export default {
         //     });
         // },
         
-        
-
-
-
+    
         // register() {
         //     console.log('RegisterUser.register')
         //     this.$store.dispatch('register', {
@@ -131,8 +144,6 @@ export default {
         //         this.errors = err.response.data.errors
         //     })
         // },
-
-
 
         // routeToDynamicPage() {
         //     router.push({
@@ -156,47 +167,40 @@ export default {
 
 <style scoped lang="scss">
 
+@import "@/styles/_variables.scss";
+
 .login-form {
     background-color: #fff;
-    padding: 15px;
-    display: inline-block;
-    width: 20vw;
-    margin: 0 auto;
+    padding: 30px;
     border-radius: 8px;
-    
-}
-input {
-    display: block;
-    width: 100%;
-    margin: 0 auto;
-    margin-bottom: 20px;
-    padding: 10px;
-    border-radius: 8px;
-    border: 1px solid #ccc;
-}
-button {
-    width: 100%;
-    padding: 10px 0;
-    border-radius: 8px;
-    border: none;
 }
 .modal {
-    width: 50vw;
+    width: 25vw;
     margin: 0 auto;
-    text-align: center;
 }
-.link {
-    color: #6069E0;
-}
-.button {
-    background-color: #6069E0;
-    color: #fff;
-    border-radius: 10px;
-    padding: 15px;
-    width: 100%;
-    display: block;
+.form-title {
     text-align: center;
     margin-bottom: 20px;
-    border: none;
+}
+.email-input {
+    margin-bottom: 20px;
+}
+.password-input {
+    margin-bottom: 20px;
+}
+.form-button  {
+    width: 100%;
+    margin-bottom: 20px;
+}
+.form-text {
+    text-align: center;
+}
+.link:hover {
+    color: $active;
+}
+.msg {
+    width: 25vw;
+    margin: 0 auto; 
+    margin-bottom: 20px;
 }
 </style>

@@ -19,9 +19,7 @@
             <div class="flex-left">
                 <p class="ddddd" v-if="wishes.length">Количество желаний: {{ wishes.length }}</p>
             </div>
-            <div class="flex-right">
-                <n-button @click="showModal=true" class="btn" strong secondary type="success">+ Добавить желание</n-button>
-            </div>
+           
         </div>
 
         <n-space vertical v-if="wishes.length">
@@ -29,13 +27,14 @@
         </n-space>
 
         <my-input
-        v-if="wishes.length"
-        v-model="searchQuery"
-        placeholder="Поиск..."
+            v-if="wishes.length"
+            v-model="searchQuery"
+            placeholder="Поиск..."
         />
         
         <DoneWishlist :wishes="sortedAndSearchedPosts"/>
 
+      
       
 
         
@@ -46,8 +45,6 @@
 import axios from 'axios';
 import { defineComponent, ref } from "vue";
 
-import { NSpace, NSelect } from 'naive-ui';
-import { NButton } from 'naive-ui';
 
 import DoneWishlist from '@/components/wishes/DoneWishlist.vue';
 import MyInput from '@/components/layout/MyInput.vue';
@@ -59,16 +56,24 @@ export default defineComponent ({
     name: "DoneWishListView",
     components: { 
         DoneWishlist,
-        MyInput,
-        NSpace,
-        NSelect,
-        NButton
+        MyInput
     },
     data(){
         return {
             wishes:[],
             selectedSort: '',
             searchQuery: '',
+            showModal: false,
+            newWish: { 
+               name: "", 
+               price: "",
+               description: "",
+               photo: "",
+               link: "",
+               visible: "0",
+               folder_id: "",
+               done: "0",
+           },
         }
     },
     methods: {

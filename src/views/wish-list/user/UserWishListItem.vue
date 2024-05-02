@@ -205,7 +205,6 @@ export default {
             let id = this.$route.params.id;
             let formData = this.toFormData(this.currentUser);
 
-            console.log(formData);
 
          
             // let iserId = this.$user.id;

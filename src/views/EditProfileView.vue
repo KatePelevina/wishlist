@@ -32,20 +32,9 @@
               <p>{{user.about}}</p>
           </div>
           
-        <n-upload
-            action="https://www.mocky.io/v2/5e4bafc63100007100d8b70f"
-            :headers="{
-            'naive-info': 'hello!'
-            }"
-            :data="{
-            'naive-data': 'cool! naive!'
-            }"
-            >
-            <n-button>Загрузить фото</n-button>
-        </n-upload>
+        
 
 
-        <router-link to="/want-and-stop-list">Мои предпочтения</router-link>
 
         <n-button strong secondary type="warning" @click="showEditModal=true; selectUser(user);">
             Редактировать профиль
@@ -80,12 +69,33 @@
             <div class="add-component__modal">
                 <div class="add-box">
                     <h2>Редактировать user</h2>
-                    <form class="form" method="post">
-                        <input class="add-box__input" type="text" name="firstName"  v-model="currentUser.firstName">
-                        <input class="add-box__input" type="email" name="secondName"  v-model="currentUser.secondName">
-                        <input class="add-box__input" type="text" name="nickName"  v-model="currentUser.nickName">
-                        <input class="add-box__input" type="text" name="about"  v-model="currentUser.about">      
-                        <button  @click="showEditModal=false; updateUser()" class="button">Обновить</button>
+                    <form class="form" method="post" @submit.prevent="updateUser">
+                        <n-input v-model:value="currentUser.firstName" type="text" placeholder="firstName"/>
+                        <!-- <input class="add-box__input" type="text" name="firstName"  v-model="currentUser.firstName"> -->
+
+                        <n-input v-model:value="currentUser.secondName" type="text" placeholder="secondName"/>
+                        <!-- <input class="add-box__input" type="text" name="secondName"  v-model="currentUser.secondName"> -->
+
+                        <n-input v-model:value="currentUser.nickName" type="text" placeholder="nickName"/>
+                        <!-- <input class="add-box__input" type="text" name="nickName"  v-model="currentUser.nickName"> -->
+
+                        <n-input v-model:value="currentUser.about" type="text" placeholder="about"/>
+                        <!-- <input class="add-box__input" type="text" name="about"  v-model="currentUser.about">   -->
+                        
+                        <n-upload
+                            v-model:value="currentUser.img"
+                            action="http://localhost:8085/public/process.php?action=update-user-img"
+                            :headers="{
+                            'naive-info': 'hello!'
+                            }"
+                            :data="{
+                            'naive-data': 'cool! naive!'
+                            }"
+                            >
+                            <n-button>Загрузить фото</n-button>
+                        </n-upload>  
+
+                        <button  @click="showEditModal=false; updateUser(); uploadFile()" class="button">Обновить</button>
                     </form>
                 </div>
             </div>
@@ -93,6 +103,20 @@
             </n-card>
         </n-modal>
   </div> 
+
+  <!-- <n-upload
+        v-model="currentUser.img"
+        action="http://localhost:8085/public/process.php?action=update-user-img"
+        :headers="{
+        'naive-info': 'hello!'
+        }"
+        :data="{
+        'naive-data': 'cool! naive!'
+        }"
+        >
+        <n-button @click="uploadFile()">Загрузить фото</n-button>
+    </n-upload>  
+        <n-button @click="uploadFile()">Загрузить</n-button> -->
 
   
 
@@ -107,6 +131,7 @@ import { defineComponent, ref } from "vue";
 
 import MsgComponent from '@/components/layout/MsgComponent.vue';
 import { NButton, NModal, NCard, NUpload } from 'naive-ui'
+import { NInput } from 'naive-ui'
 
 
 export default defineComponent({
@@ -116,7 +141,8 @@ export default defineComponent({
       NButton,
       NModal,
       NCard,
-      NUpload
+      NUpload,
+      NInput
   },
   data() {
       return {
@@ -133,6 +159,29 @@ export default defineComponent({
       }
   },
   methods: {
+    uploadFile() {
+            const formData = new FormData();
+            formData.append('bytes', this.file, this.currentUser);
+
+            let user = this.toFormData(this.currentUser);
+
+            console.log(user);
+
+            axios.post('http://localhost:8085/public/process.php?action=update-user-img',
+            user, formData, 
+            {
+                headers: {
+                    'Content-Type': 'multipart/form-data'
+                }
+            }
+            ).then(function (data) {
+                console.log(data.data);
+                // this.$router.reload();
+            })
+            .catch(function () {
+                console.log('FAILURE!!');
+            });
+        },
       async getUser(){
           await axios.get('http://localhost:8085/public/process.php?action=get-my-profile')
           .then((response)=>{
@@ -142,7 +191,7 @@ export default defineComponent({
               console.log(error)
           })
       },
-      updateUser(){
+      updateUser() {
           let formData = this.toFormData(this.currentUser);
 
           axios.post("http://localhost:8085/public/process.php?action=update-user", formData)
@@ -194,15 +243,16 @@ export default defineComponent({
           this.errorMsg = "";
           this.successMsg = "";
       },
-  },
-  mounted() {
-      this.getUser()
-  },
-  setup() {
-  return {
-    showModal: ref(false)
-  };
-}
+    },
+    mounted() {
+        this.getUser()
+    },
+    setup() {
+        return {
+            // showModal: ref(false)
+            value: ref(null),
+        };
+    }
 })
 </script>
 

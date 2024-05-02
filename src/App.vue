@@ -20,7 +20,6 @@ export default {
   name: 'app',
   computed: {
     layuot () {
-      // console.log(this.$route.meta.layout)
       return this.$route.meta.layout;
     },
   },
@@ -40,6 +39,7 @@ export default {
   //       const userData = JSON.parse(userString)
   //       this.$store.commit('SET_USER_DATA', userData)
   //   }
+
   //   axios.interceptors.response.use(
   //     response => response,
   //     error => {

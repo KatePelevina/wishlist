@@ -2,102 +2,28 @@
   <div class="page">
     
     <div class="flex color">
-      <div>
-        <n-space @click="$router.push(`/my-wish-list-folders`)">
-          <n-switch v-model:value="active" />
-        </n-space>
+      <div class="popover">
+        <n-popover trigger="hover">
+            <template #trigger>
+                <n-space @click="$router.push(`/my-wish-list-folders`)">
+                  <n-icon size="25" @click="showInfo=true">
+                    <svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" viewBox="0 0 512 512"><path d="M408 96H252.11a23.89 23.89 0 0 1-13.31-4L211 73.41A55.77 55.77 0 0 0 179.89 64H104a56.06 56.06 0 0 0-56 56v24h416c0-30.88-25.12-48-56-48z" fill="currentColor"></path><path d="M423.75 448H88.25a56 56 0 0 1-55.93-55.15L16.18 228.11v-.28A48 48 0 0 1 64 176h384.1a48 48 0 0 1 47.8 51.83v.28l-16.22 164.74A56 56 0 0 1 423.75 448zm56.15-221.45z" fill="currentColor"></path></svg>                  
+                  </n-icon>
+                </n-space>
+            </template>
+            <span>Просмотр желаний в папках</span>
+        </n-popover>
       </div>
       <div>
-        <n-icon size="25" @click="showInfo=true">
+        <n-icon size="25" @click="showInfo=true" class="nav-item__icon">
           <svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" viewBox="0 0 20 20"><g fill="none"><path d="M10.492 8.91A.5.5 0 0 0 9.5 9v4.502l.008.09a.5.5 0 0 0 .992-.09V9l-.008-.09zm.307-2.16a.75.75 0 1 0-1.5 0a.75.75 0 0 0 1.5 0zM18 10a8 8 0 1 0-16 0a8 8 0 0 0 16 0zM3 10a7 7 0 1 1 14 0a7 7 0 0 1-14 0z" fill="currentColor"></path></g></svg>
         </n-icon>
       </div>
     </div>
-
-  
-    <!-- <p>Всего: {{ wishes.length }}</p> -->
-  
-    
-        <!-- <div class="card" v-for="place in places" :key="place.id" @click="$router.push(`/place/${place.id}`)">
-            <div class="card-header">
-                
-                <div class="card-header__right">
-                    <a href="#"><img src="@/assets/dots.svg" alt="dots-icon"></a>
-                    <img src="@/assets/dots.svg" alt="dots-icon">
-                </div>
-            </div>
-            <div class="card-body">
-                <div class="card-body__right">
-                  <div class="card-body__right-img">
-                    <img src="@/assets/paris.jpg" alt="">
-                  </div>
-                </div>
-                <div class="card-body__left">
-                    <div>
-                        <p class="card-title">Сумка</p>
-                        <p class="card-text">300$</p>
-                        <p class="card-text"></p>     
-                    </div>
-                    <p>{{ place.description }}</p>
-                    <div class="flex">
-                        <p>11 декабря 2021</p>
-                        <p>Имя автора</p>
-                    </div>
-                    <button>Добавить в свой WishList</button>
-                </div>
-                
-            </div>
-        </div> -->
-  
-        <!-- <h1>Все желания из моего Wish List</h1> -->
-
-        <!-- <div class="items">
-          <div class="item" v-for="wish in wishes" :key="wish.id">
-              <div class="box" @click="$router.push(`/my-wish-list-item/${wish.id}`)">
-                  <div class="box-inner">
-                      <span v-if="wish.price" class="span">{{ wish.price }}</span>
-                      <img :src="'/img/' + wish.photo" alt="">
-                  </div>
-              </div>
-              <div class="flex">
-                <div>
-                  <p class="box-inner__hover">{{wish.name}}</p>
-                </div>
-              </div>
-          </div>
-        </div> -->
-
-
-        <!-- <n-space @click="$router.push(`/my-wish-list-folders`)">
-            <n-switch v-model:value="active" size="large">
-                <template #checked-icon>
-                    <n-icon :component="Moon" />
-                </template>
-                <template #unchecked-icon>
-                    <n-icon :component="Sunny" />
-                </template>
-            </n-switch>
-        </n-space> -->
-
         
 
-        <div class="flex" @click="showInfo=true">
-            <h1 class="title">
-                <!-- <img src="@/assets/location.svg" alt="icon" class="nav-item__icon">  -->
-                Wish List
-            </h1>
-            <!-- <img src="@/assets/location.svg" alt="icon" class="nav-item__icon" @click="$router.push(`/my-wish-list-folders`)">  -->
-        </div>
-
-
-        <!-- <div class="flex rrrr">
-            <div class="flex-left">
-                <p class="ddddd">Кол-во желаний: {{ wishes.length }}</p> 
-            </div>
-            <div class="flex-right">
-                <p class="ddddd">Кол-во исполненных: {{ done_count  }}</p>
-            </div>
-        </div> -->
+            <h1 class="title">Wish List</h1>
+       
 
         <div class="progress ddddd percent">
             <p>Исполнено: {{ done_count  }} / {{ wishes.length }}</p>
@@ -113,88 +39,28 @@
         </div>
 
 
-        <div class="flex">
-            <div class="flex-left">
-              <n-space vertical>
-                <n-select v-model:value="selectedSort" :options="options" />
-              </n-space>
-            </div>
-            <div class="div-button flex-right">
-                <n-button @click="showModal=true; openForm()" class="btn" strong secondary type="success">+ Новое желание</n-button>
-            </div>
-        </div>
-
-        <!-- <my-select
-        v-model="selectedSort"
-        :options="sortOptions" 
-        /> -->
-
-        <!-- <div class="select">
+        <div class="sort">
           <n-space vertical>
             <n-select v-model:value="selectedSort" :options="options" />
           </n-space>
-        </div> -->
+
+        </div>
+        
+            
+
+      
         
 
         <my-input
-        v-model="searchQuery"
-        placeholder="Поиск..."
+          v-model="searchQuery"
+          placeholder="Поиск..."
         />
 
         <wish-list-component
-        :wishes="sortedAndSearchedPosts"
+          :wishes="sortedAndSearchedPosts"
         />
 
-        <div v-if="showModal">
-           <n-modal v-model:show="showModal">
-               <n-card
-               style="width: 600px"
-               
-               :bordered="false"
-               size="huge"
-               role="dialog"
-               aria-modal="true"
-               >
-               <div class="add-component__modal">
-                   <div class="add-box">
-                       <h4 class="add-box-title">Добавить желание в эту папку</h4>
-                       <form class="form" method="post">
-                           <n-input v-model:value="newWish.name" type="text" placeholder="Название" class="input" />
-                           <n-input-number  v-model:value="newWish.price" type="text" placeholder="Цена"/>
-                           <n-input v-model:value="newWish.description" type="text" placeholder="Описание" class="input"  />
-                           <n-input v-model:value="newWish.link" type="text" placeholder="Ссылка" class="input" />
-
-                            <n-space vertical class="select">
-                                <n-select v-model:value="newWish.visible" :options="visible" />
-                            </n-space>
-
-                            <!-- <select name="folder_id" id="folder_id" v-model="newWish.folder_id" >
-                                <option disabled value="" selected>Сохранить в папку</option>
-                                <option v-for="(folder,index) in folders" :key="index" :value="folder.id">{{ folder.name }}</option> 
-                            </select> -->
-
-
-                            <!-- <n-space vertical class="select">
-                                <n-select :value="folder.name" v-for="folder in folders" :key="folder.id"  />
-                            </n-space> -->
-
-                            <n-space vertical class="select">
-                                <n-select v-model:value="newWish.folder_id" :options="folderSelector"/>
-                            </n-space>
-                            
-
-                            <n-space vertical class="select">
-                                <n-select v-model:value="newWish.done" :options="done" />
-                            </n-space>
-
-                           <n-button strong secondary type="success" attr-type="submit" class="add-btn" @click="showModal=false; addWishList();">Добавить желание</n-button>
-                       </form>
-                   </div>
-               </div>
-               
-               </n-card>
-           </n-modal>
-       </div> 
+        
 
        <div v-if="showInfo">
             <n-modal v-model:show="showInfo">
@@ -219,24 +85,25 @@
   import axios from 'axios';
   import { defineComponent, ref } from "vue";
 
-  import { NButton } from 'naive-ui';
+  // import { NButton } from 'naive-ui';
   import { NSpace, NSelect } from 'naive-ui';
   import { NProgress }  from 'naive-ui';
-  import { NModal, NCard } from 'naive-ui';
-  import { NInput, NInputNumber } from 'naive-ui';
+  import { NModal, NCard, NPopover } from 'naive-ui';
+  // import { NInput, NInputNumber } from 'naive-ui';
 
   import WishListComponent from '@/components/wishes/WishListComponent.vue';
   import MyInput from '@/components/layout/MyInput.vue';
   // import MySelect from '@/components/layout/MySelect.vue';
 
-  import { NSwitch, NIcon } from 'naive-ui';
+  import { NIcon } from 'naive-ui';
+  // import { NSwitch } from 'naive-ui';
 // import { Sunny, Moon } from "@vicons/ionicons5";
 
   
   export default defineComponent ({
     name: 'AllWishListView',
     components: {
-      NButton,
+      // NButton,
       NSpace,
       NSelect,
       WishListComponent,
@@ -244,10 +111,11 @@
       NProgress,
       NModal, 
       NCard,
-      NInput, 
-      NInputNumber,
-      NSwitch,
-      NIcon
+      // NInput, 
+      // NInputNumber,
+      // NSwitch,
+      NIcon,
+      NPopover
     },
     data() {
         return {
@@ -255,7 +123,6 @@
           done_count: [],
           selectedSort: '',
           searchQuery: '',
-          showModal: false,
           showInfo: false,
           newWish: { 
                name: "", 
@@ -264,10 +131,9 @@
                photo: '',
                link: "",
                visible: "",
-               folder_id: "",
+               folder_id: "1",
                done: "0",
-               wish_list: '1',
-               bucket_list: '0'
+              
           },
           folders: [],
         }
@@ -313,19 +179,24 @@
             console.log(this.percent);
             return this.percent
         },
-        addWishList(){
+        async addWishList(){
+          
             let formData = this.toFormData(this.newWish);
+        
 
-            axios.post("http://localhost:8085/public/process.php?action=add-wishlist", formData)
+            axios.post('http://localhost:8085/public/process.php?action=add-wishlist', formData)
+
             .then((response)=>{
-                this.newWish = {name: "", price: "", description: "", photo: "", link: "", visible: "", folder_id: "", done: "", wish_list: "", bucket_list: "" };
+                this.newWish = {name: "", price: "", description: "", photo: "", link: "", visible: "", folder_id: "", done: "" };
                 
                 if (response.data.error) {
-                    this.errorMsg = response.data.message;
+                    console.log(response.data);
+                    // this.errorMsg = response.data.message;
+
                 } else {
-                    // location.reload(); 
-                    this.successMsg = response.data.message;
-                    this.getAllWishlist();         
+                    console.log(response.data);
+                    // this.successMsg = response.data.message;
+                    this.getWishes();              
                 }
             });
         },
@@ -426,13 +297,13 @@
                 value: "1"
               }
             ],
-            folderSelector: [
-                {
-                  label: "Добавить в папку",
-                  value: "",
-                  disabled: true
-                }
-            ],
+            // folderSelector: [
+            //     {
+            //       label: "Добавить в папку",
+            //       value: "",
+            //       disabled: true
+            //     }
+            // ],
         };
     }
   })
@@ -603,7 +474,6 @@
     margin-top: 20px;
   }
   .percent {
-    margin-top: 20px;
     margin-bottom: 20px;
   }
   .color {
@@ -611,5 +481,17 @@
     border-radius: 10px;
     padding: 10px;
     margin-bottom: 20px;
+}
+.sort {
+  margin-bottom: 20px;
+}
+.popover {
+    cursor: pointer;
+}
+.nav-item__icon {
+    cursor: pointer;
+}
+.title {
+  margin-bottom: 20px;
 }
   </style>

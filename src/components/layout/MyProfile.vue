@@ -7,34 +7,24 @@
                     <div class="flex">
                         <!-- <img class="photo" :src="'/img/' + user.img"/> -->
                         
-                        
-
                         <div class="flex">
                             <!-- <img class="photo" src="@/assets/photo.jpg" alt=""> -->
-
-
                             <img :src="'/img/' + user.img" alt="" class="photo" >
-
-
-                            
 
                             <div>
                                 <p>{{ user.username }}</p>
-
                                 <p>{{ user.firstName }} {{ user.secondName }}</p>   
                             </div>
                             
                         </div>
                         
-                        
-
                         <n-tooltip trigger="hover">
-                        <template #trigger>
-                            <div class="img-icon">
-                            <img src="@/assets/setting.svg" alt="icon" class="nav-item__icon" @click="$router.push(`/edit-profile`)">
-                        </div>
+                            <template #trigger>
+                                <div class="img-icon">
+                                <img src="@/assets/setting.svg" alt="icon" class="nav-item__icon" @click="$router.push(`/edit-profile/user=${user.id}`)">
+                            </div>
                         </template>
-                        Редактировать аккаунт
+                            Редактировать аккаунт
                         </n-tooltip>
                         
                     </div>
@@ -42,9 +32,7 @@
             </div>
 
             <div class="profile-text">
-                <!-- а -->
                 <p>{{ user.about }}</p>
-                <p @click="showModal=true" class="stop">Подробнее</p>
             </div>
 
             <div class="profile-items">

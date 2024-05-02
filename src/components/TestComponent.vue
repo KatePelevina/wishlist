@@ -1,19 +1,17 @@
 <template>
     <div class="item">
         <div class="box" @click="$router.push(`/my-wish-list-item/wish=${wish.id}`)">
-            <div class="box-inner">
+            
                 <span v-if="wish.price" class="span">{{ wish.price }} $</span>
-                <div>
-                    <img :src="'/img/' + wish.photo" alt="photo" v-if="wish.photo">
-                    <n-empty v-else size="large" description="Фотографии нет" class="empty"></n-empty>
-                </div>
                 
-            </div>
+                <img :src="'/img/' + wish.photo" alt="photo" v-if="wish.photo" class="wish-img">
+                <n-empty v-else size="large" description="Фотографии нет" class="empty"></n-empty>
+               
+            
         </div>
         <div class="flex">
             <img src="@/assets/lock.png" alt="icon" class="nav-item__icon" v-if="wish.visible == 0"> 
             <p class="box-inner__hover">{{ wish.name }}</p>
-
         </div>
 
         <!-- <p class="box-inner__hover">{{ wish.date }}</p> -->
@@ -75,24 +73,24 @@ export default {
    margin-bottom: 10px;
    border: 1px solid $bg;
    cursor: pointer;
-   img {
-        height: 100%;
-        width: 100%;
-        object-fit: cover;
-   }
 }
 .box:hover {
    box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.25); 
    border: none;
 }
-.box-inner {
-   background-color: #fff;
-   text-align: center;
-   position: relative;
-   p {
-       opacity: 0;
+.wish-img {
+        height: 100%;
+        width: 100%;
+        // object-fit: cover;
    }
-}
+// .box-inner {
+//    background-color: #fff;
+//    text-align: center;
+//    position: relative;
+//    p {
+//        opacity: 0;
+//    }
+// }
 .box-inner:hover {
    p {
        opacity: 1;
@@ -149,10 +147,11 @@ export default {
 }
 
 .nav-item__icon {
-    width: 30px;
+    width: 25px;
     border: 1px solid #ccc;
     border-radius: 5px;
     padding: 5px;
+    margin-right: 10px;
 }
 
 </style>

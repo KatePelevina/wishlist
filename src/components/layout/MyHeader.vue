@@ -19,12 +19,7 @@
             <li class="navtest-item">
               <router-link v-if="loggedIn" to="/my-bucket-list-folders">Bucket List</router-link>
             </li> -->
-            <li class="navtest-item">
-              <router-link to="/blog">Blog</router-link>
-            </li>
-            <li class="navtest-item">
-              <router-link to="/countries">countries</router-link>
-            </li>
+           
             <li class="navtest-item">
               <router-link to="/find-user">find-user</router-link>
             </li>

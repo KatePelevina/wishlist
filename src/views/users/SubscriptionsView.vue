@@ -30,11 +30,7 @@
 
         <div class="div-search" v-if="users.length">
             <label for="my-input">Поиск по никнейму</label>
-            <my-input
-            
-            v-model="searchQuery"
-            />
-
+            <my-input v-model="searchQuery" />
         </div>
        
 

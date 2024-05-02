@@ -5,7 +5,7 @@
                 <div class="box-inner">
                     <span v-if="wish.price" class="span">{{ wish.price }} руб</span>
 
-                    <img v-if="wish.photo" :src="'/img/' + wish.photo" alt="">
+                    <img v-if="wish.photo" :src="'/img/' + wish.photo" alt="" class="wish-img">
                     <n-empty v-else size="large" description="Фотографии нет" class="empty"></n-empty>
                 </div>
             </div>
@@ -142,5 +142,10 @@ export default {
 .empty {
     padding-top: 50px;
     padding-bottom: 50px;
+}
+.wish-img {
+    object-fit: cover;
+    width: 100%;
+    height: 100%;
 }
 </style>

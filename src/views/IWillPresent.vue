@@ -13,7 +13,7 @@
             </div>  
         </div> -->
 
-        <h1>Я подарю</h1>
+        <h1 class="title">Я подарю</h1>
 
         <my-input
         v-if="wishes.length"
@@ -157,5 +157,7 @@ export default {
 .page {
     @include page;
 }
-
+.title {
+    margin-bottom: 20px;
+}
 </style>

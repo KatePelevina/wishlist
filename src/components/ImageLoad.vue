@@ -1,11 +1,11 @@
 <template>
     <div class="container">
-        <!-- <div>
+        <div>
             
             <input type="file" id="file" ref="file" v-on:change="handleFileUpload()"/>
             
             <button v-on:click="submitFile()" >Submit</button>
-        </div> -->
+        </div>
 
         <n-upload
             

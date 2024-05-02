@@ -65,26 +65,30 @@
               </div>
           </div> -->
   
-          <div class="progress ddddd percent">
+          <div class="flex">
+            <div class="progress ddddd percent flex-item">
               <p>Исполнено: {{ done_count  }} / {{ wishes.length }}</p>
-             
-              <n-space vertical>
-                  <n-progress
-                  type="line"
-                  :percentage="getPercent()"
-                  :indicator-placement="'inside'"
-                  :border-radius="4"
-                  />
-              </n-space>
           </div>
+          <div class="flex-item">
+              <n-space vertical>
+                <n-select v-model:value="selectedSort" :options="options" />
+              </n-space>
+            </div>
+          </div>
+          
+
+          <n-space vertical>
+              <n-progress
+              type="line"
+              :percentage="getPercent()"
+              :indicator-placement="'inside'"
+              :border-radius="4"
+              />
+          </n-space>
   
   
           <!-- <div class="flex"> -->
-              <div>
-                <n-space vertical>
-                  <n-select v-model:value="selectedSort" :options="options" />
-                </n-space>
-              </div>
+              
               <!-- <div class="div-button flex-right">
                   <n-button @click="showModal=true" class="btn" strong secondary type="success">+ Новое желание</n-button>
               </div> -->
@@ -487,5 +491,8 @@
     .percent {
       margin-top: 20px;
       margin-bottom: 20px;
+    }
+    .flex-item {
+      width: 49%;
     }
     </style>

@@ -1,9 +1,20 @@
 <template>
+    <n-drawer v-model:show="active" :placement="placement">
+        <n-drawer-content closable>
+            <transition class="msg">
+                <msg-component
+                :errorMsg="this.errorMsg"
+                :successMsg="this.successMsg"
+                />
+            </transition>
+        </n-drawer-content>
+    </n-drawer>
+
+
     <div class="page">
         <div class="flex color">
         <div>
             <n-breadcrumb>
-                <!-- <n-breadcrumb-item @click="$router.push(`/my-bucket-list-folders`)">Bucket List</n-breadcrumb-item> -->
                 <n-breadcrumb-item @click="$router.push(`/my-bucket-list-folders`)">Bucket List</n-breadcrumb-item>
                 <n-breadcrumb-item>{{ folder_name }}</n-breadcrumb-item>
             </n-breadcrumb>
@@ -22,9 +33,6 @@
         <h1 class="title">{{ folder_name }}</h1>   
         <p v-if="folder_description">{{ folder_description }}</p>
     </div>
-
-    <!-- <n-button @click="showModal=true" class="btn" strong secondary type="success">+ Добавить желание</n-button> -->
-
 
     <n-tabs type="segment">
         <n-tab-pane name="f1" tab="Хочу ">
@@ -107,71 +115,7 @@
         
 
 
-        <div v-if="showModal">
-            <n-modal v-model:show="showModal">
-                <n-card
-                style="width: 600px"
-                
-                :bordered="false"
-                size="huge"
-                role="dialog"
-                aria-modal="true"
-                >
-                <div class="add-component__modal">
-                    <div class="add-box">
-                        <h2>Добавить желание в эту папку</h2>
-                        <form class="form" method="post">
-                            <!-- <input type="text" name="name" placeholder="Название" v-model="newWish.name"> -->
-                            <n-input v-model:value="newWish.name" type="text" placeholder="Название" class="input" />
-
-                            <!-- <input type="text" name="name" placeholder="Цена" v-model="newWish.price"> -->
-                            <n-input-number  v-model:value="newWish.price" type="text" placeholder="Цена"/>
-
-
-                            <!-- <input type="text" name="description" placeholder="Описание" v-model="newWish.description"> -->
-                            <n-input v-model:value="newWish.description" type="text" placeholder="Описание" class="input" />
-
-
-                            <!-- <input type="text" name="link" placeholder="Ссылка" v-model="newWish.link"> -->
-                            <n-input v-model:value="newWish.link" type="text" placeholder="Ссылка" class="input" />
-
-
-                            <!-- <select name="visible" id="visible" v-model="newWish.visible" class="select">
-                                <option disabled selected>Please select one</option>
-                                <option v-for="(visible,index) in visible" :key="index" :value="visible.status">{{ visible.status }}</option> 
-                            </select> -->
-
-                            <n-space vertical class="select" required>
-                                <n-select v-model:value="newWish.visible" :options="visible" />
-                            </n-space>
-
-                            <n-space vertical class="select">
-                                <n-select v-model:value="newWish.done" :options="done" />
-                            </n-space>
-
-                            <n-upload 
-            
-                                action="http://localhost:8085/public/process.php?action="
-                                :data="{
-                                    'id': 'wish.id'
-                                }"
-                                accept= ".png, .jpg, .jpeg, .webp, .HEIC"
-                                
-                            >
-                                <n-button>Загрузить фото</n-button>
-                        
-                            </n-upload>
-                        
-                            <!-- <button class="button add-btn" @click="showModal=false; addBucketList(); clearMsg();">Добавить желание</button> -->
-                            <n-button strong secondary type="success" attr-type="submit" class="add-btn" @click="showModal=false; addBucketList();">Добавить желание</n-button>
-
-                        </form>
-                    </div>
-                </div>
-                
-                </n-card>
-            </n-modal>
-        </div> 
+       
 
          <!-- Edit User Model -->
          <div v-if="showEditModal">
@@ -179,44 +123,25 @@
                 <n-modal v-model:show="showEditModal">
                     <n-card
                     style="width: 600px"
-                    title="Редактировать папку"
                     :bordered="false"
                     size="huge"
                     role="dialog"
                     aria-modal="true"
                     >
-                    
-                    <form method="post">
-                        <input type="text" name="name"  placeholder="Название" v-model="currentFolder.name">
-                        <input type="text" name="description"  placeholder="Описание" v-model="currentFolder.description">
-                        <button  @click="showEditModal=false; updateFolder(); reload_interval(50);"  class="button">Обновить</button>
-                    </form>
-                    
-                    
-                    </n-card>
-                </n-modal>
-            </div>
-        </div>
+                    <div class="add-box edit-modal">
+                        <h5 class="modal-title">Редактирование папки</h5>
 
-        <!-- Delete User Model -->
-        <div v-if="showDeleteModal">
-            <div class="modal">
-                <n-modal v-model:show="showDeleteModal">
-                    <n-card
-                    style="width: 600px"
-                    title="Удалить папку"
-                    :bordered="false"
-                    size="huge"
-                    role="dialog"
-                    aria-modal="true"
-                    >
-                    
-                    <div>
-                        <h4>Удалить? </h4>
-                        
-                        <button @click="showDeleteModal=false; deleteFolder(); clearMsg();" class="red">Да</button>
-                        &nbsp;&nbsp;&nbsp;&nbsp;
-                        <button @click="showDeleteModal=false" class="green">Нет</button>
+                        <form method="post">
+
+                            <label>Название папки</label>
+                            <n-input v-model:value="currentFolder.name" type="text" placeholder="Название" class="name-folder-input" />
+
+                            <label>Описание папки</label>
+                            <n-input v-model:value="currentFolder.description" type="textarea" :autosize="{minRows: 3}" placeholder="Описание" class="description-folder-input" />
+
+                            <n-button strong secondary type="success" attr-type="submit" @click="showEditModal=false; updateFolder(); activate('top'); reload_interval(2000);" class="edit-btn">Обновить</n-button>
+
+                        </form>
                     </div>
                     
                     
@@ -224,6 +149,38 @@
                 </n-modal>
             </div>
         </div>
+
+         <!-- Delete  Model -->
+       <div v-if="showDeleteModal">
+           <div class="modal">
+               <n-modal v-model:show="showDeleteModal">
+                   <n-card
+                   style="width: 600px"
+                   :bordered="false"
+                   size="huge"
+                   role="dialog"
+                   aria-modal="true"
+                   >
+                   
+                   <div class="delete-modal">
+                        <h5 class="modal-title">Удаление папки</h5>
+                        <h4 class="red">Вы уверены, что хотите удалить папку: '{{ currentFolder.name }}'? </h4>
+                       
+                       <div class="delete-buttons">
+                            <n-button strong secondary type="success" @click="showDeleteModal=false" class="delete-no" >
+                                Нет
+                            </n-button>
+                            <n-button strong secondary type="error" @click="showDeleteModal=false; deleteFolder(2000); activate('top'); clearMsg();" >
+                                Да
+                            </n-button>
+                       </div>
+                   </div>
+                   
+                   
+                   </n-card>
+               </n-modal>
+           </div>
+       </div>
     </div>
 </template>
 
@@ -232,10 +189,13 @@ import axios from 'axios';
 import { defineComponent, ref } from "vue";
 
 import { NTabs, NTabPane } from 'naive-ui';
-import {  NModal, NCard, NButton } from 'naive-ui';
+import {  NModal, NCard } from 'naive-ui';
+import { NButton } from 'naive-ui';
+import { NInput } from 'naive-ui';
+
 import { NBreadcrumb, NBreadcrumbItem} from 'naive-ui';
-import { NSpace, NSelect } from 'naive-ui';
-import { NInput, NInputNumber, NUpload } from 'naive-ui';
+// import { NSpace, NSelect } from 'naive-ui';
+// import { NInput, NInputNumber, NUpload } from 'naive-ui';
 // import { NProgress} from 'naive-ui';
 
 
@@ -248,7 +208,10 @@ import { NInput, NInputNumber, NUpload } from 'naive-ui';
 
 import WantBucketList from '@/views/bucket-list/WantBucketList.vue';
 import AllBucketListFolder from '@/views/bucket-list/AllBucketListFolder.vue';
-import DoneBucketList from '@/views/bucket-list/DoneBucketListView.vue'
+import DoneBucketList from '@/views/bucket-list/DoneBucketListView.vue';
+
+import MsgComponent from '@/components/layout/MsgComponent.vue'
+import { NDrawer, NDrawerContent }  from 'naive-ui';
 
 
 
@@ -264,23 +227,26 @@ export default defineComponent ({
         NButton,
         NBreadcrumb,
         NBreadcrumbItem,
-        NSpace,
-        NSelect,
+        // NSpace,
+        // NSelect,
         NInput,
-        NInputNumber,
+        // NInputNumber,
         // NProgress,
         NTabs, 
         NTabPane,
         AllBucketListFolder,
         WantBucketList,
         DoneBucketList,
-        NUpload
+        MsgComponent,
+        NDrawer, 
+        NDrawerContent
+       
     },
     data() {
         return {
             wishes:[],
             done_count: [],
-            showModal: false,
+            
             nameStr: "",
             newWish: {
                 name: "", 
@@ -312,6 +278,10 @@ export default defineComponent ({
             folder_name: "",
             folder_description: "",
             data: '',
+            currentFolder: {
+                name: "",
+                description: ""
+            },
             
            
         }
@@ -395,18 +365,23 @@ export default defineComponent ({
             });
         },
         
-        deleteFolder(){
+        deleteFolder(time){
             let id = this.$route.params.id;
             
 
           axios.post("http://localhost:8085/public/process.php?action=delete-bucketlist-folder&id="+id)
           .then((response)=>{
               this.Folder = {};
-              if(response.data.error){
+              if (response.data.error){
                   this.errorMsg = response.data.message;
               } else {
                   this.successMsg = response.data.message;
-                  this.$router.push('/my-bucket-list-folders'); 
+                //   this.$router.push('/my-bucket-list-folders'); 
+
+                let self = this
+                setTimeout(function(){
+                    self.$router.push(`/my-bucket-list-folders`);
+                }, time)
               }
           });
         },
@@ -440,9 +415,18 @@ export default defineComponent ({
         }
     },
     setup() {
+        const active = ref(false);
+        const placement = ref("right");
+        const activate = (place) => {
+        active.value = true;
+        placement.value = place;
+        };
         return {
             value: ref(null),
             // percentage: percentageRef,
+            active,
+            placement,
+            activate,
             options: [
                 {
                 label: "Сортировать по",
@@ -597,9 +581,44 @@ export default defineComponent ({
 .div-button {
     flex-basis: 49%;
 }
-.title {
+// .title {
+//     text-align: center;
+// }
+
+.add-box {
+   width: 50%;
+   margin: auto;
+}
+.modal-title {
+    text-align: center;
+    margin-bottom: 20px;
+    font-size: 20px;
+}
+.delete-modal {
     text-align: center;
 }
+.delete-no {
+    margin-right: 20px;
+}
+.red {
+    color: $red;
+    margin-bottom: 20px;
+}
+.msg {
+    width: 50%;
+    margin: 0 auto;
+    padding-top: 50px;
+}
+.name-folder-input {
+    margin-bottom: 20px;
+}
+.description-folder-input {
+    margin-bottom: 20px;
+}
+.edit-btn {
+    width: 100%;
+}
+
 </style>
 
 

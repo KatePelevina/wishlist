@@ -163,21 +163,22 @@
         case 'delete':
             $id = $_POST['id'];
             
-            $sql = $conn->query("DELETE FROM places WHERE id='$id'");
+            $sql = $conn->query("DELETE FROM wish WHERE id='$id'");
 
             
 
-            $sql = $conn->query(
-            "DELETE FROM users_places WHERE place_id='$id'");
+            $sql = $conn->query("DELETE FROM users_wishlist WHERE wish_id='$id'");
             
             if ($sql) {
-                $result['message'] = "Place deleted successfully!";
+                $result['message'] = "Wish deleted successfully!";
             } else {
                 $result['error'] = true;
-                $result['message'] = "Failed to delete place!";
+                $result['message'] = "Failed to delete Wish!";
             }
 
             break;
+        
+
         case 'get-friends':
             $id = 1;
 
@@ -412,11 +413,16 @@
 
             $id = $_GET['id']; 
 
-            $sql = $conn->query(
-                "SELECT * FROM users
-                LEFT JOIN i_will_present ON users.id = i_will_present.friend_id
-                LEFT JOIN wish ON wish.id = i_will_present.wish_id
-                AND i_will_present.wish_id = $id");
+            // $sql = $conn->query(
+            //     "SELECT * FROM users
+            //     LEFT JOIN i_will_present ON users.id = i_will_present.friend_id
+            //     LEFT JOIN wish ON wish.id = i_will_present.wish_id
+            //     AND i_will_present.wish_id = $id");
+
+             $sql = $conn->query(
+                "SELECT * FROM i_will_present WHERE wish_id=$id");
+
+            
     
             $presents = [];
             while($row = $sql->fetch_assoc()) {
@@ -527,16 +533,15 @@
             $password = $_POST['password'];
             
             
-            
             try {
                 
                 $sql = $conn->query("INSERT INTO `users`(`firstName`, `secondName`, `nickname`, `about`, `img`, `password`, `email`) VALUES ('','','','','','$password','$email')");
                 
-            } catch (Exception $e){
+            } catch (Exception $e) {
             }
     
             if (isset($sql) && $sql) {
-                $result['message'] = "User added successfully!";
+                $result['message'] = "Регистрация прошла успешно! Профиль создан: войти в акаунт";
                 
             } else {
                 $result['error'] = true;
@@ -552,8 +557,9 @@
             $secondName = $_POST['secondName'];
             $nickName = $_POST['nickName'];
             $about =$_POST['about'];
+            $img =$_POST['img'];
             
-            $sql = $conn->query("UPDATE users SET firstName='$firstName',secondName='$secondName',nickName='$nickName', about='$about' WHERE id='$id'");
+            $sql = $conn->query("UPDATE users SET firstName='$firstName',secondName='$secondName',nickName='$nickName', about='$about', img='$img' WHERE id='$id'");
             
             if ($sql) {
                 $result['message'] = "User updated successfully!";
@@ -562,6 +568,22 @@
                 $result['message'] = "Failed to update user!";
             }
             
+            break;
+        case 'update-user-img':
+
+            if(!empty($_FILES['file']['name'] !== '')) {
+                $file = $_FILES['file'];
+                $name = $file['name'];
+                $pathFile = '../public/img/'.$name;
+             
+                if(!move_uploaded_file($file['tmp_name'], $pathFile)) {
+                    echo 'Файл не смог загрузиться';
+                }
+
+                // $sql = $conn->query("INSERT INTO `photos`(`path`) VALUES ('$name')");
+                $sql = $conn->query("UPDATE `users` SET `img`='$name' WHERE `id`= 1");
+            }
+
             break;
         case 'delete-user':
             $id = $_POST['id'];
@@ -722,6 +744,39 @@
             }
           
             break;
+        case 'image-load-wishlist':
+            $id = $_GET['id'];
+
+            if(!empty($_FILES['file']['name'] !== '')) {
+                $file = $_FILES['file'];
+                $name = $file['name'];
+                $pathFile = '../public/img/'.$name;
+             
+                if(!move_uploaded_file($file['tmp_name'], $pathFile)) {
+                    echo 'Файл не смог загрузиться';
+                }
+
+                $sql = $conn->query("UPDATE `wish` SET `photo`='$name' WHERE `id`= $id");
+            }
+
+            break;
+        case 'image-load-bucketlist':
+            $id = $_GET['id'];
+
+            if(!empty($_FILES['file']['name'] !== '')) {
+                $file = $_FILES['file'];
+                $name = $file['name'];
+                $pathFile = '../public/img/'.$name;
+                
+                if(!move_uploaded_file($file['tmp_name'], $pathFile)) {
+                    echo 'Файл не смог загрузиться';
+                }
+
+                $sql = $conn->query("UPDATE `bucket` SET `photo`='$name' WHERE `id`= $id");
+            }
+
+            break;
+       
         case 'bucketlist-item-image-load':
             $id = $_GET['id'];
 
@@ -1422,12 +1477,11 @@
             $visible = $_POST['visible'];
             $folder_id = $_POST['folder_id'];
             $done = $_POST['done'];
-            $wish_list = $_POST['wish_list'];
-            $bucket_list = $_POST['bucket_list'];
+            
 
            
             
-            $sql = $conn->query("INSERT INTO `wish`(`name`, `price`, `description`, `photo`, `link`, `visible`, `folder_id`, `done`, `wish_list`, `bucket_list`) VALUES ('$name','$price','$description', '$photo', '$link','$visible','$folder_id','$done','$wish_list','$bucket_list')");
+            $sql = $conn->query("INSERT INTO `wish`(`name`, `price`, `description`, `photo`, `link`, `visible`, `folder_id`, `done`) VALUES ('$name','$price','$description', '$photo', '$link','$visible','$folder_id','$done')");
             
             $last_id = $conn->insert_id;
 
@@ -1455,45 +1509,25 @@
             $price = $_POST['price'];
             $done = $_POST['done'];
 
+            if(!empty($_POST['name'])) {
+                $sql = $conn->query("INSERT INTO `wish`(`name`, `price`, `description`, `photo`,  `link`, `visible`,`folder_id`, `done`) VALUES ('$name', '$price', '$description', '', '$link', '$visible', '$folder_id', '$done')");
 
+                $last_id = $conn->insert_id;
+    
+                $sql = $conn->query("INSERT INTO users_wishlist (user_id, wish_id) VALUES('1','$last_id')");
+
+                $result['error'] = false;
+                $result['message'] = "Желание добавлено";
+            } else {
+                $result['error'] = true;
+                $result['message'] = "Укажите название желания"; 
+            }
             
             
-            // echo json_encode($_POST);
 
-            $sql = $conn->query("INSERT INTO `wish`(`name`, `price`, `description`, `photo`,  `link`, `visible`,`folder_id`, `done`) VALUES ('$name', '$price', '$description', '', '$link', '$visible', '$folder_id', '$done')");
-
-            $last_id = $conn->insert_id;
-
-            $sql = $conn->query("INSERT INTO users_wishlist (user_id, wish_id) VALUES('1','$last_id')");
-
-            // if(!empty($_FILES['file']['name'] !== '')) {
-            //     $file = $_FILES['file'];
-            //     $filename = $file['name'];
-            //     $pathFile = '../public/img/'.$filename;
             
-            //     if(!move_uploaded_file($file['tmp_name'], $pathFile)) {
-            //         echo 'Файл не смог загрузиться';
-            //     }
 
-            //     $sql = $conn->query("INSERT INTO `photos`(`path`) VALUES ('$name')");
-
-            //     $sql = $conn->query("UPDATE `users` SET `img`='$name' WHERE `id`=1");
-
-            //     $sql = $conn->query("UPDATE `wish` SET `photo`= '$pathFile' WHERE `id` = $last_id");
-            // }
-
-            // if(!empty($_FILES['file']['name'] !== '')) {
-            //     $file = $_FILES['file'];
-            //     $filename = $file['name'];
-            //     $pathFile = '../public/img/'.$filename;
-             
-            //     if(!move_uploaded_file($file['tmp_name'], $pathFile)) {
-            //         echo 'Файл не смог загрузиться';
-            //     }
-
-            //     // $sql = $conn->query("INSERT INTO `photos`(`path`) VALUES ('$name')");
-            //     $sql = $conn->query("UPDATE `wish` SET `photo`='$file' WHERE `id`=$last_id");
-            // }
+            
 
 
             break; 
@@ -1523,36 +1557,30 @@
             $name = $_POST['name'];
             $description = $_POST['description'];
             $folder_id = $_GET['id'];
-            // $photo = $_POST['photo'];
+            $photo = $_POST['photo'];
             $link = $_POST['link'];
             $visible = $_POST['visible'];
             $price = $_POST['price'];
             $done = $_POST['done'];
 
 
-            if(!empty($_FILES['file']['name'] !== '')) {
-                $file = $_FILES['file'];
-                $photo = $file['name'];
-                $pathFile = '../public/img/'.$name;
-            
-                if(!move_uploaded_file($file['tmp_name'], $pathFile)) {
-                    echo 'Файл не смог загрузиться';
-                }
+            if(!empty($_POST['name'])) {
+                $sql = $conn->query(
+                    "INSERT INTO `bucket`(`name`, `price`, `description`, `photo`,  `link`, `visible`,`folder_id`, `done`) VALUES ('$name', '$price', '$description', '', '$link', '$visible', '$folder_id', '$done')");
+       
+                $last_id = $conn->insert_id;
+       
+                $sql = $conn->query(
+                   "INSERT INTO users_bucketlist (user_id, bucketlist_id) VALUES('1','$last_id')");
 
-                // $sql = $conn->query("INSERT INTO `photos`(`path`) VALUES ('$name')");
-
-                // $sql = $conn->query("UPDATE `users` SET `img`='$name' WHERE `id`=1");
+                $result['error'] = false;
+                $result['message'] = "Желание создано";
+            } else {
+                $result['error'] = true;
+                $result['message'] = "Укажите название желания"; 
             }
             
-            // echo json_encode($_POST);
-
-            $sql = $conn->query(
-             "INSERT INTO `bucket`(`name`, `price`, `description`, `photo`,  `link`, `visible`,`folder_id`, `done`) VALUES ('$name', '$price', '$description', '$photo', '$link', '$visible', '$folder_id', '$done')");
-
-            $last_id = $conn->insert_id;
-
-            $sql = $conn->query(
-            "INSERT INTO users_bucketlist (user_id, bucketlist_id) VALUES('1','$last_id')");
+            
             
             break;
 
@@ -1581,15 +1609,21 @@
             $description = $_POST['description'];
             $type = "my-bucket-list";
 
-
-            $sql = $conn->query("INSERT INTO `bucketlist_folders`(`name`, `type`, `description`) VALUES ('$name', '$type', '$description')");
+            if(!empty($_POST['name'])) {
+                $sql = $conn->query("INSERT INTO `bucketlist_folders`(`name`, `type`, `description`) VALUES ('$name', '$type', '$description')");
             
-            $last_id = $conn->insert_id;
+                $last_id = $conn->insert_id;
+    
+                $sql = $conn->query(
+                "INSERT INTO users_bucketlist_folders (user_id, folder_id) VALUES('1','$last_id')");
 
-            $sql = $conn->query(
-            "INSERT INTO users_bucketlist_folders (user_id, folder_id) VALUES('1','$last_id')");
-
-
+                $result['error'] = false;
+                $result['message'] = "Папка создана";
+            } else {
+                $result['error'] = true;
+                $result['message'] = "Укажите название папки";
+            }
+            
          break; 
 
         case 'add-wishlist-folder':
@@ -1598,13 +1632,22 @@
             $description = $_POST['description'];
             $type = "my-wish-list";
             
-
-            $sql = $conn->query("INSERT INTO `wishlist_folders`(`name`, `type`, `description`) VALUES ('$name', '$type', '$description')");
+            if(!empty($_POST['name'])) {
+                $sql = $conn->query("INSERT INTO `wishlist_folders`(`name`, `type`, `description`) VALUES ('$name', '$type', '$description')");
             
-            $last_id = $conn->insert_id;
+                $last_id = $conn->insert_id;
+    
+                $sql = $conn->query(
+                "INSERT INTO users_wishlist_folders (user_id, folder_id) VALUES('1','$last_id')");
 
-            $sql = $conn->query(
-            "INSERT INTO users_wishlist_folders (user_id, folder_id) VALUES('1','$last_id')");
+                $result['error'] = false;
+                $result['message'] = "Папка создана";
+            } else {
+                $result['error'] = true;
+                $result['message'] = "Укажите название папки"; 
+            }
+
+            
 
             break; 
 
@@ -1834,20 +1877,35 @@
             $name = $_POST['name'];
             $price = $_POST['price'];
             $description = $_POST['description'];
+            $link = $_POST['link'];
             // $photo = $_POST['photo'];
             $visible = $_POST['visible'];
             $folder_id = $_POST['folder_id'];
 
-            // var_dump($photo);
+
+
+            $sql = $conn->query("UPDATE wish SET name='$name', price='$price', description='$description', link='$link', photo='',  visible='$visible', folder_id='$folder_id'  WHERE id='$id'");
             
-            $sql = $conn->query("UPDATE wish SET name='$name', price='$price', description='$description',   visible='$visible', folder_id='$folder_id'  WHERE id='$id'");
+
+            $result['message'] = "Данные изменены";
+
+            // $sql = $conn->query("UPDATE wish SET name='$name', price='$price', description='$description',   visible='$visible', folder_id='$folder_id'  WHERE id='$id'");
             
-            if ($sql) {
-                $result['message'] = "Данные изменены";
-            } else {
-                $result['error'] = true;
-                $result['message'] = "Ошибка";
-            }
+            // if ($sql) {
+            //     $result['message'] = "Данные изменены";
+            // } else {
+            //     $result['error'] = true;
+            //     $result['message'] = "Ошибка";
+ 
+            // }
+
+           
+                
+            // if ($result['error'] = true) {
+            //     $result['message'] = "Ошибка";
+            // }
+                
+
 
             break;
         case 'delete-wishlist-item':
@@ -1856,8 +1914,7 @@
             $sql = $conn->query("DELETE FROM wish WHERE id='$id'");
 
 
-            $sql = $conn->query(
-            "DELETE FROM users_wishlist WHERE wish_id='$id'");
+            $sql = $conn->query("DELETE FROM users_wishlist WHERE wish_id='$id'");
             
             if ($sql) {
                 $result['message'] = "Желание удалено";
@@ -1879,10 +1936,10 @@
                 $sql = $conn->query("UPDATE bucket SET name='$name', price='$price', description='$description', link='$link' WHERE id='$id'");
                 
                 if ($sql) {
-                    $result['message'] = "Place updated successfully!";
+                    $result['message'] = "Данные изменены!";
                 } else {
                     $result['error'] = true;
-                    $result['message'] = "Failed to update place!";
+                    $result['message'] = "Ошибка";
                 }
 
                 break;
@@ -1897,10 +1954,10 @@
                 "DELETE FROM users_bucketlist WHERE bucketlist_id='$id'");
                 
                 if ($sql) {
-                    $result['message'] = "Place deleted successfully!";
+                    $result['message'] = "Желание удалено";
                 } else {
                     $result['error'] = true;
-                    $result['message'] = "Failed to delete place!";
+                    $result['message'] = "Ошибка!";
                 }
     
     
@@ -1915,10 +1972,10 @@
                 $sql = $conn->query("UPDATE wishlist_folders SET name='$name', description='$description' WHERE id='$id'");
                 
                 if ($sql) {
-                    $result['message'] = "Updated successfully!";
+                    $result['message'] = "Данные изменены";
                 } else {
                     $result['error'] = true;
-                    $result['message'] = "Failed to update!";
+                    $result['message'] = "Ошибка!";
                 }
     
                 break;
@@ -1932,10 +1989,10 @@
 
                 
                 if ($sql & $sql2) {
-                    $result['message'] = "Delete successfully!";
+                    $result['message'] = "Папка удалена";
                 } else {
                     $result['error'] = true;
-                    $result['message'] = "Failed to delete!";
+                    $result['message'] = "Ошибка!";
                 }
     
             break;
@@ -1949,10 +2006,10 @@
             $sql = $conn->query("UPDATE bucketlist_folders SET name='$name', description='$description' WHERE id='$id'");
             
             if ($sql) {
-                $result['message'] = "Updated successfully!";
+                $result['message'] = "Данные изменены";
             } else {
                 $result['error'] = true;
-                $result['message'] = "Failed to update!";
+                $result['message'] = "Ошибка!";
             }
 
 
@@ -1966,10 +2023,10 @@
             $sql2 = $conn->query("DELETE FROM bucket WHERE folder_id = $id");
             
             if ($sql) {
-                $result['message'] = "Delete successfully!";
+                $result['message'] = "Папка удалена";
             } else {
                 $result['error'] = true;
-                $result['message'] = "Failed to delete!";
+                $result['message'] = "Ошибка!";
             }
 
             break;
@@ -2077,26 +2134,32 @@
         case 'add-userwish-to-my-wishlist':
             $id = $_POST['id'];
             $name = $_POST['name'];
-            $price = $_POST['price'];
-            $description = $_POST['description'];
-            // $photo = $_POST['photo'];
+
+            if($_POST['price'] == null ) {
+                $price = ' ';
+            } else {
+                $price = $_POST['price'];
+            }
+
+            
+
+            if(!empty($_POST['description'])) {
+                $description = $_POST['description'];
+            } else {
+                $description = ' ';
+            }
+            
+
+            if(!empty($_POST['photo'])) {
+                $photo = $_POST['photo'];
+            } else {
+                $photo = '';
+            }
+            
             $my_folder_id = $_POST['my_folder_id'];
+
             $done = '0';
             
-            // var_dump($_POST);
-
-            if(!empty($_FILES['file']['name'] !== '')) {
-                $file = $_FILES['file'];
-                $photo = $file['name'];
-                $pathFile = '../public/img/'.$name;
-             
-                if(!move_uploaded_file($file['tmp_name'], $pathFile)) {
-                    echo 'Файл не смог загрузиться';
-                }
-
-                // $sql = $conn->query("INSERT INTO `photos`(`path`) VALUES ('$name')");
-                // $sql = $conn->query("UPDATE `users` SET `img`='$name' WHERE `id`=1");
-            }
             
             $sql = $conn->query(
                 "INSERT INTO `wish`(`name`, `price`, `description`, `photo`, `folder_id`, `done`) VALUES ('$name', '$price', '$description', '$photo', '$my_folder_id', '$done')");
@@ -2324,6 +2387,8 @@
                 $result['message'] = "Failed!";
             }
             break;
+        
+
         case 'add-to-i-will-present':
             $wish_id = $_GET['id'];
             $friend_id = $_POST['id'];

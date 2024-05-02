@@ -2,13 +2,13 @@
     <div class="items" v-if="wishes.length" >
         <div class="item" v-for="(wish,index) in wishes" :key="index">
             <div class="box" @click="$router.push(`/idea-wishlist-item/wish=${wish.id}`)">
-                <div class="box-inner">
+                
                     <span v-if="wish.price" class="span">{{ wish.price }}</span>
-                    <div>
-                        <img :src="'/img/' + wish.photo" alt="" v-if="wish.photo">
-                        <n-empty v-else size="large" description="Фотографии нет" class="empty"></n-empty>
-                    </div>
-                </div>
+                    
+                    <img :src="'/img/' + wish.photo" alt="" v-if="wish.photo">
+                    <n-empty v-else size="large" description="Фотографии нет" class="empty"></n-empty>
+                    
+                
             </div>
             <p class="box-inner__hover">{{ wish.name }}</p>
             <p class="box-inner__hover">date: {{ wish.date }}</p>

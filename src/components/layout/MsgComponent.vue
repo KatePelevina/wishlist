@@ -8,25 +8,20 @@
             {{ errorMsg }}
         </n-alert>
 
-        
 
-        
+        <!-- <div class="errorMsg" v-if="errorMsg">
+            {{ errorMsg }}
+        </div> -->
+        <!-- <div class="successMsg" v-if="successMsg">
+            {{ successMsg }}
+        </div> -->
 
-            <!-- <div class="errorMsg" v-if="errorMsg">
-                {{ errorMsg }}
-            </div> -->
-            <!-- <div class="successMsg" v-if="successMsg">
-                {{ successMsg }}
-            </div> -->
-        </div>
+    </div>
 </template>
 
 <script>
 import { defineComponent } from "vue";
 import { NAlert } from 'naive-ui';
-
-
-
 
 export default defineComponent ({
     name: 'MsgComponent',
@@ -36,7 +31,6 @@ export default defineComponent ({
     ],
     components: {
         NAlert,
-        
     }
 });
 </script>

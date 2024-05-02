@@ -1,40 +1,17 @@
 <template>
     <div>
         
-        <!-- <div class="items">
-            <div class="item" v-for="wish in wishes" :key="wish.id">
-                <div class="box">
-                    <div class="box-inner">
-                        <span v-if="wish.price" class="span">{{ wish.price }} руб</span>
-                        <img :src="'/img/' + wish.photo" alt="">
-                    </div>
-                </div>
-                <p class="box-inner__hover">{{ wish.name }}</p>
-            </div>
-        </div> -->
-
-        <!-- <my-select
-        v-model="selectedSort"
-        :options="sortOptions" 
-        /> -->
-
-        <div class="flex rrrr">
-            <div class="flex-left">
+        <div class="flex" v-if="wishes.length">
+            <div class="flex-item">
                 <p class="ddddd">Кол-во желаний: {{ wishes.length }}</p>
             </div>
-            <div class="div-button">
-                <n-button @click="showModal=true" class="btn" strong secondary type="success">+ Добавить желание</n-button>
-            </div>
-            <!-- <div class="flex-right">
-                <n-space vertical v-if="wishes.length">
+            <div class="flex-item">
+                <n-space vertical>
                     <n-select v-model:value="selectedSort" :options="options" />
                 </n-space>
-            </div> -->
+            </div>
         </div>
 
-        <!-- <n-space vertical v-if="wishes.length">
-            <n-select v-model:value="selectedSort" :options="options" />
-        </n-space> -->
 
         <my-input
         v-if="wishes.length"
@@ -43,44 +20,6 @@
         />
         
         <DoneWishlist :wishes="sortedAndSearchedPosts"/>
-
-        <div v-if="showModal">
-           <n-modal v-model:show="showModal">
-               <n-card
-               style="width: 600px"
-               
-               :bordered="false"
-               size="huge"
-               role="dialog"
-               aria-modal="true"
-               >
-               <div class="add-component__modal">
-                   <div class="add-box">
-                       <h4 class="add-box-title">Добавить желание в эту папку</h4>
-                       <form class="form" method="post" @submit.prevent="addWishList">
-                           <n-input v-model:value="newWish.name" type="text" placeholder="Название" class="input" />
-                           <n-input-number  v-model:value="newWish.price" type="text" placeholder="Цена"/>
-                           <n-input v-model:value="newWish.description" type="text" placeholder="Описание" class="input"  />
-                           <n-input v-model:value="newWish.link" type="text" placeholder="Ссылка" class="input" />
-                           
-                            <n-space vertical class="select">
-                                <n-select v-model:value="newWish.visible" :options="visible" />
-                            </n-space>
-
-                            <n-space vertical class="select">
-                                <n-select v-model:value="newWish.done" :options="done" />
-                            </n-space>
-
-                            <n-button strong secondary type="success" attr-type="submit" class="add-btn" @click="showModal=false; addWishList(); addPhoto()">Добавить желание</n-button>
-                       </form>
-                   </div>
-               </div>
-               
-               </n-card>
-           </n-modal>
-       </div> 
-      
-
         
     </div>
 </template>
@@ -89,14 +28,12 @@
 import axios from 'axios';
 import { defineComponent, ref } from "vue";
 
-import { NSpace, NSelect } from 'naive-ui';
-import { NModal, NButton, NCard, NInput, NInputNumber  } from 'naive-ui';
-
 
 import DoneWishlist from '@/components/wishes/DoneWishlist.vue';
 import MyInput from '@/components/layout/MyInput.vue';
-// import MySelect from '@/components/layout/MySelect.vue';
 
+
+import { NSpace, NSelect } from 'naive-ui';
 
 
 export default defineComponent ({
@@ -104,13 +41,8 @@ export default defineComponent ({
     components: { 
         DoneWishlist,
         MyInput,
-        NButton,
-        NCard,
-        NModal,
-        NInput, 
-        NInputNumber,
         NSpace, 
-        NSelect 
+        NSelect
     },
     data(){
         return {
@@ -285,5 +217,8 @@ export default defineComponent ({
     button {
         width: 100%;
     }
+}
+.flex-item {
+    width: 49%;
 }
 </style>

@@ -1,35 +1,21 @@
 <template>
     <div>
-        <!-- <div class="items">
-            <div class="item" v-for="(wish,index) in wishes" :key="index">
-                <div class="box" @click="$router.push(`/done-bucket-list-item/${wish.id}`)">
-                    <img :src="'/img/' + wish.photo" alt="">
-                </div>
-                <p class="box-inner__hover">{{ wish.name }}</p>
-            </div>
-        </div> -->
-
-        <!-- <my-select
-        v-model="selectedSort"
-        :options="sortOptions" 
-        /> -->
-
-        <!-- <div class="flex rrrr"> -->
-            <div class="flex-left">
+       
+        <div class="flex">
+            <div class="flex-left flex-item" v-if="wishes.length">
                 <p class="ddddd">Количество желаний: {{ wishes.length }}</p>
             </div>
-            <!-- <div class="flex-right">
-                <n-button @click="showModal=true" class="btn" strong secondary type="success">+ Добавить желание</n-button>
-            </div> -->
-        <!-- </div> -->
-
-        <n-space vertical>
-            <n-select v-model:value="selectedSort" :options="options" />
-        </n-space>
-
+            <div class="flex-item">
+                <n-space vertical v-if="wishes.length" >
+                    <n-select v-model:value="selectedSort" :options="options" />
+                </n-space>
+            </div>
+        </div>
+       
         <my-input
-        v-model="searchQuery"
-        placeholder="Поиск..."
+            v-if="wishes.length"
+            v-model="searchQuery"
+            placeholder="Поиск..."
         />
 
         <DoneBucketlist
@@ -45,12 +31,9 @@
   import { defineComponent, ref } from "vue";
 
   import { NSpace, NSelect } from 'naive-ui';
-//   import { NButton } from 'naive-ui';
 
   import DoneBucketlist from '@/components/wishes/DoneBucketlist.vue';
   import MyInput from '@/components/layout/MyInput.vue';
-//   import MySelect from '@/components/layout/MySelect.vue';
-
 
 
 
@@ -61,20 +44,18 @@
         MyInput,
         NSpace,
         NSelect,
-        // NButton
-        // MySelect
     },
     data(){
         return {
             wishes:[],
-            selectedSort: '',
-            searchQuery: '',
-            sortOptions: [
-                {value: 'name', name: 'По name'},
-                {value: 'date', name: 'По date'},
-                {value: 'price', name: 'По price'},
-                {value: 'visible', name: 'По visible'},
-            ],
+            // selectedSort: '',
+            // searchQuery: '',
+            // sortOptions: [
+            //     {value: 'name', name: 'По name'},
+            //     {value: 'date', name: 'По date'},
+            //     {value: 'price', name: 'По price'},
+            //     {value: 'visible', name: 'По visible'},
+            // ],
         }
     },
     methods: {
@@ -108,25 +89,25 @@
             value: ref(null),
             options: [
                 {
-                label: "Сортировать по",
-                value: "",
-                disabled: true
+                    label: "Сортировать по",
+                    value: "",
+                    disabled: true
                 },
                 {
-                label: "По name",
-                value: "name",
+                    label: "По названию",
+                    value: "name",
                 },
                 {
-                label: "По date",
-                value: "date"
+                    label: "По дате создания",
+                    value: "date"
                 },
                 {
-                label: "По price",
-                value: "price"
+                    label: "По цене",
+                    value: "price"
                 },
                 {
-                label: "По visible",
-                value: "visible"
+                    label: "По видимости",
+                    value: "visible"
                 }
             ],
         };
@@ -204,5 +185,8 @@
   button {
     width: 100%;
   }
+}
+.flex-item {
+    width: 49%;
 }
 </style>

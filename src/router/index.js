@@ -12,24 +12,7 @@ const routes = [
     },
     component: LandingView,
   },
-  {
-    path: '/blog',
-    name: 'blog',
-    meta: {
-      layout: 'HeaderLayout',
-      requiresAuth: false
-    },
-    component: () => import('@/views/blog/BlogView.vue')
-  },
-  {
-    path: '/article',
-    name: 'article',
-    meta: {
-      layout: 'HeaderLayout',
-      requiresAuth: false
-    },
-    component: () => import('@/views/blog/ArticleView.vue')
-  },
+
   // AUTH 
   {
     path: '/register',
@@ -50,7 +33,7 @@ const routes = [
     component: () => import('@/views/auth/LoginUser.vue')
   },
   {
-    path: '/edit-profile',
+    path: '/edit-profile/user=:id',
     name: 'edit-profile',
     meta: {
       layout: 'MainLayout',
@@ -58,30 +41,7 @@ const routes = [
     },
     component: () => import('@/views/EditProfileView.vue')
   },
-  {
-    path: '/image-load',
-    name: 'image-load',
-    meta: {
-      layout: 'MainLayout'
-    },
-    component: () => import('@/components/ImageLoad.vue')
-  },
-  {
-    path: '/preview-image',
-    name: 'preview-image',
-    meta: {
-      layout: 'MainLayout'
-    },
-    component: () => import('@/components/PreviewImage.vue')
-  },
-  {
-    path: '/bucket-item-image-load',
-    name: 'bucket-item-image-load',
-    meta: {
-      layout: 'MainLayout'
-    },
-    component: () => import('@/views/BucketItemImageLoad.vue')
-  },
+  
   // WISHES
   {
     path: '/my-wish-list/folder=:id',
@@ -334,15 +294,6 @@ const routes = [
     component: () => import('@/views/bucket-list/MyBucketListFolders.vue')
   },
   {
-    path: '/want-and-stop-list',
-    name: 'stop-list',
-    meta: {
-      layout: 'MainLayout',
-      // authRequired: false
-    },
-    component: () => import('@/views/y/StopListView.vue')
-  },
-  {
     path: '/idea-wishlist-item/wish=:id',
     name: 'idea-wishlist-item',
     meta: {
@@ -378,33 +329,7 @@ const routes = [
     },
     component: () => import('@/views/bucket-list/user/UserBucketListFolders.vue')
   },
-  {
-    path: '/countries',
-    name: 'countries',
-    meta: {
-      layout: 'HeaderLayout',
-      requiresAuth: false
-    },
-    component: () => import('@/views/y/CountriesView.vue')
-  },
-  {
-    path: '/checklist',
-    name: 'checklist',
-    meta: {
-      layout: 'MainLayout',
-      // authRequired: false
-    },
-    component: () => import('@/views/y/MyChecklist.vue')
-  },
-  {
-    path: '/my-wishlist-want',
-    name: 'my-wishlist-want',
-    meta: {
-      layout: 'MainLayout',
-      // authRequired: false
-    },
-    component: () => import('@/views/wish-list/my-wishes/MyWishlistWant.vue')
-  },
+  
   {
     path: '/user-wishlist-want/folder=:id',
     name: 'user-wishlist-want',

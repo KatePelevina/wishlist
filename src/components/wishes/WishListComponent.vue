@@ -28,7 +28,7 @@
         </div>
     </div>
     <div v-else>
-        <n-empty size="large" description="Нет данных" class="empty"></n-empty>
+        <n-empty size="large" description="Пока ничего нет" class="empty"></n-empty>
     </div>
     
     

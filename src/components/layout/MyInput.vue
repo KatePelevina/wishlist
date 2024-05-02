@@ -26,8 +26,8 @@ export default ({
     border-radius: 5px;
     border: 1px #ccc solid;
     padding: 15px 40px;
-    margin-top: 15px;
-    margin-bottom: 15px;
+    // margin-top: 15px;
+    // margin-bottom: 15px;
 }
 
 .search {

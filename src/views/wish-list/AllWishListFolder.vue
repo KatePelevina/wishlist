@@ -66,53 +66,38 @@
           </div> -->
   
           
-  
-  
-          <div class="flex">
-            <div class="progress ddddd percent flex-left">
+            <div class="flex items" v-if="wishes.length" >
+              <div class="progress ddddd flex-left flex-item">
                 <p >Исполнено: {{ done_count  }} / {{ wishes.length }}</p>
-              
-                <!-- <n-space vertical>
-                    <n-progress
+              </div>
+              <div class="flex-item">
+                <n-space vertical>
+                  <n-select v-model:value="selectedSort" :options="options" />
+                </n-space>
+              </div>
+            </div>
+         
+  
+          <!-- <div class="flex">
+            <div class="progress ddddd percent flex-left" v-if="wishes.length">
+                <p  >Исполнено: {{ done_count  }} / {{ wishes.length }}</p>
+            </div>
+          </div> -->
+
+          <div class="progress ddddd percent"  v-if="wishes.length">             
+              <n-space vertical>
+                  <n-progress
+                    
                     type="line"
                     :percentage="getPercent()"
                     :indicator-placement="'inside'"
                     :border-radius="4"
-                    />
-                </n-space> -->
-            </div>
-              <!-- <div class="flex-right">
-                <n-space vertical>
-                  <n-select v-model:value="selectedSort" :options="options" />
-                </n-space>
-              </div> -->
-              <div class="div-button flex-right">
-                  <n-button @click="showModal=true" class="btn" strong secondary type="success">+ Новое желание</n-button>
-              </div>
-              
-          </div>
-
-          <div class="progress ddddd percent" v-if="wishes.length">
-              <!-- <p>Исполнено: {{ done_count  }} / {{ wishes.length }}</p> -->
-             
-              <n-space vertical >
-                  <n-progress
-                  type="line"
-                  :percentage="getPercent()"
-                  :indicator-placement="'inside'"
-                  :border-radius="4"
                   />
               </n-space>
           </div>
   
           
-  
-          <!-- <div class="select">
-            <n-space vertical>
-              <n-select v-model:value="selectedSort" :options="options" />
-            </n-space>
-          </div> -->
-          
+
   
           <my-input
           v-if="wishes.length"
@@ -124,38 +109,7 @@
           :wishes="sortedAndSearchedPosts"
           />
   
-          <div v-if="showModal">
-             <n-modal v-model:show="showModal">
-                 <n-card
-                 style="width: 600px"
-                 
-                 :bordered="false"
-                 size="huge"
-                 role="dialog"
-                 aria-modal="true"
-                 >
-                 <div class="add-component__modal">
-                     <div class="add-box">
-                         <h4 class="add-box-title">Добавить желание в эту папку</h4>
-                         <form class="form" method="post">
-                             <n-input v-model:value="newWish.name" type="text" placeholder="Название" class="input" />
-                             <n-input-number  v-model:value="newWish.price" type="text" placeholder="Цена"/>
-                             <n-input v-model:value="newWish.description" type="text" placeholder="Описание" class="input"  />
-                             <n-input v-model:value="newWish.link" type="text" placeholder="Ссылка" class="input" />
-  
-                              <n-space vertical class="select">
-                                  <n-select v-model:value="newWish.visible" :options="visible" />
-                              </n-space>
-  
-                             <n-button strong secondary type="success" attr-type="submit" class="add-btn" @click="showModal=false; addWishList();">Добавить желание</n-button>
-                         </form>
-                     </div>
-                 </div>
-                 
-                 </n-card>
-             </n-modal>
-         </div> 
-      
+        
       </div>
     </template>
     
@@ -163,29 +117,22 @@
     import axios from 'axios';
     import { defineComponent, ref } from "vue";
   
-    import { NButton } from 'naive-ui';
-    import { NSpace, NSelect } from 'naive-ui';
-    import { NProgress }  from 'naive-ui';
-    import { NModal, NCard } from 'naive-ui';
-    import { NInput, NInputNumber } from 'naive-ui';
+
   
     import WishListComponent from '@/components/wishes/WishListComponent.vue';
     import MyInput from '@/components/layout/MyInput.vue';
   
+    import { NSpace, NProgress, NSelect } from 'naive-ui';
+
     
     export default defineComponent ({
       name: 'AllWishListView',
       components: {
-        NButton,
-        NSpace,
-        NSelect,
         WishListComponent,
         MyInput,
+        NSpace, 
         NProgress,
-        NModal, 
-        NCard,
-        NInput, 
-        NInputNumber        
+        NSelect
       },
       data() {
           return {
@@ -499,7 +446,13 @@
       margin-top: 20px;
     }
     .percent {
-      margin-top: 20px;
+      margin-bottom: 20px;
+    }
+
+    .flex-item {
+      width: 49%;
+    }
+    .items {
       margin-bottom: 20px;
     }
     </style>

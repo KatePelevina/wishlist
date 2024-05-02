@@ -2,6 +2,7 @@ $white: #fff;
 $black: #000;
 $bg: #F6F7FF;
 $active: #6069E0;
+$red: #D13050;
 
 $border-radius: 10px;
 
@@ -83,7 +84,7 @@ $border-radius: 10px;
     width: 100%;
 }
 @mixin page {
-    // background-color: #fff;
+    background-color: #fff;
     padding: 15px;
     border-radius: 10px;
 }

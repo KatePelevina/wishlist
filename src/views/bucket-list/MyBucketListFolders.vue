@@ -1,40 +1,42 @@
 <template>
     <div class="page">
         <div class="flex color">
-            <div>
-                <n-space @click="$router.push(`/all-bucketlist-view`)">
-                <n-switch v-model:value="active" />
-                </n-space>
+            <div class="popover">
+                <n-popover trigger="hover">
+                    <template #trigger>
+                        <n-space @click="$router.push(`/all-bucketlist-view`)">
+                            <n-icon size="25" @click="showInfo=true">
+                                <svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" viewBox="0 0 512 512"><path fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="48" d="M160 144h288"></path><path fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="48" d="M160 256h288"></path><path fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="48" d="M160 368h288"></path><circle cx="80" cy="144" r="16" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="32"></circle><circle cx="80" cy="256" r="16" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="32"></circle><circle cx="80" cy="368" r="16" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="32"></circle></svg>
+                            </n-icon>
+                        </n-space>
+                    </template>
+                    <span>Просмотр желаний списком</span>
+                </n-popover>
             </div>
             <div>
-                <n-icon size="25" @click="showInfo=true">
-                <svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" viewBox="0 0 20 20"><g fill="none"><path d="M10.492 8.91A.5.5 0 0 0 9.5 9v4.502l.008.09a.5.5 0 0 0 .992-.09V9l-.008-.09zm.307-2.16a.75.75 0 1 0-1.5 0a.75.75 0 0 0 1.5 0zM18 10a8 8 0 1 0-16 0a8 8 0 0 0 16 0zM3 10a7 7 0 1 1 14 0a7 7 0 0 1-14 0z" fill="currentColor"></path></g></svg>
+                <n-icon size="25" @click="showInfo=true" class="nav-item__icon">
+                    <svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" viewBox="0 0 20 20"><g fill="none"><path d="M10.492 8.91A.5.5 0 0 0 9.5 9v4.502l.008.09a.5.5 0 0 0 .992-.09V9l-.008-.09zm.307-2.16a.75.75 0 1 0-1.5 0a.75.75 0 0 0 1.5 0zM18 10a8 8 0 1 0-16 0a8 8 0 0 0 16 0zM3 10a7 7 0 1 1 14 0a7 7 0 0 1-14 0z" fill="currentColor"></path></g></svg>
                 </n-icon>
             </div>
         </div>
 
-        <msg-component
-            :errorMsg="this.errorMsg"
-            :successMsg="this.successMsg"
-        />
-
-        <div class="flex" >
-            <h1 class="title" @click="showInfo=true">
-                <img src="@/assets/location.svg" alt="icon" class="nav-item__icon"> 
-                Bucket List
-            </h1>
-            
-            <img src="@/assets/location.svg" alt="icon" class="nav-item__icon" @click="$router.push(`/all-bucketlist-view`)"> 
-        </div>
     
+        <n-drawer v-model:show="active"  :placement="placement">
+            <n-drawer-content closable>
+                <msg-component
+                    class="msg"
+                    :errorMsg="this.errorMsg"
+                    :successMsg="this.successMsg"
+                />
+            </n-drawer-content>
+        </n-drawer>
 
-    <!-- <div class="flex" @click="showInfo=true">
-        <h1 class="title">
-            <img src="@/assets/location.svg" alt="icon" class="nav-item__icon"> 
-            Bucket List
-        </h1>
-        <p>Кол-во папок: {{ folders.length }}</p>
-    </div> -->
+        
+
+       
+        <h1 class="title">Bucket List</h1>
+            
+    
 
     <div class="flex">
         <div class="flex-left">
@@ -47,28 +49,16 @@
 
 
 
-    <!-- <div class="flex">
-        <div class="select">
-            <my-select
-                v-model="selectedSort"
-                :options="sortOptions" 
-            />
-        </div>
-        <div class="div-button">
-            <button @click="showModal=true" class="button">+ Новая папка</button>
-        </div>
-    </div> -->
+    
 
-    <!-- <div class="flex"> -->
-        <!-- <div class="div-button">
-            <n-button @click="showModal=true" class="btn" strong secondary type="success">+ Новая папка </n-button>
-        </div> -->
+  
+        
         <div class="select"  v-if="folders.length">
             <n-space vertical>
                 <n-select v-model:value="selectedSort" :options="options" />
             </n-space>
         </div>
-    <!-- </div> -->
+   
     
     <!-- <div class="cards" v-if="folders.length">
         <div class="card-test" v-for="(folder,index) in folders" :key="index" @click="$router.push(`/my-bucket-list/${folder.id}`)">
@@ -105,13 +95,15 @@
             aria-modal="true"
             >
             <div class="add-box">
-                <form action="">
+                
+
+                <form>
                     <!-- <input type="text" placeholder="Название папки" v-model="newFolder.name" required> -->
                     <n-input v-model:value="newFolder.name" type="text" placeholder="Название папки"/>
                     <n-input v-model:value="newFolder.description" type="text" placeholder="Описание папки"/>
 
 
-                    <n-button strong secondary type="success" @click="showModal=false; addFolder();" class="add-btn">Создать папку</n-button>
+                    <n-button strong secondary type="success" @click="showModal=false; addFolder(); activate('top')" class="add-btn">Создать папку</n-button>
                     <!-- <button class="button" @click="showModal=false; addFolder();">Создать папку</button> -->
                 </form>
                 
@@ -148,7 +140,11 @@ import { NModal, NCard } from 'naive-ui';
 import { NSpace, NSelect } from 'naive-ui';
 import { NButton} from 'naive-ui';
 import { NInput } from 'naive-ui';
-import { NSwitch, NIcon } from 'naive-ui';
+import { NIcon, NPopover } from 'naive-ui';
+// import { NSwitch } from 'naive-ui';
+
+
+import { NDrawer, NDrawerContent }  from 'naive-ui';
 
 
 import FoldersList from '@/components/folders/FoldersList';
@@ -172,7 +168,11 @@ export default defineComponent ({
         NSelect,
         NButton,
         NInput,
-        NSwitch, NIcon
+        // NSwitch, 
+        NIcon,
+        NDrawer, 
+        NDrawerContent,
+        NPopover
         // FolderItem
     },
     data() {
@@ -216,12 +216,12 @@ export default defineComponent ({
                 this.newFolder = {name: "", type: "my-bucket-list", description: ""};
 
 
-                if(response.data.error){
+                if (response.data.error){
                     this.errorMsg = response.data.message;
                 } else {
                     this.successMsg = response.data.message;
                     // this.$router.push('/my-bucket-list-folders'); 
-                    // location.reload();    
+                    // location.reload(10);    
                     this.getFolders();           
                 }
             });
@@ -246,21 +246,30 @@ export default defineComponent ({
         }
     },
     setup() {
+        const active = ref(false);
+        const placement = ref("right");
+        const activate = (place) => {
+        active.value = true;
+        placement.value = place;
+        };
         return {
             value: ref(null),
+            active,
+            placement,
+            activate,
             options: [
                 {
-                label: "Сортировать",
-                value: "",
-                disabled: true
+                    label: "Сортировать",
+                    value: "",
+                    disabled: true
                 },
                 {
-                label: "по названию",
-                value: "name",
+                    label: "по названию",
+                    value: "name",
                 },
                 {
-                label: "по дате создания",
-                value: "date"
+                    label: "по дате создания",
+                    value: "date"
                 }
             ]
         };
@@ -307,6 +316,7 @@ export default defineComponent ({
 
 .select {
     flex-basis: 49%;
+    margin-bottom: 20px;
 }
 // select {
 //     width: 100%;
@@ -335,8 +345,11 @@ export default defineComponent ({
     margin-top: 10px;
     width: 100%; 
 }
-.nav-item__icon, .title {
+.nav-item__icon {
     cursor: pointer;
+}
+.title {
+    margin-bottom: 20px;
 }
 
 .ddddd {
@@ -355,5 +368,13 @@ export default defineComponent ({
     border-radius: 10px;
     padding: 10px;
     margin-bottom: 20px;
+}
+.msg {
+    width: 50%;
+    margin: 0 auto;
+    padding-top: 50px;
+}
+.popover {
+    cursor: pointer;
 }
 </style>

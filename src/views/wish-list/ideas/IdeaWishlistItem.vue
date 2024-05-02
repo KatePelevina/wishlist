@@ -6,96 +6,137 @@
         :successMsg="this.successMsg"
         />
         
-        
-        
-        <div v-for="(wish,index) in wishes" :key="index">
-            
-            <n-breadcrumb>
-                <n-breadcrumb-item @click="$router.push(`/ideas-wish-list`)">Идеи для Wish List</n-breadcrumb-item>
-                <!-- <n-breadcrumb-item>{{ wish.name }}</n-breadcrumb-item> -->
-                <n-breadcrumb-item>Желание</n-breadcrumb-item>
-            </n-breadcrumb>
-
-
-            <div class="card-body">
-                <h3 class="card-title">{{ wish.name }}</h3>
-                <div class="card-body__header">
-                    <div class="card-body__image">
-                        <img v-if="wish.photo"  :src="'/img/' + wish.photo" alt="" class="wish-img" @click="showPhoto=true; selectWish(wish);" >
-                        <n-empty v-else size="large" description="Нет фото" class="empty"></n-empty>
-                    </div>
-                    <div class="card-body__text">
-                        <p>{{ wish.nickname }} хочет</p>
-                        <p>{{ wish.firstName }} {{ wish.secondName }}</p>
-                       
-                        <p v-if="wish.price" class="card-price">{{ wish.price }}</p>
-                    </div>
+        <div class="card" v-for="(user,index) in users" :key="index">
+            <div v-for="(wish,index) in wishes" :key="index">
+                
+                <div class="color">
+                    <n-breadcrumb>
+                        <n-breadcrumb-item @click="$router.push(`/ideas-wish-list`)">Идеи для Wish List</n-breadcrumb-item>
+                        <n-breadcrumb-item>Желание</n-breadcrumb-item>
+                    </n-breadcrumb>
                 </div>
-                <div class="card-body__body"></div>
-                <div class="card-body__content">
-                    <p class="card-description">{{ wish.description }}</p>
-                    <div class="card-link">
-                        <div v-if="wish.link">
-                            <a :href="wish.link" class="link">Ссылка</a>
+                
+                <div>
+                    
+                    <div>
+
+
+                        <div class="flex">
+                            <h1 class="card-title">{{ wish.name }}</h1>
+                            <div v-if="wish.photo">
+                                <n-button @click="selectWish(wish); showPhoto=true;">
+                                    <template #icon>
+                                        <n-icon>
+                                            <search-img />
+                                        </n-icon>
+                                    </template>
+                                </n-button>
+                            </div>
+                        </div>
+                       
+
+                        <div class="flex-left">
+                            <div v-if="wish.price" class="flex-left">
+                                <n-space v-if=" wish.price" class="price">
+                                    <n-tag type="success" size="large">
+                                        <div class="flex-left align-items-center">
+                                            <n-icon :component="CashOutline" size="25" :depth="1" class="cash-icon" />
+                                            <p class="card-price">Цена: {{ wish.price }} рублей</p>
+                                        </div>
+                                    </n-tag>
+                                </n-space>
+                            </div>
+                            <div v-if="wish.link" class="card-link">
+                                <n-space>
+                                    <n-tag type="success" size="large">
+                                        <a :href="wish.link" class="link">Ссылка</a>
+                                    </n-tag>
+                                </n-space>
+                            </div>
+                        </div>
+
+                        
+                        
+                        
+                    </div>
+
+                    <div class="card-body__body">
+                        <div class="card-body__content">
+
+                            <div class="div-img">
+
+                                <div v-if="wish.photo">
+                                    <img :src="'/img/' + wish.photo" alt="" class="wish-img" @click="selectWish(wish); showAddPhotoModal=true;" >
+                                </div>
+
+                                <div v-else>
+                                    <n-empty @click="selectWish(wish); showAddPhotoModal=true;" size="large" description="Нет фото" class="empty"></n-empty>
+                                </div>
+
+                            </div> 
+
+                            <div class="flex-left user-info" @click="$router.push(`/user-wish-list/user=${wish.id}`)">
+                                <img :src="'/img/' + wish.img" alt="" class="user-avatar" >
+                                <p>{{ wish.firstName }} {{ wish.secondName }} | {{ wish.nickname }} хочет</p>
+                            </div>
+
+                            
+                            <p class="card-description">{{ wish.description }}</p>
+                        
+                                
+
+                            <p v-if="statusYes">Статус: {{ statusYes }}</p>
+                            <p v-if="statusNo">Статус: {{ statusNo }}</p>
+
+                            <div class="div-flex">                                
+                                <div class="flex-item">
+                                    <n-popover trigger="hover">
+                                        <template #trigger>
+                                            <button v-if="statusYes" class="btn btn-left disabled">Подарить</button>
+                                            <button v-if="statusNo" class="btn"  @click="selectUser(user); addToIWillPresent()">Подарить</button>
+                                        </template>
+                                    <span v-if="statusYes">Это желание уже забронировано</span>
+                                    <span v-if="statusNo">Забронировать этот подарок</span>
+
+                                </n-popover>
+                                
+                                </div>
+
+                                <div class="flex-item">
+                                    <button class="btn" @click="showModal=true; selectWish(wish); openForm();">+ Добавить в свой Wish List</button>
+                                </div>
+                            </div>
+                        
                         </div>
                     </div>
-                    
-                    <div class="flex">
-                        <!-- <div v-if="this.statusNo"> -->
-                            <button  v-if="this.statusNo" class="button" @click="selectWish(wish); iWillPresent();">Забронировать</button>
-                        <!-- </div> -->
-                        <!-- <div v-if="this.statusYes"> -->
-                            <button  v-if="this.statusYes" class="button disabled" @click="selectWish(wish); iWillPresent();">Забронировано</button>
-                        <!-- </div> -->
-
-                        <button class="btn" @click="showModal=true; selectWish(wish); openForm();">+ Добавить в свой Wish List</button>
-                    </div>
-                    
-                    
                 </div>
+
             </div>
         </div>
 
           
-          <div v-if="showModal">
+        <div v-if="showModal">
             <div class="modal">
                 <n-modal v-model:show="showModal">
                     <n-card
-                    style="width: 600px"
-                    title="title"
-                    :bordered="false"
-                    size="huge"
-                    role="dialog"
-                    aria-modal="true"
+                        style="width: 600px"
+                        title="title"
+                        :bordered="false"
+                        size="huge"
+                        role="dialog"
+                        aria-modal="true"
                     >
                     
                     <form method="post">
-                        <!-- <input type="text" name="name"  placeholder="Название" v-model="currentWish.name"> -->
                         <n-input v-model:value="currentWish.name" type="text" placeholder="Название"/>
                         <n-input v-model:value="currentWish.photo" type="text" placeholder="Фото"/>
-
-
-                        <!-- <input type="text" name="name"  placeholder="Цена" v-model="currentWish.price"> -->
                         <n-input-number  v-model:value="currentWish.price" type="text" placeholder="Цена"/>
-
-                        <!-- <input type="text" name="name"  placeholder="Описание" v-model="currentWish.description"> -->
                         <n-input v-model:value="currentWish.description" type="text" placeholder="Описание"/>
-
-                        <!-- <input type="text" name="name"  placeholder="Ссылка" v-model="currentWish.link"> -->
                         <n-input v-model:value="currentWish.link" type="text" placeholder="Ссылка"/>
 
                         <n-space vertical class="select">
                             <n-select v-model:value="currentWish.visible" :options="visible" />
                         </n-space>
-
-                        <!-- <n-space vertical class="select">
-                            <n-select v-model:value="currentWish.folders" :options="folders" />
-                        </n-space> -->
-
-                        <!-- <select name="folder_id" id="folder_id" v-model="currentWish.folder_id">
-                            <option disabled selected value="">Сохранить в папку</option>
-                            <option v-for="(folder,index) in folders" :key="index" :value="folder.id">{{ folder.name }}</option> 
-                        </select> -->
 
                         <n-space vertical class="select">
                             <n-select  v-model:value="currentWish.my_folder_id" :options="folderSelector"/>
@@ -104,11 +145,11 @@
                         <button  @click="showModal=false; addToMyWishList();" class="button">Добавить в свой Wish List</button>
                     </form>
                     
-                    
                     </n-card>
                 </n-modal>
             </div>
         </div>
+
     </div>
 </template>
 
@@ -123,6 +164,17 @@ import { NBreadcrumb, NBreadcrumbItem } from 'naive-ui';
 import { NEmpty } from 'naive-ui';
 import { NInput, NInputNumber  } from 'naive-ui';
 import { NSpace, NSelect } from 'naive-ui';
+import { NButton } from 'naive-ui';
+
+import { NIcon } from "naive-ui";
+
+import { SearchSharp as SearchImg } from "@vicons/ionicons5";
+import { CashOutline } from "@vicons/ionicons5";
+
+import { NPopover } from "naive-ui";
+
+import {  NTag } from 'naive-ui';
+
 
 
 export default defineComponent({
@@ -137,19 +189,26 @@ export default defineComponent({
         NInput, 
         NInputNumber,
         NSpace,
-        NSelect 
+        NSelect,
+        NIcon,
+        SearchImg,
+        NButton,
+        NPopover,
+        NTag
+        
     },
     data(){
         return {
             wishes: [],
+            users: [],
             currentWish: {
-                name: '',
-                price: '',
-                description: '',
-                photo: " ",
-                link: '',
-                visible: '',
-                my_folder_id: '',
+                // name: '',
+                // price: '',
+                // description: '',
+                // photo: " ",
+                // link: '',
+                // visible: '',
+                // my_folder_id: '',
 
             },
             showModal: false,
@@ -164,6 +223,15 @@ export default defineComponent({
         }
     },
     methods: {
+        async getUser() {
+            let id = this.$route.params.id;
+
+            await axios.get('http://localhost:8085/public/process.php?action=get-user-by-wish&id='+id)
+            .then((response)=>{
+                this.users = response.data.users;
+                // console.log(this.users);
+            })
+        },
         async getWish() {
             let id = this.$route.params.id;
 
@@ -185,10 +253,11 @@ export default defineComponent({
                this.currentWish = {name: "", price: "", description: "", photo: "", link: "", visible: "", folder_id: "", done: "", wish_list: "", bucket_list: "" };
                if(response.data.error){
                    this.errorMsg = response.data.message;
-               }else {
+               } else {
                    this.successMsg = response.data.message;
+                //    this.$router.reload();
                }
-               });
+            });
        },
         toFormData(obj){
             let fd = new FormData();
@@ -206,23 +275,29 @@ export default defineComponent({
                 console.log(error);
             });
         },
+        async addToIWillPresent() {
+          
+          let id = this.$route.params.id;
+          let formData = this.toFormData(this.currentUser);
+
+
        
-        async iWillPresent() {
-            let formData = this.toFormData(this.currentWish);
+          // let iserId = this.$user.id;
+          // let friend = currentUser;
+         
 
-            axios.post('http://localhost:8085/public/process.php?action=add-to-i-will-present', formData )
+          await axios.post('http://localhost:8085/public/process.php?action=add-to-i-will-present&id=' + id, formData )
 
-            .then((response)=>{
-            
-                this.currentWish = {};
-                
-                if(response.data.error){
-                    this.errorMsg = response.data.message;
-                } else {
-                    location.reload(); 
-                    // this.successMsg = response.data.message;
-                }
-            });
+          .then((response)=>{
+              if(response.data.error){
+                  this.errorMsg = response.data.message;
+              } else {
+                  this.successMsg = response.data.message;
+              }
+          });
+      },
+        selectUser(user) {
+            this.currentUser = user;
         },
         test() {
             let id = this.$route.params.id;
@@ -232,7 +307,7 @@ export default defineComponent({
             
                 if(response.data.error){
                     this.errorMsg = response.data.message;
-                }else {
+                } else {
                     this.presents =response.data.presents;
                     console.log(this.presents);
                     this.successMsg = response.data.message;
@@ -240,9 +315,9 @@ export default defineComponent({
                     this.statusYes =  response.data.statusYes;
                     this.statusNo =  response.data.statusNo; 
 
-                    // console.log(this.presents);
-                    // console.log(this.statusYes);
-                    // console.log(this.statusNo);
+                    console.log(this.presents);
+                    console.log(this.statusYes);
+                    console.log(this.statusNo);
                 }
             });
         },
@@ -260,10 +335,12 @@ export default defineComponent({
         this.getFolders()
         this.test()
         this.openForm()
+        this.getUser() 
     },
     setup() {
         return {
             value: ref(null),
+            CashOutline,
             visible: [
                 {
                 label: "Кто видит желание",
@@ -295,61 +372,11 @@ export default defineComponent({
 
 
 <style lang="scss" scoped>
+
 @import "@/styles/_variables.scss";
+
 .page {
     @include page;
-}
-.card-body__header {
-    display: flex;
-}
-.card-body__image {
-    width: 50%;
-}
-.card-body__img {
-    width: 100%;
-    border-radius: 10px;
-}
-.card-body__text {
-    width: 50%;
-}
-
-// .card {
-//     background-color: #fff;
-//     border-radius: 10px;
-//     padding: 15px;
-//     margin-bottom: 20px;
-//     cursor: pointer;
-   
-// }
-.card-body__image {
-    margin-right: 20px;
-}
-
-// .card-body__image  {
-//     text-align: center;
-//     margin-bottom: 20px;
-// }
-// .card-body__right-img {
-//     display: block;
-//     max-width: 100%;
-//     height: auto;
-//     border-radius: 10px;
-    
-// }
-.card-price {
-    margin-bottom: 20px;
-}
-.card-description {
-    margin-bottom: 20px;
-}
-.card-link {
-    margin-bottom: 20px;
-}
-
-.button {
-    @include button;
-    width: 49%;
-    font-weight: bold;
 }
 .btn {
     border: 1px solid $active;
@@ -358,13 +385,18 @@ export default defineComponent({
     font-weight: bold;
     border-radius: $border-radius;
     padding: 15px;
-    width: 49%;
+    width: 100%;
     cursor: pointer;
 }
+// .btn-left {
+//     margin-bottom: 20px;
+// }
 
 .disabled {
     background-color: #ccc;
     cursor: not-allowed;
+    border: none;
+    color: #787878;
 }
 
 .empty {
@@ -372,10 +404,59 @@ export default defineComponent({
     // border-radius: 10px;
     border-radius: 5px;
     padding: 80px;
+    margin-bottom: 20px;
 }
 
 .wish-img {
     border-radius: 10px;
     width: 100%; 
+}
+.div-flex {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+.flex-item {
+    width: 49%;
+}
+.wish-img {
+    border: 1px solid #ebebeb;
+    // padding: 10px;
+    border-radius: 10px;
+    width: 100%; 
+    height: 400px;   
+    // object-fit: contain;
+    object-fit: cover;
+    // object-fit: fill;
+    // object-fit: scale-down;
+}
+.header {
+    margin-bottom: 20px;
+}
+.color {
+    border: 1px $bg solid;
+    border-radius: 10px;
+    padding: 10px;
+    margin-bottom: 20px;
+}
+.user-avatar {
+    width: 30px;
+    height: 30px;
+    border-radius: 50%;
+    margin-right: 10px;
+
+}
+.flex-left {
+    display: flex;
+    justify-content: start;
+}
+.user-info {
+    cursor: pointer;
+}
+.cash-icon {
+    margin-right: 10px;
+}
+.align-items-center {
+    align-items: center;
 }
 </style>

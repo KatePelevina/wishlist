@@ -2,54 +2,40 @@
 <template>
     <div class="wrapper">
         <div class="modal">
-            <h1>Login Page</h1>
+            
             <div class="login-form">
-               
+
+                <h1 class="form-title">Авторизация</h1>
+                
                <form @submit.prevent="login">
 
-                <input 
-                    label="Email"
-                    type="email" 
-                    v-model="email" 
-                    :error="emailError"
-                >
-
-                <!-- <n-input 
+                <n-input 
                     label="Email"
                     type="email" 
                     v-model:value="email" 
-                    :error="emailError"
-                /> -->
-                    
-                <!-- <BaseInput
-                    v-model="email"
-                    label="email"
-                    type="email" 
-                /> -->
+                    class="email-input"
+                    placeholder="Email"
+                />
 
-                <input 
-                    v-model="password" 
-                    type="password" 
-                    name="password"
-                >
-
-                <!-- <n-input v-model:value="password" type="password" placeholder="password"/> -->
-
-                <!-- <BaseInput 
-                    v-model="password"
-                    type="text"
+                <n-input 
                     label="Password"
-                /> -->
-
-                <!-- <button type="submit">Login</button> -->
-                <n-button strong secondary type="success" attr-type="submit">Login</n-button>
-               
-
+                    type="password" 
+                    v-model:value="password" 
+                    class="password-input"
+                    placeholder="Password"
+                />
+                    
+                <n-button strong secondary type="success" attr-type="submit" class="form-button">Войти</n-button>
+            
                 <p>{{ error }}</p>
 
-                <router-link to="/register">
-                    Еще нет аккаунта? Зарегистрироваться
-               </router-link>
+                <div class="form-text">
+                    <p>Еще нет аккаунта?</p>
+                    <router-link to="/register" class="link">
+                        Зарегистрироваться
+                    </router-link>
+                </div>
+               
 
                </form>
 
@@ -59,18 +45,13 @@
 </template>
 
 <script>
-// import BaseInput from '@/components/forms/BaseInput.vue';
 import { NButton } from 'naive-ui';
-// import { NInput } from 'naive-ui';
-// import { useField } from 'vee-validate';
-
+import { NInput } from 'naive-ui';
 
 export default {
     components: { 
-        // BaseInput,
         NButton,
-        // NInput,
-        
+        NInput,
     },
     data(){
         return {
@@ -118,58 +99,38 @@ export default {
 }
 </script>
 
-
-
-
-
-
-
 <style scoped lang="scss">
 
+@import "@/styles/_variables.scss";
 
 .login-form {
     background-color: #fff;
     padding: 30px;
-    display: inline-block;
-    width: 20vw;
-    margin: 0 auto;
     border-radius: 8px;
-    
-}
-// input {
-//     display: block;
-//     width: 100%;
-//     margin: 0 auto;
-//     margin-bottom: 20px;
-//     padding: 10px;
-//     border-radius: 8px;
-//     border: 1px solid #ccc;
-// }
-button {
-    width: 100%;
-    // padding: 10px 0;
-    // border-radius: 8px;
-    // border: none;
 }
 .modal {
     width: 25vw;
     margin: 0 auto;
-    // margin-left: 0 auto;
-    // text-align: center;
 }
-// .link {
-//     color: #6069E0;
-// }
-// .button {
-//     background-color: #6069E0;
-//     color: #fff;
-//     border-radius: 10px;
-//     padding: 15px;
-//     width: 100%;
-//     display: block;
-//     text-align: center;
-//     margin-bottom: 20px;
-//     border: none;
-// }
+.form-title {
+    text-align: center;
+    margin-bottom: 20px;
+}
+.email-input {
+    margin-bottom: 20px;
+}
+.password-input {
+    margin-bottom: 20px;
+}
+.form-button  {
+    width: 100%;
+    margin-bottom: 20px;
+}
+.form-text {
+    text-align: center;
+}
+.link:hover {
+    color: $active;
+}
 </style>
 
