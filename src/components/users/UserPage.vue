@@ -1,16 +1,20 @@
 <template>
-
-    <msg-component
-        :errorMsg="this.errorMsg"
-        :successMsg="this.successMsg"
-    />
+    <n-drawer v-model:show="active" :placement="placement">
+        <n-drawer-content closable>
+            <msg-component
+                class="msg"
+                :errorMsg="this.errorMsg"
+                :successMsg="this.successMsg"
+            />
+        </n-drawer-content>
+    </n-drawer>     
 
     <div class="profile">        
         
         <div v-for="user in users" :key="user.id">
 
-            <div class="flex">
-                <div class="flex">
+            <div class="color">
+                <div class="profile-center">
                     <div v-if="user.img">
                         <img class="photo" :src="'/img/' + user.img" />
                     </div>
@@ -22,7 +26,26 @@
                         <p>{{ user.firstName }} {{ user.secondName }}</p> 
 
                         <!-- Подписчик -->
-                        <p> {{ FolYes }} </p>
+                        <!-- <p> {{ FolYes }} </p> -->
+
+                        <!-- <p>{{ statusIn }}</p>
+                        <p>{{ statusOut }}</p> -->
+
+                        
+                        
+                            <div>
+                                <p v-if="FolYes"> подписан на вас </p>
+                                <!-- <p v-if="FolNo"> {{ FolNo }} </p> -->
+                            </div>
+                            <div>
+                                <n-button v-if="statusOut"   strong secondary type="success" @click="showModal=false; subscribe(); statusOut=true; activate('top');">Подписаться</n-button>
+                                <n-button v-if="statusIn"   strong secondary type="error" @click="showModal=false; unsubscribeUser(); statusOut=true; activate('top');">Отписаться</n-button>
+                            </div>
+                        
+
+
+
+
 
                         <!-- В подписках -->
                         <!-- <p>{{ statusIn }}</p> -->
@@ -38,7 +61,8 @@
                     </div>
                 </div>
                 <div>
-                    <user-name @testFunction="testFunction" />
+                    <!-- <user-name @testFunction="testFunction" /> -->
+
                         <!-- <div v-if="this.statusIn">
                             <button class="unSubscribe" @click="unsubscribeUser(); statusOut=true">Отписаться</button>
                         </div>
@@ -46,56 +70,28 @@
                             <button class="subscribe" @click="subscribe(); statusOut=false; testFunction()">Подписаться</button>
                         </div> -->
 
-                            <div v-if="this.statusOut">
-                            <button v-if="FolYes" @click="subscribe(); statusOut=false;">Подписаться в ответ</button>
-                            <n-button strong secondary type="success" v-else class="subscribe" @click="subscribe(); statusOut=false; testFunction()">Подписаться</n-button>
-                        </div>
-                        <div v-else>
-                            <img src="@/assets/setting.svg" alt="icon" class="nav-item__icon" @click="showModal=true">
-                        </div>
+                            <!-- <div v-if="this.statusOut">
+                                <button v-if="FolYes" @click="subscribe(); statusOut=false;">Подписаться в ответ</button>
+                                <n-button strong secondary type="success" v-else class="subscribe" @click="subscribe(); statusOut=false; testFunction()">Подписаться</n-button>
+                            </div>
+                            <div v-else>
+                                <img src="@/assets/setting.svg" alt="icon" class="nav-item__icon" @click="showModal=true">
+                            </div> -->
 
-                        <div v-if="showModal">
-                            <n-modal v-model:show="showModal">
-                                <n-card
-                                    style="width: 600px"
-                                    :bordered="false"
-                                    size="huge"
-                                    role="dialog"
-                                    aria-modal="true"
-                                    >
-                                    <div class="add-component__modal"> 
-                                        <h4>Мои препочтения</h4>
-                                        <p>Цветы: розы</p>
-                                        <br />
-                                        <h4>Стоп-лист</h4>
-                                        <p>Сладкое</p>
-                                        <p>Алкоголь</p>
-                                        <br />
-                                        <p>День рождения: 31 августа 1995 г.</p>
-                                        <p>Страна: Черногория</p>
-                                        <p>Город: Подгорица</p>
-                                        <br />
-                                        <n-button  strong secondary type="error" @click="showModal=false; unsubscribeUser(); statusOut=true">Отписаться</n-button>
-                                        
-                                    </div>
-                                </n-card>
-                            </n-modal>
-                    </div> 
+                        
                 </div>
             </div>
-            <!-- <div class="profile-text">
-                <p @click="showStopList=true" class="stop">Подробнее</p>
-                <p>День рождения: 31 августа</p>
-            </div> -->
+           
 
 
-            <div class="profile-items">
-                <div class="i" @click="showWishlistFolders=true">
+            <div class="profile-items color">
+                <!-- <div class="i" @click="showWishlistFolders=true"> -->
+                <div class="i active" @click="$router.push(`/user-wish-list-folders/user=${user.id}`)">
                     <p>Wish List</p>
                     <p>{{ count_wishlist }} </p>
                 </div>
                 <!-- <div class="i" @click="$router.push(`/user-bucket-list-folders/user=${user.id}`)"> -->
-                <div class="i" @click="$router.push(`/user-bucket-list/user=${user.id}`)">
+                <div class="i active" @click="$router.push(`/user-bucket-list-folders/user=${user.id}`)">
                     <p>Bucket List</p>
                     <p>{{ count_bucketlist }}</p>
                 </div>
@@ -146,11 +142,11 @@
                     <div class="add-component__modal">
                         <div class="flex">
                             <h4>Подписчики {{ followers.length }}</h4>
-                            <button type="button" class="close" @click="showUserFollowers=false">
+                            <!-- <button type="button" class="close" @click="showUserFollowers=false">
                                 <span aria-hidden="true">&times;</span>
-                            </button>
+                            </button> -->
                         </div>
-                        <div v-if="followers.length">
+                        <div v-if="followers.length" class="fol-item">
                             <div v-for="follower in followers" :key="follower.id">
                             <!-- <p @click="this.$router.push(`/user/${follower.id}`)">{{ follower.nickName }}</p>    -->
                             
@@ -160,7 +156,9 @@
 
                             <div class="img">
                                 <img :src="'/img/' + follower.img" alt="" class="nav-item__icon">
-                                <a :href="`/user-wish-list/user=${follower.id}`">{{ follower.nickname }}</a>
+                                <a :href="`/user-wish-list/user=${follower.id}`">{{ follower.nickname }} {{ follower.firstName }} {{ follower.secondName }}</a>
+                                <!-- <p>{{ sub.nickname }} {{ sub.firstName }} {{ sub.secondName }}</p> -->
+
                             </div>
                             
                         
@@ -188,21 +186,23 @@
                     <div class="add-component__modal">
                         <div class="flex">
                             <h4>Подписки {{ subs.length }}</h4>
-                            <button type="button" class="close" @click="showUserSubs=false">
+                            <!-- <button type="button" class="close" @click="showUserSubs=false">
                                 <span aria-hidden="true">&times;</span>
-                            </button>
+                            </button> -->
                         </div>
 
-                        <div>
+                        <div class="sub-item">
                             <div v-if="subs.length">
                                 <div v-for="sub in subs" :key="sub.id" >
                                     <!-- <div @click="$router.push(`/user-wish-list/${sub.id}`)">
                                         <p>{{ sub.nickName }}</p>
                                     </div> -->
                                 
-                                    <div class="img">
+                                    <div class="img black">
                                         <img :src="'/img/' + sub.img" alt="" class="nav-item__icon">
-                                        <a :href="`/user-wish-list/user=${sub.id}`">{{ sub.nickname }}</a>
+                                        <!-- <a :href="`/user-wish-list/user=${sub.id}`">{{ sub.nickname }}</a> -->
+                                        <p>{{ sub.nickname }} {{ sub.firstName }} {{ sub.secondName }}</p>
+
                                     </div>
                                     
                                 </div>
@@ -217,28 +217,7 @@
                 </n-modal>
             </div>
 
-            <div v-if="showStopList">
-                
-                <n-modal v-model:show="showStopList">
-                    <n-card
-                    style="width: 600px"
-                    :bordered="false"
-                    size="huge"
-                    role="dialog"
-                    aria-modal="true"
-                    >
-                    <div>
-                        
-                        <h4>Мои препочтения</h4>
-                        
-                        <p>Цветы: розы</p>
-                        <h4>Стоп-лист</h4>
-                        <p>Сладкое</p>
-                        <p>Алкоголь</p>
-                    </div>
-                    </n-card>
-                </n-modal>
-            </div>
+            
 
             <div v-if="showWishlistFolders">
                 <n-modal v-model:show="showWishlistFolders">
@@ -271,7 +250,7 @@
 
 import axios from 'axios';
 
-import UserName from '@/components/users/UserName.vue'
+// import UserName from '@/components/users/UserName.vue'
 import MsgComponent from '@/components/layout/MsgComponent.vue'
 
 // import { NModal, NCard, NTabs, NTabPane} from 'naive-ui'
@@ -284,19 +263,25 @@ import MsgComponent from '@/components/layout/MsgComponent.vue'
 // import UserWishList from '@/views/wish-list/UserWishList.vue';
 
 import { NModal, NCard, NButton } from 'naive-ui';
+import { NDrawer, NDrawerContent }  from 'naive-ui';
+
+import { defineComponent, ref } from "vue";
 
 
 
 
-export default {
+export default defineComponent ({
     name: 'UserPage',
     components: {
-        UserName,
+        // UserName,
         // WishList,
         MsgComponent,
         NModal,
         NCard,
-        NButton
+        NButton,
+        NDrawer, 
+        NDrawerContent
+        // NTag
         // NTabs,
         // NTabPane,
         // BucketList,
@@ -335,7 +320,6 @@ export default {
 
             showModal: false,
             showDeleteModal: false,
-            showStopList: false,
             showUserFollowers: false,
             showUserSubs: false,
             showWishlistFolders: false,
@@ -522,6 +506,11 @@ export default {
                 console.log(error)
             })
         },
+        reload_interval(time){
+            setTimeout(function(){
+                location.reload();
+            }, time);
+        },
     },
     mounted() {
         this.getUserId(),
@@ -534,6 +523,19 @@ export default {
         this.getUserSubs(),
         this.getFolders()
     },
+    setup() {
+        const active = ref(false);
+        const placement = ref("right");
+        const activate = (place) => {
+        active.value = true;
+        placement.value = place;
+        };
+        return {
+            active,
+            placement,
+            activate,
+        };
+    }
      // computed: {
     //     sortedPosts() {
     //         return [...this.folders].sort((folder1, folder2) => folder1[this.selectedSort]?.localeCompare(folder2[this.selectedSort]))
@@ -542,7 +544,7 @@ export default {
     //         return this.sortedPosts.filter(folder => folder.name.toLowerCase().includes(this.searchQuery.toLowerCase()))
     //     }
     // },
-}
+})
 </script>
 
 <style scoped lang="scss">
@@ -555,6 +557,8 @@ export default {
 }
 .photo {
     @include photo;
+    width: 80px;
+    height: 80px;
 }
 .button {
     @include button;
@@ -583,7 +587,7 @@ export default {
     margin-bottom: 10px;
     font-size: 12px;
     padding: 5px;
-    cursor: default;
+    cursor: pointer;
 }
 .active:hover {
     background-color: #F6F7FF;
@@ -638,5 +642,31 @@ export default {
 
 .profile-items {
     margin-top: 30px;
+}
+.profile-center {
+    text-align: center;
+}
+.flex-items {
+    justify-content: space-evenly;
+}
+.color {
+    border: 1px $bg solid;
+    border-radius: 10px;
+    padding: 10px;
+    margin-bottom: 20px;
+}
+.msg {
+    width: 50%;
+    margin: 0 auto;
+    padding-top: 50px;
+}
+.black {
+    color: black;
+}
+.sub-item {
+    cursor: pointer;
+}
+.fol-item {
+    cursor: pointer;
 }
 </style>

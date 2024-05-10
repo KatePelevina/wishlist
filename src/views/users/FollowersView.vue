@@ -24,17 +24,11 @@
             <p>пока ничего нет</p>
         </div> -->
 
-        <div class="page-title">
-            <!-- <h1>Мои подписчики {{ users.length }}</h1> -->
-            <h1>Мои подписчики: {{ followers }}</h1>
-        </div>
+        
+            <h1 class="title">Мои подписчики: {{ followers }}</h1>
+        
 
-        <n-space vertical v-if="users.length">
-            <n-select v-model:value="selectedSort" :options="options" />
-        </n-space>
-
-
-        <div v-if="users.length">
+        <div v-if="users.length" class="search">
             <label for="my-input">Поиск по никнейму</label>
             <my-input
             
@@ -43,6 +37,16 @@
             />
 
         </div>
+
+        <div class="sort">
+            <n-space vertical v-if="users.length">
+                <n-select v-model:value="selectedSort" :options="options" />
+            </n-space>
+        </div>
+        
+
+
+       
         
 
         <div v-if="users.length">
@@ -171,12 +175,12 @@ export default defineComponent( {
 
 <style lang="scss" scoped>
 @import "@/styles/_variables.scss";
-.page-title {
-    background-color: #fff;
-    border-radius: 10px;
-    padding: 15px;
-    margin-bottom: 10px;
-}
+// .page-title {
+//     background-color: #fff;
+//     border-radius: 10px;
+//     padding: 15px;
+//     margin-bottom: 10px;
+// }
 .page {
     @include page;
 }
@@ -184,4 +188,15 @@ export default defineComponent( {
     height: 30px;
     background: green;
 }
+.title {
+    margin-bottom: 20px;
+    text-align: center;
+}
+.search {
+    margin-bottom: 20px;
+}
+.sort {
+    margin-bottom: 20px;
+}
+
 </style>

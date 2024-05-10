@@ -37,11 +37,23 @@
     
     <UserPage />
 
-    <p v-for="user in users" :key="user.id">{{ user.firstName }} {{ user.secondName }}</p>
+    <!-- <p v-for="user in users" :key="user.id">{{ user.firstName }} {{ user.secondName }}</p> -->
 
-    <div class="flex">
-        <h1>User Bucket List</h1>
-        <img src="@/assets/location.svg" alt="icon" class="nav-item__icon" @click="$router.push(`/user-bucket-list-folders/user=${this.$route.params.id}`)"> 
+    <div class="flex-left color">
+        <div class="popover">
+        <n-popover trigger="hover">
+            <template #trigger>
+                <n-space @click="$router.push(`/user-bucket-list-folders/user=${this.$route.params.id}`)">
+                  <n-icon size="25" @click="showInfo=true">
+                    <svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" viewBox="0 0 512 512"><path d="M408 96H252.11a23.89 23.89 0 0 1-13.31-4L211 73.41A55.77 55.77 0 0 0 179.89 64H104a56.06 56.06 0 0 0-56 56v24h416c0-30.88-25.12-48-56-48z" fill="currentColor"></path><path d="M423.75 448H88.25a56 56 0 0 1-55.93-55.15L16.18 228.11v-.28A48 48 0 0 1 64 176h384.1a48 48 0 0 1 47.8 51.83v.28l-16.22 164.74A56 56 0 0 1 423.75 448zm56.15-221.45z" fill="currentColor"></path></svg>                  
+                  </n-icon>
+                </n-space>
+            </template>
+            <span>Просмотр желаний в папках</span>
+        </n-popover>
+        </div>
+        <h1>User BUCKETLIST</h1>
+        <!-- <img src="@/assets/location.svg" alt="icon" class="nav-item__icon" @click="$router.push(`/user-bucket-list-folders/user=${this.$route.params.id}`)">  -->
     </div>
 
 
@@ -51,10 +63,13 @@
         </n-space>
     </div>
 
-    <my-input
+    <div class="search">
+        <my-input
         v-model="searchQuery"
         placeholder="Поиск..."
-    />
+        />
+    </div>
+    
 
     <UserBucketList 
         :wishes="sortedAndSearchedPosts"
@@ -90,6 +105,7 @@ import UserBucketList from '@/components/users/UserBucketList.vue'
 import { NSpace, NSelect } from 'naive-ui';
 
 import { defineComponent, ref } from "vue";
+import { NPopover, NIcon } from 'naive-ui';
 
 
 export default defineComponent ({
@@ -99,7 +115,9 @@ export default defineComponent ({
         UserPage,
         NSpace, 
         NSelect,
-        UserBucketList
+        UserBucketList,
+        NPopover, 
+        NIcon
     },
     data() {
         return {
@@ -232,6 +250,22 @@ export default defineComponent ({
 
 .flex {
     @include flex;
+}
+.flex-left {
+    display: flex;
+    justify-content: start;
+    align-items: center;
+    margin-bottom: 20px;
+}
+.popover {
+    margin-right: 10px;
+    cursor: pointer;
+}
+.select {
+    margin-bottom: 20px;
+}
+.search {
+    margin-bottom: 20px;
 }
 </style>
 

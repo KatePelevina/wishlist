@@ -21,17 +21,18 @@
             <p>пока ничего нет</p>
         </div> -->
 
-        <!-- <h1>Мои подписки {{ users.length }}</h1> -->
-        <h1>Мои подписки: {{ subs }}</h1>
+        <h1 class="title">Мои подписки: {{ subs }}</h1>
 
-        <n-space vertical v-if="users.length">
+        <div class="div-search" v-if="users.length">
+            <label for="my-input" class="label">Поиск по никнейму</label>
+            <my-input v-model="searchQuery" />
+        </div>
+
+        <n-space vertical v-if="users.length" class="sort">
             <n-select v-model:value="selectedSort" :options="options" />
         </n-space>
 
-        <div class="div-search" v-if="users.length">
-            <label for="my-input">Поиск по никнейму</label>
-            <my-input v-model="searchQuery" />
-        </div>
+        
        
 
         <div v-if="users.length">
@@ -165,10 +166,21 @@ export default defineComponent  ({
     @include page;
 }
 .div-search {
-    margin-top: 30px;
+    margin-bottom: 20px;
 }
 .observer {
     height: 30px;
     background: green;
+}
+.title {
+    margin-bottom: 20px;
+    text-align: center;
+}
+.sort {
+    margin-bottom: 20px;
+}
+.label {
+    display: inline-block;
+    margin-bottom: 5px;
 }
 </style>

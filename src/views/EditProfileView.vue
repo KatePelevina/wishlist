@@ -10,7 +10,7 @@
 
  
       <div class="card" v-for="user in users" :key="user.id">
-          <div class="card-header">
+          <!-- <div class="card-header">
               <div class="card-header__left">
                   <div class="photo"></div>
                   <div>
@@ -30,18 +30,20 @@
           </div>
           <div>
               <p>{{user.about}}</p>
-          </div>
+          </div> -->
           
         
 
+        <div class="flex-btn">
+            <n-button strong secondary type="warning" @click="showEditModal=true; selectUser(user);">
+                Редактировать профиль
+            </n-button>
+            <n-button strong secondary type="error">
+                Удалить профиль
+            </n-button>
+        </div>
 
-
-        <n-button strong secondary type="warning" @click="showEditModal=true; selectUser(user);">
-            Редактировать профиль
-        </n-button>
-        <n-button strong secondary type="error">
-            Удалить профиль
-        </n-button>
+        
       </div>
  
       <!-- <div>
@@ -55,7 +57,7 @@
 
 
 
-<!-- Edit Place -->
+<!-- Edit  -->
   <div v-if="showEditModal">
         <n-modal v-model:show="showEditModal">
             <n-card
@@ -70,17 +72,17 @@
                 <div class="add-box">
                     <h2>Редактировать user</h2>
                     <form class="form" method="post" @submit.prevent="updateUser">
+                        <label>Имя</label>
                         <n-input v-model:value="currentUser.firstName" type="text" placeholder="firstName"/>
-                        <!-- <input class="add-box__input" type="text" name="firstName"  v-model="currentUser.firstName"> -->
 
+                        <label>Фамилия</label>
                         <n-input v-model:value="currentUser.secondName" type="text" placeholder="secondName"/>
-                        <!-- <input class="add-box__input" type="text" name="secondName"  v-model="currentUser.secondName"> -->
 
+                        <label>nickname</label>
                         <n-input v-model:value="currentUser.nickName" type="text" placeholder="nickName"/>
-                        <!-- <input class="add-box__input" type="text" name="nickName"  v-model="currentUser.nickName"> -->
 
+                        <label>about</label>
                         <n-input v-model:value="currentUser.about" type="text" placeholder="about"/>
-                        <!-- <input class="add-box__input" type="text" name="about"  v-model="currentUser.about">   -->
                         
                         <n-upload
                             v-model:value="currentUser.img"
@@ -95,7 +97,7 @@
                             <n-button>Загрузить фото</n-button>
                         </n-upload>  
 
-                        <button  @click="showEditModal=false; updateUser(); uploadFile()" class="button">Обновить</button>
+                        <n-button type="success"  @click="showEditModal=false; updateUser(); uploadFile()" class="edit-btn">Обновить</n-button>
                     </form>
                 </div>
             </div>
@@ -103,22 +105,6 @@
             </n-card>
         </n-modal>
   </div> 
-
-  <!-- <n-upload
-        v-model="currentUser.img"
-        action="http://localhost:8085/public/process.php?action=update-user-img"
-        :headers="{
-        'naive-info': 'hello!'
-        }"
-        :data="{
-        'naive-data': 'cool! naive!'
-        }"
-        >
-        <n-button @click="uploadFile()">Загрузить фото</n-button>
-    </n-upload>  
-        <n-button @click="uploadFile()">Загрузить</n-button> -->
-
-  
 
 </template>
 
@@ -272,7 +258,7 @@ export default defineComponent({
   display: flex;
 }
 .add-box {
-    text-align: center;
+    // text-align: center;
     width: 50%;
     margin: auto;
     input {
@@ -286,5 +272,16 @@ export default defineComponent({
 .button {
     @include button;
    
+}
+.n-input {
+    margin-bottom: 10px;
+}
+.edit-btn {
+    width: 100%;
+}
+.flex-btn {
+    display: flex;
+    justify-content: space-around;
+    align-items: center;
 }
 </style>

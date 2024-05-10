@@ -31,18 +31,24 @@
     :options="sortOptions" 
     /> -->
 
-    <n-space vertical v-if="users.length">
-        <n-select v-model:value="selectedSort" :options="options" />
-    </n-space>
 
-
-    <div v-if="users.length">
+    <div v-if="users.length" class="search">
         <label for="my-input">Поиск по никнейму</label>
         <my-input
         v-model="searchQuery"
         placeholder="Поиск..."
         />
     </div>
+
+    <div class="sort">
+        <n-space vertical v-if="users.length">
+            <n-select v-model:value="selectedSort" :options="options" />
+        </n-space>
+    </div>
+  
+
+
+    
     
     
     <users-list 
@@ -189,5 +195,12 @@ export default defineComponent ({
 }
 .title {
     text-align: center;
+    margin-bottom: 20px;
+}
+.sort {
+    margin-bottom: 20px;
+}
+.search {
+    margin-bottom: 20px;
 }
 </style>

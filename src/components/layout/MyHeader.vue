@@ -20,9 +20,9 @@
               <router-link v-if="loggedIn" to="/my-bucket-list-folders">Bucket List</router-link>
             </li> -->
            
-            <li class="navtest-item">
+            <!-- <li class="navtest-item">
               <router-link to="/find-user">find-user</router-link>
-            </li>
+            </li> -->
             <li class="navtest-item">
               <router-link to="/ideas-wish-list">ideaWish</router-link>
             </li>
@@ -32,14 +32,19 @@
           </ul>
         </nav>
 
+       
+
         <div class="header-inner__right">
+          <p>Welcome, {{ name }}</p>
+          <button @click="Logout">Logout</button>
+
           <!-- <a href="#" class="header-link">Катя Пелевина</a> -->
-          <router-link v-if="!loggedIn"  to="/login" class="btn">
+          <!-- <router-link v-if="!loggedIn"  to="/login" class="btn">
             Login
           </router-link>
           <button v-else type="button" class="btn" @click="logout">
             Logout
-          </button>
+          </button> -->
         </div>
 
       </div>
@@ -49,6 +54,8 @@
 
 <script>
 import { authComputed } from '../../vuex/helpers.js';
+import { ref, onBeforeMount } from 'vue';
+import firebase from 'firebase';
 
 export default {
   name: 'MyHeader',
@@ -64,7 +71,33 @@ export default {
     logout() {
       this.$store.dispatch('logout')
     }
-  }
+  },
+  setup() {
+
+const name = ref("");
+
+onBeforeMount(() => {
+    const user = firebase.auth().currentUser;
+
+    if(user) {
+        name.value = user.email.split('@')[0];
+    }
+});
+
+const Logout = () => {
+    firebase
+    .auth()
+    .signOut()
+    .then(() => console.log("Signed out"))
+    .catch(err => alert(err.message));
+}
+
+
+return { 
+    name,
+    Logout
+}
+}
 }
 </script>
 

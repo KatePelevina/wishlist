@@ -1,6 +1,10 @@
 import { createRouter, createWebHistory } from 'vue-router'
 
-import LandingView from '../views/LandingView.vue'
+import LandingView from '../views/LandingView.vue';
+
+// import { auth } from '@/firebase';
+
+
 
 const routes = [
   {
@@ -14,23 +18,42 @@ const routes = [
   },
 
   // AUTH 
-  {
-    path: '/register',
-    name: 'register',
-    meta: {
-      layout: 'HeaderLayout',
-      requiresAuth: false
-    },
-    component: () => import('@/views/auth/RegisterUser.vue')
-  },
+  // {
+  //   path: '/dashboard',
+  //   name: 'dashboard',
+  //   meta: {
+  //     layout: 'HeaderLayout',
+  //     requiresAuth: false
+  //   },
+  //   component: () => import('@/views/DashboardView.vue')
+  // },
   {
     path: '/login',
     name: 'login',
     meta: {
       layout: 'HeaderLayout',
-      requiresAuth: false
+      // requiresAuth: true
     },
-    component: () => import('@/views/auth/LoginUser.vue')
+    component: () => import('@/views/test/LoginFirebaseTest.vue')
+  },
+  {
+    path: '/signup',
+    name: 'signup',
+    meta: {
+      layout: 'HeaderLayout',
+      // requiresAuth: true
+    },
+    component: () => import('@/views/test/SignUpFirebaseTest.vue')
+  },
+  
+  {
+    path: '/edit-profile/user=:id',
+    name: 'edit-profile',
+    meta: {
+      layout: 'MainLayout',
+      // requiresAuth: true
+    },
+    component: () => import('@/views/EditProfileView.vue')
   },
   {
     path: '/edit-profile/user=:id',
@@ -41,6 +64,7 @@ const routes = [
     },
     component: () => import('@/views/EditProfileView.vue')
   },
+  
   
   // WISHES
   {
@@ -181,6 +205,7 @@ const routes = [
     name: 'ideas-wish-list',
     meta: {
       layout: 'MainLayout',
+      
 
     },
     component: () => import('@/views/wish-list/ideas/IdeasWishList.vue')
@@ -280,7 +305,7 @@ const routes = [
     name: 'my-wish-list-folders',
     meta: {
       layout: 'MainLayout',
-      // requiresAuth: true
+      requiresAuth: true
     },
     component: () => import('@/views/wish-list/my-wishes/MyWishListFolders.vue')
   },
@@ -394,13 +419,27 @@ const router = createRouter({
   routes
 })
 
-router.beforeEach( (to, from, next) => {
-  const loggedIn = localStorage.getItem('user')
+// router.beforeEach( (to, from, next) => {
+//   const loggedIn = localStorage.getItem('user')
 
-  if (to.matched.some(record => record.meta.requiresAuth) && !loggedIn) {
-    next('/')
-  } 
-  next()
-})
+//   if (to.matched.some(record => record.meta.requiresAuth) && !loggedIn) {
+//     next('/')
+//   } 
+//   next()
+// })
+
+// router.beforeEach( (to, from, next) => {
+//   if(to.path === '/login' && auth.currentUser) {
+//     next('/my-wish-list-folders')
+//     return;
+//   }
+
+//   if(to.matched.some(record => record.meta.requiresAuth) && !auth.currentUser) {
+//     next('/login')
+//     return;
+//   }
+
+//   next();
+// })
 
 export default router

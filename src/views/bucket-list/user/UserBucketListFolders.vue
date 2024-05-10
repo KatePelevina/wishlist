@@ -3,9 +3,23 @@
         <user-page />
 
 
-        <div class="flex title">
-            <h1>User Bucket List Folders</h1>
-            <img src="@/assets/location.svg" alt="icon" class="nav-item__icon" @click="$router.push(`/user-bucket-list/user=${this.$route.params.id}`)"> 
+        <div class="flex-left title">
+            <div class="popover">
+                <n-popover trigger="hover">
+                    <template #trigger>
+                        <n-space @click="$router.push(`/user-bucket-list/user=${this.$route.params.id}`)">
+                            <!-- <n-switch v-model:value="active" /> -->
+                            <n-icon size="25" @click="showInfo=true">
+                                <svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" viewBox="0 0 512 512"><path fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="48" d="M160 144h288"></path><path fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="48" d="M160 256h288"></path><path fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="48" d="M160 368h288"></path><circle cx="80" cy="144" r="16" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="32"></circle><circle cx="80" cy="256" r="16" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="32"></circle><circle cx="80" cy="368" r="16" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="32"></circle></svg>                            
+                            </n-icon>
+                        </n-space>
+                    </template>
+                    <span>Просмотр желаний списком</span>
+                </n-popover>
+            </div>
+
+            <h1>User BUCKETLIST Folders</h1>
+            <!-- <img src="@/assets/location.svg" alt="icon" class="nav-item__icon" @click="$router.push(`/user-bucket-list/user=${this.$route.params.id}`)">  -->
         </div>
 
         <div class="select" v-if="folders.length">
@@ -13,10 +27,14 @@
                 <n-select v-model:value="selectedSort" :options="options" />
             </n-space>
         </div>
-        <my-input
+
+        <div class="search" v-if="folders.length">
+            <my-input
             v-model="searchQuery"
             placeholder="Поиск..."
-        />
+            />
+        </div>
+        
 
         <UserFoldersList :folders="sortedAndSearchedPosts"/>
 
@@ -31,6 +49,7 @@ import MyInput from '@/components/layout/MyInput.vue';
 import { NSpace, NSelect } from 'naive-ui';
 
 import { defineComponent, ref } from "vue";
+import { NPopover,  NIcon } from 'naive-ui';
 
 
 export default defineComponent({
@@ -39,7 +58,9 @@ export default defineComponent({
         UserFoldersList, 
         MyInput,
         NSpace, 
-        NSelect 
+        NSelect,
+        NPopover,  
+        NIcon
     },
     data() {
         return {
@@ -125,5 +146,20 @@ export default defineComponent({
 
 .title {
     margin-bottom: 50px;
+}
+.flex-left {
+    display: flex;
+    justify-content: start;
+    align-items: center;
+}
+.popover {
+    margin-right: 10px;
+    cursor: pointer;
+}
+.select {
+    margin-bottom: 20px;
+}
+.search {
+    margin-bottom: 20px;
 }
 </style>

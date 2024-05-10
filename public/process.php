@@ -528,14 +528,14 @@
         case 'register':
             
             
-            // $nickname = $_POST['nickname'];
+            $name = $_POST['name'];
             $email = $_POST['email'];
             $password = $_POST['password'];
             
             
             try {
                 
-                $sql = $conn->query("INSERT INTO `users`(`firstName`, `secondName`, `nickname`, `about`, `img`, `password`, `email`) VALUES ('','','','','','$password','$email')");
+                $sql = $conn->query("INSERT INTO `users`(`name`, `firstName`, `secondName`, `nickname`, `img`, `password`, `email`) VALUES (' $name','','','','','$email',' $password')");
                 
             } catch (Exception $e) {
             }
@@ -646,10 +646,10 @@
                     "INSERT INTO `users_users`(`user_id`, `test_id`) VALUES ('1','$id')");
     
                 if ($sql) {
-                    $result['message'] = "subscribe successfully!";
+                    $result['message'] = "Вы подписались";
                 } else {
                     $result['error'] = true;
-                    $result['message'] = "subscribe error!";
+                    $result['message'] = "Ошибка!";
                 }
             // }
             // catch (Exception $e) {
@@ -664,7 +664,7 @@
                     "DELETE FROM `users_users` WHERE `test_id`=$id");
     
                 if ($sql) {
-                    $result['message'] = "unsubscribe successfully!";
+                    $result['message'] = "Вы отписались";
                 } else {
                     $result['error'] = true;
                     $result['message'] = "unsubscribe error!";
@@ -1096,6 +1096,7 @@
         case 'get-wishlist-folders':
             $id = 1;
 
+            
             $sql = $conn->query(
             "SELECT *
             FROM wishlist_folders

@@ -120,30 +120,45 @@
                 <n-modal v-model:show="showModal">
                     <n-card
                         style="width: 600px"
-                        title="title"
+                        
                         :bordered="false"
                         size="huge"
                         role="dialog"
                         aria-modal="true"
                     >
-                    
-                    <form method="post">
-                        <n-input v-model:value="currentWish.name" type="text" placeholder="Название"/>
-                        <n-input v-model:value="currentWish.photo" type="text" placeholder="Фото"/>
-                        <n-input-number  v-model:value="currentWish.price" type="text" placeholder="Цена"/>
-                        <n-input v-model:value="currentWish.description" type="text" placeholder="Описание"/>
-                        <n-input v-model:value="currentWish.link" type="text" placeholder="Ссылка"/>
+                    <div class="modal-form">
+                        <h5 class="modal-title">Добавить желание в мой WISHLIST</h5>
 
-                        <n-space vertical class="select">
-                            <n-select v-model:value="currentWish.visible" :options="visible" />
-                        </n-space>
+                        <form method="post">
+                            <label>Название*</label>
+                            <n-input v-model:value="currentWish.name" type="text" placeholder="Название" class="my-n-input"/>
 
-                        <n-space vertical class="select">
-                            <n-select  v-model:value="currentWish.my_folder_id" :options="folderSelector"/>
-                        </n-space>
+                            <!-- <label>Фото</label>
+                            <n-input v-model:value="currentWish.photo" type="text" placeholder="Фото" class="my-n-input"/> -->
 
-                        <button  @click="showModal=false; addToMyWishList();" class="button">Добавить в свой Wish List</button>
-                    </form>
+                            <label>Цена</label>
+                            <n-input-number  v-model:value="currentWish.price" type="text" placeholder="Цена" class="my-n-input"/>
+
+                            <label>Описание</label>
+                            <n-input v-model:value="currentWish.description" type="text" placeholder="Описание" class="my-n-input"/>
+
+                            <label>Ссылка</label>
+                            <label></label>
+                            <n-input v-model:value="currentWish.link" type="text" placeholder="Ссылка" class="my-n-input"/>
+
+                            <label>Кто видит желание*</label>
+                            <n-space vertical class="select">
+                                <n-select v-model:value="currentWish.visible" :options="visible" />
+                            </n-space>
+
+                            <label>Папка*</label>
+                            <n-space vertical class="select">
+                                <n-select  v-model:value="currentWish.my_folder_id" :options="folderSelector"/>
+                            </n-space>
+
+                            <n-button type="primary"  @click="showModal=false; addToMyWishList();" class="button">Добавить в свой Wish List</n-button>
+                        </form>
+                    </div>
                     
                     </n-card>
                 </n-modal>
@@ -343,17 +358,17 @@ export default defineComponent({
             CashOutline,
             visible: [
                 {
-                label: "Кто видит желание",
-                value: "",
-                disabled: true
+                    label: "Кто видит желание",
+                    value: "",
+                    disabled: true
                 },
                 {
-                label: "вижу только я",
-                value: "1",
+                    label: "вижу только я",
+                    value: "0",
                 },
                 {
-                label: "видят все пользователи",
-                value: "2"
+                    label: "видят все пользователи",
+                    value: "1"
                 }
             ],
             folderSelector: [
@@ -449,9 +464,13 @@ export default defineComponent({
 .flex-left {
     display: flex;
     justify-content: start;
+    align-items: center;
 }
 .user-info {
     cursor: pointer;
+    // display: flex;
+    // justify-content: start;
+    // align-items: center;
 }
 .cash-icon {
     margin-right: 10px;
@@ -459,4 +478,24 @@ export default defineComponent({
 .align-items-center {
     align-items: center;
 }
+.modal-form {
+    max-width: 50%;
+    margin: 0 auto;
+    // text-align: center;
+}
+.my-n-input {
+    margin-bottom: 10px;
+}
+.select {
+    margin-bottom: 20px;
+}
+.button {
+    width: 100%;
+}
+.modal-title {
+    text-align: center;
+    margin-bottom: 20px;
+    font-size: 20px;
+}
+
 </style>

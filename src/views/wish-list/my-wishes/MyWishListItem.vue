@@ -85,7 +85,7 @@
               <div class="modal-form add-photo-modal">
                
                 <form >
-                  <input type="file" id="file" ref="file" v-on:change="handleFileUpload()"/>
+                  <input type="file" id="file" ref="file" v-on:change="handleFileUpload()" class="photo-input"/>
 
                   <n-button @click="showAddPhotoModal=false; updateWish(); submitFile()"  type="primary" class="add-photo-btn">Добавить фото</n-button>
                 </form>
@@ -582,7 +582,7 @@ export default defineComponent ({
         max-width: 50%;
         margin: 0 auto;
         // text-align: center;
-    }
+}
 .flex-left, .flex-right {
     width: 50%;
 }
@@ -665,9 +665,10 @@ export default defineComponent ({
     width: 100%;
 }
 
-// .div-img {
-//     margin-right: 20px;
-// }
+.div-img {
+    // margin-right: 20px;
+    cursor: pointer;
+}
 // .flex-img {
 //     align-items: start;
 // }
@@ -743,5 +744,8 @@ export default defineComponent ({
 }
 .page {
     @include page;
+}
+.photo-input {
+    cursor: pointer;
 }
 </style>

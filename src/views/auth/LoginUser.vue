@@ -1,6 +1,13 @@
 
 <template>
-    <div class="wrapper">
+    <div>
+        <!-- <h1>Login</h1>
+        <input type="email" placeholder="Email" v-model="email">
+        <input type="password" placeholder="Password" v-model="password">
+        <button @click="login">Login</button> -->
+    </div>
+
+    <!-- <div class="wrapper">
         <div class="modal">
             
             <div class="login-form">
@@ -41,39 +48,66 @@
 
             </div>
         </div>
-    </div>
+    </div> -->
 </template>
 
 <script>
-import { NButton } from 'naive-ui';
-import { NInput } from 'naive-ui';
+// import firebase from 'firebase';
 
-export default {
-    components: { 
-        NButton,
-        NInput,
-    },
-    data(){
-        return {
-            email: '',
-            password: '',
-            error: null
-        }
-    },
-    methods: {
-        login() {
-            this.$store.dispatch('login', {
-                email: this.email,
-                password: this.password
-            })
-            .then( () => {
-                this.$router.push({ name: 'my-wish-list-folders'})
-            })
-            .catch(err => {
-                this.error = err.response.data.error
-            })
-        },
-    },
+
+// export default {
+//     name: 'LoginView',
+//     data() {
+//         return {
+//             email: "",
+//             password: "",
+//             initials: "",
+//         }
+//     },
+//     methods: {
+//         login() {
+//             firebase.auth()
+//             .signInWithEmailAndPaswword(this.email, this.password)
+//             .then(
+//                 (user) => {
+//                     console.log(user)
+//                 },
+//                 (err) => {
+//                     alert(err)
+//                 }
+//             )
+//         }
+//     }
+// }
+// import { NButton } from 'naive-ui';
+// import { NInput } from 'naive-ui';
+
+// export default {
+    // components: { 
+    //     NButton,
+    //     NInput,
+    // },
+    // data(){
+    //     return {
+    //         email: '',
+    //         password: '',
+    //         error: null
+    //     }
+    // },
+    // methods: {
+    //     login() {
+    //         this.$store.dispatch('login', {
+    //             email: this.email,
+    //             password: this.password
+    //         })
+    //         .then( () => {
+    //             this.$router.push({ name: 'my-wish-list-folders'})
+    //         })
+    //         .catch(err => {
+    //             this.error = err.response.data.error
+    //         })
+    //     },
+    // },
     // setup () {
     //     function onSubmit () {
     //         alert('Submitted')
@@ -96,10 +130,10 @@ export default {
     //         emailError: email.errorMessage
     //     }
     // }
-}
+// }
 </script>
 
-<style scoped lang="scss">
+<!-- <style scoped lang="scss">
 
 @import "@/styles/_variables.scss";
 
@@ -132,5 +166,5 @@ export default {
 .link:hover {
     color: $active;
 }
-</style>
+</style> -->
 

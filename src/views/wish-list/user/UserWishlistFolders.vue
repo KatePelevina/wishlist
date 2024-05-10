@@ -7,9 +7,24 @@
         </div> -->
 
     <UserPage />
-    <div class="flex">
-        <h1>User Wish List Folders</h1>
-        <img src="@/assets/location.svg" alt="icon" class="nav-item__icon" @click="$router.push(`/user-wish-list/user=${this.$route.params.id}`)"> 
+
+    <div class="flex-left">
+        <div class="popover">
+            <n-popover trigger="hover">
+                <template #trigger>
+                    <n-space @click="$router.push(`/user-wish-list/user=${this.$route.params.id}`)">
+                        <!-- <n-switch v-model:value="active" /> -->
+                        <n-icon size="25" @click="showInfo=true">
+                            <svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" viewBox="0 0 512 512"><path fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="48" d="M160 144h288"></path><path fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="48" d="M160 256h288"></path><path fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="48" d="M160 368h288"></path><circle cx="80" cy="144" r="16" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="32"></circle><circle cx="80" cy="256" r="16" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="32"></circle><circle cx="80" cy="368" r="16" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="32"></circle></svg>                            
+                        </n-icon>
+                    </n-space>
+                </template>
+                <span>Просмотр желаний списком</span>
+            </n-popover>
+        </div>
+
+        <h1>User WISHLIST Folders</h1>
+        <!-- <img src="@/assets/location.svg" alt="icon" class="nav-item__icon" @click="$router.push(`/user-wish-list/user=${this.$route.params.id}`)">  -->
     </div>
 
     <my-input
@@ -30,7 +45,7 @@ import UserFoldersList from '@/components/folders/UserFoldersList';
 import UserPage from '@/components/users/UserPage.vue';
 import MyInput from '@/components/layout/MyInput.vue';
 
-
+import { NPopover, NSpace, NIcon } from 'naive-ui';
 
 
 export default {
@@ -38,6 +53,9 @@ export default {
         UserFoldersList,
         UserPage,
         MyInput,
+        NPopover,
+        NSpace, 
+        NIcon
     },
     data() {
         return {
@@ -111,5 +129,14 @@ export default {
 
 .flex {
     @include flex;
+}
+.flex-left {
+    display: flex;
+    justify-content: start;
+    align-items: center;
+}
+.popover {
+    margin-right: 10px;
+    cursor: pointer;
 }
 </style>

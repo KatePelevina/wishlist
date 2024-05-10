@@ -3,12 +3,23 @@
         <div  v-for="user in users" :key="user.id">
 
             <div>
-                <!-- <router-link to="/image-load"> -->
-                    <div class="flex">
-                        <!-- <img class="photo" :src="'/img/' + user.img"/> -->
-                        
-                        <div class="flex">
-                            <!-- <img class="photo" src="@/assets/photo.jpg" alt=""> -->
+                
+                    <div class="center-profile">
+                        <n-tooltip trigger="hover">
+                            <template #trigger>
+                                <div class="img-icon">
+                                    <img :src="'/img/' + user.img" alt="" class="photo" @click="$router.push(`/edit-profile/user=${user.id}`)">
+
+                                    <div>
+                                        <p>{{ user.username }}</p>
+                                        <p>{{ user.firstName }} {{ user.secondName }}</p>   
+                                    </div>
+                                </div>
+                            </template>
+                            Редактировать аккаунт
+                        </n-tooltip>
+
+                        <!-- <div class="center-profile">
                             <img :src="'/img/' + user.img" alt="" class="photo" >
 
                             <div>
@@ -16,26 +27,19 @@
                                 <p>{{ user.firstName }} {{ user.secondName }}</p>   
                             </div>
                             
-                        </div>
+                        </div> -->
                         
-                        <n-tooltip trigger="hover">
-                            <template #trigger>
-                                <div class="img-icon">
-                                <img src="@/assets/setting.svg" alt="icon" class="nav-item__icon" @click="$router.push(`/edit-profile/user=${user.id}`)">
-                            </div>
-                        </template>
-                            Редактировать аккаунт
-                        </n-tooltip>
+                        
                         
                     </div>
-                <!-- </router-link> -->
+              
             </div>
 
             <div class="profile-text">
                 <p>{{ user.about }}</p>
             </div>
 
-            <div class="profile-items">
+            <div class="profile-items"> 
                 <div class="i" @click="$router.push(`/my-wish-list-folders`)">
                     <p>{{ count_wishlist }}</p>
                     <p>Wish List</p>
@@ -60,40 +64,17 @@
         </div>
     </div>
 
-    <div v-if="showModal">
-        
-        <n-modal v-model:show="showModal">
-            <n-card
-            style="width: 600px"
-            :bordered="false"
-            size="huge"
-            role="dialog"
-            aria-modal="true"
-            >
-            <div>
-                <button>Редактировать</button>
-                <p>День рождения: 8 июня</p>
-                <p>Город: Санкт-Петербург</p>
-
-                <p>Мои пожелания</p>
-                <p>Цветы</p>
-                <p>Стоп-лист</p>
-                <p>Алгоколь</p>
-            </div>
-            </n-card>
-        </n-modal>
-    </div>
+    
 </template>
 
 <script>
 import axios from 'axios';
-import { NModal, NCard, NTooltip } from 'naive-ui'
+import { NTooltip } from 'naive-ui'
 
 export default {
     name: 'MyProfile',
     components: {
-        NModal, 
-        NCard,
+     
         NTooltip
     },
     data() {
@@ -104,7 +85,7 @@ export default {
             count_bucketlist: "",
             followers: "",
             subs: "",
-            showModal: false,
+           
         }
     },
     methods: {
@@ -258,5 +239,8 @@ export default {
 
 .img-icon {
     cursor: pointer;
+}
+.center-profile {
+    text-align: center;
 }
 </style>

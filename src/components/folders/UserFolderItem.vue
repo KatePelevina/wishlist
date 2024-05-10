@@ -1,5 +1,7 @@
 <template>
+    <!-- <div class="card-test" @click="$router.push(`/${folder.type}/folder=${folder.id}`)"> -->
     <div class="card-test" @click="$router.push(`/${folder.type}/folder=${folder.id}`)">
+
         <p>{{ folder.name }}</p>
         <p>{{ folder.date }}</p>
         <!-- <p>{{ folder.type }}</p> -->

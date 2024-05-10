@@ -1,12 +1,14 @@
 <template>
     
     <div v-if="users.length">
-        <div v-for="user in users" :key="user.id" @click="$router.push(`/user-wish-list/user=${user.id}`)">
+        <div v-for="user in users" :key="user.id" @click="$router.push(`/user-wish-list-folders/user=${user.id}`)">
             <div class="card" >
                 <div class="card-header">
                     <div class="card-header__left">
                         <div>
-                            <img class="photo" :src="'/img/' + user.img" />
+                            <img v-if="user.img"  class="photo" :src="'/img/' + user.img" />
+                            <n-empty v-else size="large" description="Нет фото" class="empty"></n-empty>
+
                         </div>
                         <div>
                             <!-- <p class="card-text">{{ user.firstName }} {{ user.secondName }}</p> -->

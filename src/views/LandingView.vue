@@ -11,11 +11,14 @@
 
         <div class="first">
             <div class="first-left">
+                <button @click="Logout">Logout</button>
+
+                <h3>Welcome, {{ name }}</h3>
+
                 <span class="span">сочиняй мечты</span>
                 <h1 class="first-title">PelDreams</h1>
                 
                 <p class="first-subtitle">Сервис для создания WishList и BucketList</p>
-
 
                 
 <!-- 
@@ -40,7 +43,7 @@
                         Login
                     </router-link>
 
-                    <router-link to="/register">
+                    <router-link to="/signup">
                         Register
                     </router-link>
                 </div>
@@ -244,10 +247,39 @@
 <script>
 import { authComputed } from '../vuex/helpers.js';
 
+import { ref, onBeforeMount } from 'vue';
+import firebase from 'firebase';
+
 export default {
     name: 'LandingView',
     computed: {
         ...authComputed
+    },
+    setup() {
+
+        const name = ref("");
+
+        onBeforeMount(() => {
+            const user = firebase.auth().currentUser;
+
+            if(user) {
+                name.value = user.email.split('@')[0];
+            }
+        });
+
+        const Logout = () => {
+            firebase
+            .auth()
+            .signOut()
+            .then(() => console.log("Signed out"))
+            .catch(err => alert(err.message));
+        }
+        
+
+        return { 
+            name,
+            Logout
+        }
     }
   
 }
