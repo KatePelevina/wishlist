@@ -1,35 +1,8 @@
 <template>
     <div class="page">
   
- 
-     <!-- <div v-for="user in users" :key="user.id" @click="$router.push(`/user-profile/${user.id}`)">
-       <div class="card" >
-         <div class="card-header">
-             <div class="card-header__left">
-                 <div>
-                     <img class="photo" :src="'/img/' + user.img" />
-                 </div>
-                 <div>
-                     
-                     <p class="card-text">{{ user.firstName }} {{ user.secondName }}</p>
-                     <p class="card-text">{{ user.nickname }}</p>  
-                 </div>
-             </div>
-             <div class="card-header__right">
-                 
-                 
-                 
-             </div>
-         </div>
-       </div>        
-     </div> -->
     
     <h1 class="title">Все пользователи</h1>
-
-    <!-- <my-select
-    v-model="selectedSort"
-    :options="sortOptions" 
-    /> -->
 
 
     <div v-if="users.length" class="search">
@@ -46,11 +19,6 @@
         </n-space>
     </div>
   
-
-
-    
-    
-    
     <users-list 
     :users="sortedAndSearchedPosts" 
     
@@ -58,9 +26,6 @@
     
     <div v-intersection="loadMoreUsers" class="observer"></div>
     
-
-<!-- <n-pagination v-model:page="page" :page-count="pageCount" :click-handler="changePage" /> -->
-
 
 </div>
 </template>
@@ -86,17 +51,10 @@ export default defineComponent ({
             users:[],
             selectedSort: '',
             searchQuery: '',
-            // sortOptions: [
-            //     {value: 'nickname', name: 'По nickname'},
-            //     {value: 'firstName', name: 'По firstName'},
-            //     {value: 'secondName', name: 'По secondName'},
-            // ],
             count_wishlist: '',
             count: '',
             pageNumber: 1,
-            // limit: 3,
             page: 0
-            
         }
     },
     methods: {
@@ -162,21 +120,21 @@ export default defineComponent ({
             // page: ref(0),
             options: [
                 {
-                label: "Сортировать по",
-                value: "",
-                disabled: true
+                    label: "Сортировать по",
+                    value: "",
+                    disabled: true
                 },
                 {
-                label: "По nickname",
-                value: "nickname",
+                    label: "По nickname",
+                    value: "nickname",
                 },
                 {
-                label: "По дате firstName",
-                value: "firstName"
+                    label: "По firstName",
+                    value: "firstName"
                 },
                 {
-                label: "По secondName",
-                value: "secondName"
+                    label: "По secondName",
+                    value: "secondName"
                 }
             ],
         };

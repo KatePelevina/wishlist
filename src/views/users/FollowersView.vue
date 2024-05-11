@@ -1,33 +1,7 @@
 <template>
     <div class="page">
+        <h1 class="title">Мои подписчики: {{ followers }}</h1>
         
-      
-        
-        <!-- <div v-if="users.length">
-        
-        <a href="#">
-            <div class="card" v-for="user in users" :key="user.id" @click="$router.push(`/user-profile/${user.id}`)">
-                <div class="card-header">
-                    <div class="card-header__left">
-                        <img class="photo" :src="'/img/' + user.img" />
-                        <div>
-                            <p class="card-text">{{ user.nickname }}</p>  
-                            <p class="card-text">{{ user.firstName }} {{ user.secondName }}</p>
-                        </div>
-                    </div>
-                    
-                </div>
-            </div>
-        </a>
-        </div>
-        <div v-else>
-            <p>пока ничего нет</p>
-        </div> -->
-
-        
-            <h1 class="title">Мои подписчики: {{ followers }}</h1>
-        
-
         <div v-if="users.length" class="search">
             <label for="my-input">Поиск по никнейму</label>
             <my-input
@@ -44,11 +18,6 @@
             </n-space>
         </div>
         
-
-
-       
-        
-
         <div v-if="users.length">
             <users-list :users="sortedAndSearchedPosts" />
         </div>
@@ -57,7 +26,6 @@
         </div>
 
         <div v-intersection="loadMorePosts" class="observer"></div>
-
 
     </div>
 </template>
@@ -71,7 +39,6 @@ import { NSpace, NSelect } from 'naive-ui';
 
 import UsersList from '@/components/users/UsersList.vue';
 import MyInput from '@/components/layout/MyInput.vue';
-
 
 
 export default defineComponent( {
@@ -151,21 +118,21 @@ export default defineComponent( {
             value: ref(null),
             options: [
                 {
-                label: "Сортировать по",
-                value: "",
-                disabled: true
+                    label: "Сортировать по",
+                    value: "",
+                    disabled: true
                 },
                 {
-                label: "По nickname",
-                value: "nickname",
+                    label: "По nickname",
+                    value: "nickname",
                 },
                 {
-                label: "По дате firstName",
-                value: "firstName"
+                    label: "По firstName",
+                    value: "firstName"
                 },
                 {
-                label: "По secondName",
-                value: "secondName"
+                    label: "По secondName",
+                    value: "secondName"
                 }
             ],
         };

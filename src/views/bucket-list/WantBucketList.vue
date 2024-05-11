@@ -183,21 +183,12 @@ export default defineComponent ({
        NButton,
        MsgComponent,
        MyInput,
-    //    MySelect,
-    //    NBreadcrumb,
-    //    NBreadcrumbItem,
        NSpace,
        NSelect,
        NInput,
        NInputNumber,
        NDrawer, 
        NDrawerContent
-    //    NUpload
-    //    NTabs, 
-    //    NTabPane,
-    //    DoneWishListView,
-    //    AllMyWishListView
-    //    NTag
     },
     data() {
        return {
@@ -221,17 +212,12 @@ export default defineComponent ({
             successMsg: "",
             showEditModal: false,
             showDeleteModal: false,
-            // visible: {
-            //         '1': 'вижу только я',
-            //         '2': 'видят все пользователи',
-            // },
             currentFolder: {
                 name: "",
                 description: ""
             },
             selectedSort: '',
             searchQuery: '',
-            
             folder_name: '',
             folder_description: '',
             folder_id: ''
@@ -352,7 +338,7 @@ export default defineComponent ({
             });
         },
         selectFolder(folder){
-        this.currentWish = folder;
+            this.currentWish = folder;
         },
     },
     mounted() {
@@ -398,7 +384,7 @@ export default defineComponent ({
                     value: "date"
                 },
                 {
-                    label: "По visible",
+                    label: "По видимости",
                     value: "visible"
                 },
             ],

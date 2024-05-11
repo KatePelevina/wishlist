@@ -1,6 +1,5 @@
 <template>
     <div>
-
         <n-drawer v-model:show="active"  :placement="placement">
             <n-drawer-content closable>
                 <msg-component
@@ -11,15 +10,8 @@
             </n-drawer-content>
         </n-drawer>
 
-        <!-- <transition class="msg">
-            <msg-component
-            :errorMsg="this.errorMsg"
-            :successMsg="this.successMsg"
-            />
-        </transition> -->
     
         <div>
-
             <div class="div-button">
                 <n-button @click="showModal=true" class="btn" strong secondary type="success">+ Добавить желание</n-button>
             </div>
@@ -167,39 +159,30 @@
 
 <script>
 import axios from 'axios';
-
 import { NModal, NButton, NCard} from 'naive-ui';
 import { NSpace, NSelect } from 'naive-ui';
 import { NInput, NInputNumber } from 'naive-ui';
-
-
-
 import { defineComponent, ref } from "vue";
-
 import MsgComponent from '@/components/layout/MsgComponent.vue'
 import WishListComponent from '@/components/wishes/WishListComponent.vue';
 import MyInput from '@/components/layout/MyInput.vue';
 import { NDrawer, NDrawerContent }  from 'naive-ui';
 
-
-
-
-
 export default defineComponent ({
     name: 'WishList',
     components: { 
         WishListComponent,
-       NModal,
-       NCard,
-       NButton,
-       MsgComponent,
-       MyInput,
-       NSpace,
-       NSelect,
-       NInput,
-       NInputNumber,
-       NDrawer, 
-       NDrawerContent 
+        NModal,
+        NCard,
+        NButton,
+        MsgComponent,
+        MyInput,
+        NSpace,
+        NSelect,
+        NInput,
+        NInputNumber,
+        NDrawer, 
+        NDrawerContent 
     },
     data() {
        return {
@@ -246,21 +229,6 @@ export default defineComponent ({
                 console.log(error)
             })
         },
-        //    async getFolder() {
-        //        let id = this.$route.params.id;
-        //        await axios.get('http://localhost:8085/public/process.php?action=wishlist-folder&id='+id)
-
-        //        .then((response)=>{
-                    
-        //             this.folder_name = response.data.folder[0].name;
-        //             this.folder_description = response.data.folder[0].description;
-        //            console.log(response.data);
-                
-        //        })
-        //        .catch((error)=>{
-        //            console.log(error)
-        //        })
-        //    },
         async getFolder() {
             let id = this.$route.params.id;
 
@@ -330,9 +298,8 @@ export default defineComponent ({
             }, time);
         },
         deleteFolder(){
-        let id = this.$route.params.id;
+            let id = this.$route.params.id;
         
-
             axios.post("http://localhost:8085/public/process.php?action=delete-wishlist-folder&id="+id)
             .then((response)=>{
                 this.currentFolder = {};
@@ -347,14 +314,13 @@ export default defineComponent ({
             });
         },
         selectFolder(folder){
-        this.currentWish = folder;
+            this.currentWish = folder;
         },
         async submitFile(){
             let formData = new FormData();
             formData.append('file', this.file);
 
             let id = this.$route.params.id;
-
 
             await axios.post( 'http://localhost:8085/public/process.php?action=image-load-wish&id=' + id,
                 formData,

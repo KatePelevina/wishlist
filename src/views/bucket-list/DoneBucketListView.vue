@@ -48,14 +48,6 @@
     data(){
         return {
             wishes:[],
-            // selectedSort: '',
-            // searchQuery: '',
-            // sortOptions: [
-            //     {value: 'name', name: 'По name'},
-            //     {value: 'date', name: 'По date'},
-            //     {value: 'price', name: 'По price'},
-            //     {value: 'visible', name: 'По visible'},
-            // ],
         }
     },
     methods: {

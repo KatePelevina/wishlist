@@ -1,24 +1,11 @@
 <template>
     <div class="page">
-        <!-- <div class="items" v-if="wishes.length" >
-            <div class="item" v-for="(wish,index) in wishes" :key="index">
-                <div class="box" @click="$router.push(`/i-will-present-item/${wish.id}`)">
-                    <div class="box-inner">
-                        <span v-if="wish.price" class="span">{{ wish.price }} руб</span>
-                        <img :src="'/img/' + wish.photo" alt="">
-                    </div>
-                </div>
-                <p>{{ wish.name }}</p>
-                <p class="box-inner__hover">Я подарю <strong>{{ wish.nickname }}</strong></p>
-            </div>  
-        </div> -->
-
         <h1 class="title">Я подарю</h1>
 
         <my-input
-        v-if="wishes.length"
-        v-model="searchQuery"
-        placeholder="Поиск..."
+            v-if="wishes.length"
+            v-model="searchQuery"
+            placeholder="Поиск..."
         />
 
         <IWillPresent :wishes="sortedAndSearchedPosts"/>
@@ -29,8 +16,6 @@
 import axios from 'axios';
 import IWillPresent from '@/components/wishes/IWillPresent.vue';
 import MyInput from '@/components/layout/MyInput.vue';
-
-
 
 export default {
     name: 'IWillPresentView',

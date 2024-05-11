@@ -2,7 +2,6 @@ import { createRouter, createWebHistory } from 'vue-router'
 
 import LandingView from '../views/LandingView.vue';
 
-// import { auth } from '@/firebase';
 
 
 
@@ -18,15 +17,6 @@ const routes = [
   },
 
   // AUTH 
-  // {
-  //   path: '/dashboard',
-  //   name: 'dashboard',
-  //   meta: {
-  //     layout: 'HeaderLayout',
-  //     requiresAuth: false
-  //   },
-  //   component: () => import('@/views/DashboardView.vue')
-  // },
   {
     path: '/login',
     name: 'login',
@@ -34,7 +24,7 @@ const routes = [
       layout: 'HeaderLayout',
       // requiresAuth: true
     },
-    component: () => import('@/views/test/LoginFirebaseTest.vue')
+    component: () => import('@/views/auth/LoginFirebaseTest.vue')
   },
   {
     path: '/signup',
@@ -43,7 +33,7 @@ const routes = [
       layout: 'HeaderLayout',
       // requiresAuth: true
     },
-    component: () => import('@/views/test/SignUpFirebaseTest.vue')
+    component: () => import('@/views/auth/SignUpFirebaseTest.vue')
   },
   
   {
@@ -120,24 +110,6 @@ const routes = [
       // authRequired: false
     },
     component: () => import('@/views/bucket-list/DoneBucketListItem.vue')
-  },
-  {
-    path: '/add-wish-list',
-    name: 'add-wish-list',
-    meta: {
-      layout: 'MainLayout',
-      // requiresAuth: true
-    },
-    component: () => import('@/views/wish-list/AddWishListView.vue')
-  },
-  {
-    path: '/add-bucket-list',
-    name: 'add-bucket-list',
-    meta: {
-      layout: 'MainLayout',
-      // requiresAuth: true
-    },
-    component: () => import('@/views/bucket-list/AddBucketListView.vue')
   },
   // USERS
   {
@@ -383,15 +355,6 @@ const routes = [
     component: () => import('@/views/wish-list/user/AllUserWishlist.vue')
   },
   {
-    path: '/result-folder-list',
-    name: 'result-folder-list',
-    meta: {
-      layout: 'MainLayout',
-      // authRequired: false
-    },
-    component: () => import('@/views/wish-list/my-wishes/WantWishList.vue')
-  },
-  {
     path: '/all-wishlist-view',
     name: 'all-wishlist-view',
     meta: {
@@ -399,6 +362,15 @@ const routes = [
       // requiresAuth: true
     },
     component: () => import('@/views/wish-list/AllWishListView.vue')
+  },
+  {
+    path: '/all-wish-list-folder',
+    name: 'all-wish-list-folder',
+    meta: {
+      layout: 'MainLayout',
+      // requiresAuth: true
+    },
+    component: () => import('@/views/wish-list/AllWishListFolder.vue')
   },
   {
     path: '/all-bucketlist-view',

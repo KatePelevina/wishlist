@@ -84,26 +84,16 @@
   <script>
   import axios from 'axios';
   import { defineComponent, ref } from "vue";
-
-  // import { NButton } from 'naive-ui';
   import { NSpace, NSelect } from 'naive-ui';
   import { NProgress }  from 'naive-ui';
   import { NModal, NCard, NPopover } from 'naive-ui';
-  // import { NInput, NInputNumber } from 'naive-ui';
-
   import WishListComponent from '@/components/wishes/WishListComponent.vue';
   import MyInput from '@/components/layout/MyInput.vue';
-  // import MySelect from '@/components/layout/MySelect.vue';
-
   import { NIcon } from 'naive-ui';
-  // import { NSwitch } from 'naive-ui';
-// import { Sunny, Moon } from "@vicons/ionicons5";
-
-  
+ 
   export default defineComponent ({
     name: 'AllWishListView',
     components: {
-      // NButton,
       NSpace,
       NSelect,
       WishListComponent,
@@ -111,9 +101,6 @@
       NProgress,
       NModal, 
       NCard,
-      // NInput, 
-      // NInputNumber,
-      // NSwitch,
       NIcon,
       NPopover
     },
@@ -133,7 +120,6 @@
                visible: "",
                folder_id: "1",
                done: "0",
-              
           },
           folders: [],
         }
@@ -246,40 +232,40 @@
             value: ref(null),
             options: [
                 {
-                label: "Сортировать",
-                value: "",
-                disabled: true
+                  label: "Сортировать",
+                  value: "",
+                  disabled: true
                 },
                 {
-                label: "По названию",
-                value: "name",
+                  label: "По названию",
+                  value: "name",
                 },
                 {
-                label: "По дате создания",
-                value: "date"
+                  label: "По дате создания",
+                  value: "date"
                 },
                 {
-                label: "По price",
-                value: "price",
+                  label: "По цене",
+                  value: "price",
                 },
                 {
-                label: "По visible",
-                value: "visible"
+                  label: "По видимости",
+                  value: "visible"
                 }
             ],
             visible: [
                 {
-                label: "Кто видит желание",
-                value: "",
-                disabled: true
+                  label: "Кто видит желание",
+                  value: "",
+                  disabled: true
                 },
                 {
-                label: "вижу только я",
-                value: "0",
+                  label: "вижу только я",
+                  value: "0",
                 },
                 {
-                label: "видят все пользователи",
-                value: "1"
+                  label: "видят все пользователи",
+                  value: "1"
                 }
             ],
             done: [

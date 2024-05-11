@@ -50,26 +50,9 @@ export default defineComponent ({
             selectedSort: '',
             searchQuery: '',
             showModal: false,
-            // sortOptions: [
-            //     {value: 'name', name: 'По name'},
-            //     {value: 'date', name: 'По date'},
-            //     {value: 'price', name: 'По price'},
-            //     {value: 'visible', name: 'По visible'},
-            // ]
         }
     },
     methods: {
-        // async getWishes(){
-            
-        //     await axios.get('http://localhost:8085/public/process.php?action=get-done-wishlist')
-        //     .then((response)=>{
-        //         this.wishes = response.data.wishes; 
-        //         console.log(this.wishes)
-        //     })
-        //     .catch((error)=>{
-        //         console.log(error)
-        //     })
-        // },
         async getDoneWishes(){
             
             let id = this.$route.params.id; 
@@ -84,7 +67,6 @@ export default defineComponent ({
         },
     },
     mounted() {
-        // this.getWishes()
         this.getDoneWishes()
     },
     computed: {
@@ -100,25 +82,25 @@ export default defineComponent ({
             value: ref(null),
             options: [
                 {
-                label: "Сортировать по",
-                value: "",
-                disabled: true
+                    label: "Сортировать по",
+                    value: "",
+                    disabled: true
                 },
                 {
-                label: "По name",
-                value: "name",
+                    label: "По названию",
+                    value: "name",
                 },
                 {
-                label: "По date",
-                value: "date"
+                    label: "По дате",
+                    value: "date"
                 },
                 {
-                label: "По price",
-                value: "price"
+                    label: "По цене",
+                    value: "price"
                 },
                 {
-                label: "По visible",
-                value: "visible"
+                    label: "По видимости",
+                    value: "visible"
                 }
             ],
         };

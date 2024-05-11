@@ -5,15 +5,12 @@
         :successMsg="this.successMsg"
     />
 
-    
-
     <div class="card" v-for="(wish,index) in wishes" :key="index">
         <div class="flex color breadcrumb">
             <div>
                 <n-breadcrumb>
                     <n-breadcrumb-item @click="$router.push(`/my-wish-list-folders`)">Done Wish List</n-breadcrumb-item>
                     <n-breadcrumb-item v-if="folder_name" @click="$router.push(`/my-wish-list/folder=${wish.folder_id}`)">{{ folder_name }}</n-breadcrumb-item>
-                    <!-- <n-breadcrumb-item>{{ wish.name }}</n-breadcrumb-item> -->
                 </n-breadcrumb>
             </div>
            
@@ -27,12 +24,6 @@
             </div>
         </div>
 
-       
-        
-
-    
-
-        
         <div class="flex">
             <h1 class="wish-name">{{ wish.name }}</h1>
                     
@@ -47,8 +38,6 @@
             </div>
         </div>    
         
-        
-
         <div class="card-body">
             <div class="div-img">
 
@@ -67,26 +56,7 @@
 
             </div>   
             <div>
-                <!-- <p>Дата создания: {{wish.date}}</p>
-                <p>Стоимость: {{ wish.price }} рублей</p> -->
-                <!-- <p>Статус: {{ statusToText[wish.done] }}</p> -->
-                <!-- <p>Кто видит желание: {{ statusOFvisible[wish.visible] }}</p> -->
-                <!-- <n-button @click="done()" secondary type="success" class="btn" v-if="wish.done == 0">Иполнено</n-button> -->
-
                 
-                <!-- <n-space v-if=" wish.price" class="price">
-                    <n-tag type="success" >
-                        Стоимость: {{ wish.price }} рублей
-                    </n-tag>
-                </n-space> -->
-                <!-- <n-space class="date">
-                    <n-tag type="info">
-                        Дата создания желания:
-                    </n-tag>
-                    <n-tag type="info">
-                        {{wish.date}}
-                    </n-tag>
-                </n-space> -->
                 
                
                 <n-space v-if="wish.link">
@@ -95,22 +65,7 @@
                     </n-tag>
                 </n-space>
 
-                <!-- <n-space class="visible">
-                    <n-tag type="info">
-                        Желание видят все пользователи
-                    </n-tag>
-                </n-space> -->
-
                 
-
-                <!-- <div>  -->
-                    
-                    <!-- <p class="card-book">Это желание забронировано (имя / анонимно): исполню сам(а)</p> -->
-                <!-- </div> -->
-
-
-                <!-- <n-button @click="done()" secondary type="success" class="btn" v-if="wish.done == 0">Иполнено</n-button> -->
-            
             </div> 
         </div>
 
@@ -267,17 +222,13 @@
 <script>
 import axios from 'axios';
 import { defineComponent, ref } from "vue";
-
 import { NEmpty } from 'naive-ui';
 import { NSpace, NSelect } from 'naive-ui';
 import { NModal, NButton, NCard } from 'naive-ui';
 import { NTag } from 'naive-ui';
 import { NBreadcrumb, NBreadcrumbItem } from 'naive-ui';
 import { NInput, NInputNumber  } from 'naive-ui';
-
 import MsgComponent from '@/components/layout/MsgComponent.vue'
-
-
 import { SearchSharp as SearchImg } from "@vicons/ionicons5";
 import { NIcon } from "naive-ui";
 
@@ -298,18 +249,16 @@ export default defineComponent ({
             currentWish: {},
             errorMsg: "",
             successMsg: "",
-            statusOFvisible: {
-                '0': 'вижу только я',
-                '1': 'видят все пользователи'
-            },
-            statusToText: {
-                '0': 'хочу',
-                '1': 'исполнено',
-            },
+            // statusOFvisible: {
+            //     '0': 'вижу только я',
+            //     '1': 'видят все пользователи'
+            // },
+            // statusToText: {
+            //     '0': 'хочу',
+            //     '1': 'исполнено',
+            // },
             // image: File,
             // imagePreview: '',
-
-            
         }
     },
     components: {
@@ -327,10 +276,6 @@ export default defineComponent ({
         NInputNumber,
         NIcon,
         SearchImg
-        // WishItemImageLoad,
-        // NUpload,
-        // NUploadDragger
-    //   WishCard
     },
     methods: {
         updateWish(){
@@ -370,7 +315,6 @@ export default defineComponent ({
         async getWish() {
             let id = this.$route.params.id;
 
-            
             await axios.get('http://localhost:8085/public/process.php?action=get-wishlist-item&id='+id)
             .then((response)=>{
                 this.wishes = response.data.wishes;

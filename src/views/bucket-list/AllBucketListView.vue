@@ -20,44 +20,35 @@
         </n-icon>
       </div>
     </div>
+  
+    <h1 class="title">Bucket List</h1>
     
-
-   
-      <h1 class="title">Bucket List</h1>
-    
-
-
-
     <div class="progress ddddd percent">
-              <p>Исполнено: {{ done_count  }} / {{ wishes.length }}</p>
-             
-              <n-space vertical>
-                  <n-progress
-                  type="line"
-                  :percentage="getPercent()"
-                  :indicator-placement="'inside'"
-                  :border-radius="4"
-                  />
-              </n-space>
-          </div>
+      <p>Исполнено: {{ done_count  }} / {{ wishes.length }}</p>
+      
+      <n-space vertical>
+          <n-progress
+          type="line"
+          :percentage="getPercent()"
+          :indicator-placement="'inside'"
+          :border-radius="4"
+          />
+      </n-space>
+    </div>
 
-
-          <div class="sort">
-            <n-space vertical>
-              <n-select v-model:value="selectedSort" :options="options" />
-            </n-space>
-          </div>
+    <div class="sort">
+      <n-space vertical>
+        <n-select v-model:value="selectedSort" :options="options" />
+      </n-space>
+    </div>
          
 
-   
-
-    
-  <div class="search">
-    <my-input
-          v-model="searchQuery"
-          placeholder="Поиск..."
-      /> 
-  </div>
+    <div class="search">
+      <my-input
+            v-model="searchQuery"
+            placeholder="Поиск..."
+        /> 
+    </div>
    
 
 
@@ -135,7 +126,6 @@
 
   import BucketListComponent from '@/components/wishes/BucketListComponent.vue';
   import MyInput from '@/components/layout/MyInput.vue';
-  // import MySelect from '@/components/layout/MySelect.vue';
 
 
   
@@ -144,7 +134,6 @@
     components: { 
         BucketListComponent,
         MyInput,
-        // MySelect,
         NButton,
         NModal, 
         NCard,
@@ -162,12 +151,12 @@
             wishes:[],
             selectedSort: '',
             searchQuery: '', 
-            sortOptions: [
-                {value: 'name', name: 'По name'},
-                {value: 'date', name: 'По date'},
-                {value: 'price', name: 'По price'},
-                {value: 'visible', name: 'По visible'},
-            ],
+            // sortOptions: [
+            //     {value: 'name', name: 'По name'},
+            //     {value: 'date', name: 'По date'},
+            //     {value: 'price', name: 'По price'},
+            //     {value: 'visible', name: 'По visible'},
+            // ],
             showModal: false,
             showInfo: false,
             newWish: { 

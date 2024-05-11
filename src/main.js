@@ -10,10 +10,6 @@ import VIntersection from "@/directives/VIntersection";
 
 import firebase from "firebase/app";
 
-// import { getAuth } from 'firebase/auth';
-// const auth = getAuth(app);
-// export { auth }
-
 const firebaseConfig = {
   apiKey: "AIzaSyDfplDIUKitdKtl1xinO5lPDJ6Gy5-no6A",
   authDomain: "wishlist-8e38f.firebaseapp.com",

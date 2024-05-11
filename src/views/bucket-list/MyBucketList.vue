@@ -182,6 +182,7 @@
            </div>
        </div>
     </div>
+
 </template>
 
 <script>
@@ -194,17 +195,6 @@ import { NButton } from 'naive-ui';
 import { NInput } from 'naive-ui';
 
 import { NBreadcrumb, NBreadcrumbItem} from 'naive-ui';
-// import { NSpace, NSelect } from 'naive-ui';
-// import { NInput, NInputNumber, NUpload } from 'naive-ui';
-// import { NProgress} from 'naive-ui';
-
-
-
-// import BucketListComponent from '@/components/wishes/BucketListComponent.vue';
-// import MyInput from '@/components/layout/MyInput.vue';
-// import MySelect from '@/components/layout/MySelect.vue';
-// import AllBucketListView from '@/views/bucket-list/AllBucketListView.vue'
-
 
 import WantBucketList from '@/views/bucket-list/WantBucketList.vue';
 import AllBucketListFolder from '@/views/bucket-list/AllBucketListFolder.vue';
@@ -219,19 +209,12 @@ import { NDrawer, NDrawerContent }  from 'naive-ui';
 export default defineComponent ({
     name: 'BucketList',
     components: { 
-        // BucketListComponent,
-        // MySelect,
-        // MyInput,
         NModal,
         NCard,
         NButton,
         NBreadcrumb,
         NBreadcrumbItem,
-        // NSpace,
-        // NSelect,
         NInput,
-        // NInputNumber,
-        // NProgress,
         NTabs, 
         NTabPane,
         AllBucketListFolder,
@@ -240,13 +223,11 @@ export default defineComponent ({
         MsgComponent,
         NDrawer, 
         NDrawerContent
-       
     },
     data() {
         return {
             wishes:[],
             done_count: [],
-            
             nameStr: "",
             newWish: {
                 name: "", 
@@ -262,19 +243,9 @@ export default defineComponent ({
             showDeleteModal: false,
             errorMsg: "",
             successMsg: "",
-            // visible: [
-            //     {status: 'вижу только я'},
-            //     {status: 'идят все пользователи'},
-            // ],
             url: "my-bucket-list",
             selectedSort: '',
             searchQuery: '',
-            // sortOptions: [
-            //     {value: 'name', name: 'По name'},
-            //     {value: 'date', name: 'По date'},
-            //     {value: 'price', name: 'По price'},
-            //     {value: 'visible', name: 'По visible'},
-            // ],
             folder_name: "",
             folder_description: "",
             data: '',
@@ -282,8 +253,6 @@ export default defineComponent ({
                 name: "",
                 description: ""
             },
-            
-           
         }
     },
     methods: {
@@ -350,8 +319,7 @@ export default defineComponent ({
             return fd;
         },
         async updateFolder(){
-            
-            
+        
             let formData = this.toFormData(this.currentFolder);
 
             axios.post("http://localhost:8085/public/process.php?action=update-bucketlist-folder", formData)
@@ -429,35 +397,35 @@ export default defineComponent ({
             activate,
             options: [
                 {
-                label: "Сортировать по",
-                value: "",
-                disabled: true
+                    label: "Сортировать по",
+                    value: "",
+                    disabled: true
                 },
                 {
-                label: "По названию",
-                value: "name",
+                    label: "По названию",
+                    value: "name",
                 },
                 {
-                label: "По цене",
-                value: "price"
+                    label: "По цене",
+                    value: "price"
                 },
                 {
-                label: "По дате создания",
-                value: "date"
+                    label: "По дате создания",
+                    value: "date"
                 },
                 {
-                label: "По visible",
-                value: "visible"
+                    label: "По видимости",
+                    value: "visible"
                 },
             ],
             visible: [
-            {
-                label: "видят все пользователи",
-                value: "2"
+                {
+                    label: "видят все пользователи",
+                    value: "0"
                 },
                 {
-                label: "вижу только я",
-                value: "1",
+                    label: "вижу только я",
+                    value: "1",
                 },
             ],
             done: [
@@ -466,7 +434,7 @@ export default defineComponent ({
                     value: 0,
                 },
                 {
-                    label: "Done",
+                    label: "Выполнено",
                     value: 1,
                 }
             ]

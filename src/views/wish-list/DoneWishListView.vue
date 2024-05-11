@@ -1,20 +1,6 @@
 <template>
     <div>
         
-        <!-- <div class="items">
-            <div class="item" v-for="wish in wishes" :key="wish.id">
-                <div class="box">
-                    <div class="box-inner">
-                        <span v-if="wish.price" class="span">{{ wish.price }} руб</span>
-                        <img :src="'/img/' + wish.photo" alt="">
-                    </div>
-                </div>
-                <p class="box-inner__hover">{{ wish.name }}</p>
-            </div>
-        </div> -->
-
-        
-
         <div class="flex rrrr">
             <div class="flex-left">
                 <p class="ddddd" v-if="wishes.length">Количество желаний: {{ wishes.length }}</p>
@@ -33,10 +19,6 @@
         />
         
         <DoneWishlist :wishes="sortedAndSearchedPosts"/>
-
-      
-      
-
         
     </div>
 </template>
@@ -44,13 +26,8 @@
 <script>
 import axios from 'axios';
 import { defineComponent, ref } from "vue";
-
-
 import DoneWishlist from '@/components/wishes/DoneWishlist.vue';
 import MyInput from '@/components/layout/MyInput.vue';
-// import MySelect from '@/components/layout/MySelect.vue';
-
-
 
 export default defineComponent ({
     name: "DoneWishListView",
@@ -88,22 +65,9 @@ export default defineComponent ({
                 console.log(error)
             })
         },
-        // async getDoneWishes(){
-            
-        //     let id = this.$route.params.id; 
-        //     await axios.get('http://localhost:8085/public/process.php?action=get-done-wishlist-in-folder&id='+id)
-        //     .then((response)=>{
-        //         this.wishes = response.data.wishes; 
-        //         console.log(this.wishes)
-        //     })
-        //     .catch((error)=>{
-        //         console.log(error)
-        //     })
-        // },
     },
     mounted() {
         this.getWishes()
-        // this.getDoneWishes()
     },
     computed: {
         sortedPosts() {
@@ -118,25 +82,25 @@ export default defineComponent ({
             value: ref(null),
             options: [
                 {
-                label: "Сортировать по",
-                value: "",
-                disabled: true
+                    label: "Сортировать по",
+                    value: "",
+                    disabled: true
                 },
                 {
-                label: "По name",
-                value: "name",
+                    label: "По name",
+                    value: "name",
                 },
                 {
-                label: "По date",
-                value: "date"
+                    label: "По date",
+                    value: "date"
                 },
                 {
-                label: "По price",
-                value: "price"
+                    label: "По price",
+                    value: "price"
                 },
                 {
-                label: "По visible",
-                value: "visible"
+                    label: "По visible",
+                    value: "visible"
                 }
             ],
         };

@@ -17,10 +17,7 @@
                 </div>
                 
                 <div>
-                    
                     <div>
-
-
                         <div class="flex">
                             <h1 class="card-title">{{ wish.name }}</h1>
                             <div v-if="wish.photo">
@@ -216,16 +213,7 @@ export default defineComponent({
         return {
             wishes: [],
             users: [],
-            currentWish: {
-                // name: '',
-                // price: '',
-                // description: '',
-                // photo: " ",
-                // link: '',
-                // visible: '',
-                // my_folder_id: '',
-
-            },
+            currentWish: {},
             showModal: false,
             errorMsg: "",
             successMsg: "",
@@ -294,12 +282,6 @@ export default defineComponent({
           
           let id = this.$route.params.id;
           let formData = this.toFormData(this.currentUser);
-
-
-       
-          // let iserId = this.$user.id;
-          // let friend = currentUser;
-         
 
           await axios.post('http://localhost:8085/public/process.php?action=add-to-i-will-present&id=' + id, formData )
 

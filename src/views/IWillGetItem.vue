@@ -1,200 +1,160 @@
 <template>
     <div class="page">
        
-   
-    <div v-for="(wish,index) in wishes" :key="index">
-
-       
-       
-        <div class="flex">
-            <h1 class="wish-name">{{ wish.name }}</h1>
-            <div v-if="wish.photo">
-                <n-button @click="selectWish(wish); showPhoto=true;">
-                    <template #icon>
-                        <n-icon>
-                            <search-img />
-                        </n-icon>
-                    </template>
-                </n-button>
-            </div>
-        </div>
-       
-
-        <div class="flex-left">
-            <div class="link">
-            <n-space v-if="wish.link">
-                <n-tag type="info" size="large">
-                    <a :href="wish.link" target="_blank" class="link">Ссылка</a>
-                </n-tag>
-            </n-space>
-            </div>
-            <div>
-                
-                <div v-if="wish.price" class="flex-left">
-                    <n-space v-if=" wish.price" class="price">
-                        <n-tag type="success" size="large">
-                            <div class="flex-left">
-                                <n-icon :component="CashOutline" size="25" :depth="1" class="cash-icon" />
-                                <p class="card-price">Цена: {{ wish.price }} рублей</p>
-                            </div>
-                        </n-tag>
-                    </n-space>
+        <div v-for="(wish,index) in wishes" :key="index">
+            <div class="flex">
+                <h1 class="wish-name">{{ wish.name }}</h1>
+                <div v-if="wish.photo">
+                    <n-button @click="selectWish(wish); showPhoto=true;">
+                        <template #icon>
+                            <n-icon>
+                                <search-img />
+                            </n-icon>
+                        </template>
+                    </n-button>
                 </div>
-                <p v-else>Цена: не указана</p>
             </div>
-        </div>
-        
-       
         
 
-        <div class="div-img">
-            <div v-if="wish.photo">
-                <img :src="'/img/' + wish.photo" alt="" class="wish-img" @click="selectWish(wish); showAddPhotoModal=true;" >
+            <div class="flex-left">
+                <div class="link">
+                <n-space v-if="wish.link">
+                    <n-tag type="info" size="large">
+                        <a :href="wish.link" target="_blank" class="link">Ссылка</a>
+                    </n-tag>
+                </n-space>
+                </div>
+                <div>
+                    
+                    <div v-if="wish.price" class="flex-left">
+                        <n-space v-if=" wish.price" class="price">
+                            <n-tag type="success" size="large">
+                                <div class="flex-left">
+                                    <n-icon :component="CashOutline" size="25" :depth="1" class="cash-icon" />
+                                    <p class="card-price">Цена: {{ wish.price }} рублей</p>
+                                </div>
+                            </n-tag>
+                        </n-space>
+                    </div>
+                    <p v-else>Цена: не указана</p>
+                </div>
             </div>
-
-            <div v-else>
-                <n-empty @click="selectWish(wish); showAddPhotoModal=true;" size="large" description="Нет фото" class="empty"></n-empty>
-            </div>
-        </div>  
             
-       
         
+            
 
-        <div>
-            <!-- <div class="card-body__left">
-                <img :src="'/img/' + wish.photo" alt="" class="card-body__right-img">
-            </div> -->
-            <div>
-                <!-- <p class="card-text">Дата создания: {{wish.date}}</p> -->
+            <div class="div-img">
+                <div v-if="wish.photo">
+                    <img :src="'/img/' + wish.photo" alt="" class="wish-img" @click="selectWish(wish); showAddPhotoModal=true;" >
+                </div>
+
+                <div v-else>
+                    <n-empty @click="selectWish(wish); showAddPhotoModal=true;" size="large" description="Нет фото" class="empty"></n-empty>
+                </div>
+            </div>  
                 
-                <!-- <div>
-                    <p v-if="wish.visible == 0">Это желание: вижу только я</p>
-                    <p v-if="wish.visible == 1">Это желание: видят все пользователи</p>
-                </div> -->
-            </div>
-        </div>
-
         <div>
             <p class="card-description">{{ wish.description }}</p>
-            
-            
-            <!-- <div class="card-link" v-if="wish.link">
-                <a :href="wish.link" class="link">Ссылка</a>
-            </div> -->
+        </div>
+        </div>
 
-            
-
-            <!-- <p class="card-book">Это желание забронировано (имя / анонимно): исполню сам(а)</p> -->
-    </div>
-</div>
-
-
-
-    <!-- Add Photo Model -->
-    <div v-if="showAddPhotoModal">
-      <div class="modal modal-inner">
-          <n-modal v-model:show="showAddPhotoModal">
-              <n-card
-                style="width: 600px"
-                :bordered="false"
-                size="huge"
-                role="dialog"
-                aria-modal="true"
-              >
-              
-              <div class="modal-form">
-               
-                <form >
-                  <input type="file" id="file" ref="file" v-on:change="handleFileUpload()"/>
-
-                  <n-button @click="showAddPhotoModal=false; updateWish(); submitFile()"  type="primary">Добавить фото</n-button>
-                </form>
-              </div>
-             
-              </n-card>
-          </n-modal>
-      </div>
-    </div>
-
-    <!-- Delete  Model -->
-    <div v-if="showDeleteModal">
-        <div class="modal">
-            <n-modal v-model:show="showDeleteModal">
+        <!-- Add Photo Model -->
+        <div v-if="showAddPhotoModal">
+        <div class="modal modal-inner">
+            <n-modal v-model:show="showAddPhotoModal">
                 <n-card
-                style="width: 600px"
+                    style="width: 600px"
+                    :bordered="false"
+                    size="huge"
+                    role="dialog"
+                    aria-modal="true"
+                >
+                
+                <div class="modal-form">
+                
+                    <form >
+                    <input type="file" id="file" ref="file" v-on:change="handleFileUpload()"/>
+
+                    <n-button @click="showAddPhotoModal=false; updateWish(); submitFile()"  type="primary">Добавить фото</n-button>
+                    </form>
+                </div>
+                
+                </n-card>
+            </n-modal>
+        </div>
+        </div>
+
+        <!-- Delete  Model -->
+        <div v-if="showDeleteModal">
+            <div class="modal">
+                <n-modal v-model:show="showDeleteModal">
+                    <n-card
+                    style="width: 600px"
+                    :bordered="false"
+                    size="huge"
+                    role="dialog"
+                    aria-modal="true"
+                    >
+                    
+                    <div class="modal-text">
+                        <h5 class="modal-title">Удаление желания из списка "Я подарю"</h5>
+                        <h4 class="red">Вы уверены, что хотите удалить желание '{{ currentWish.name }}' из списка забронированных подарков? </h4>
+
+                        
+                        <div class="delete-buttons">
+                            <n-button strong secondary type="success" @click="showDeleteModal=false" class="delete-no" >
+                                Нет
+                            </n-button>
+                            <n-button strong secondary type="error" @click="showDeleteModal=false; deleteWish(2000); activate('top')" >
+                                Да
+                            </n-button>
+                        </div>
+                    </div>
+                    
+                    
+                    </n-card>
+                </n-modal>
+            </div>
+        </div>
+
+        <div v-if="showPhoto">
+        <div class="modal modal-inner">
+            <n-modal v-model:show="showPhoto">
+                <n-card
+                style="width: 700px"
                 :bordered="false"
                 size="huge"
                 role="dialog"
                 aria-modal="true"
                 >
                 
-                <div class="modal-text">
-                    <h5 class="modal-title">Удаление желания из списка "Я подарю"</h5>
-                    <h4 class="red">Вы уверены, что хотите удалить желание '{{ currentWish.name }}' из списка забронированных подарков? </h4>
-
-                    
-                    <div class="delete-buttons">
-                        <n-button strong secondary type="success" @click="showDeleteModal=false" class="delete-no" >
-                            Нет
-                        </n-button>
-                        <n-button strong secondary type="error" @click="showDeleteModal=false; deleteWish(2000); activate('top')" >
-                            Да
-                        </n-button>
-                    </div>
+                
+                <div>
+                    <img :src="'/img/' + currentWish.photo" alt="" class="modal-wish-img" @click="showPhoto=false;">
                 </div>
                 
                 
                 </n-card>
             </n-modal>
         </div>
-    </div>
-
-    <div v-if="showPhoto">
-      <div class="modal modal-inner">
-          <n-modal v-model:show="showPhoto">
-              <n-card
-              style="width: 700px"
-              :bordered="false"
-              size="huge"
-              role="dialog"
-              aria-modal="true"
-              >
-              
-             
-              <div>
-                <img :src="'/img/' + currentWish.photo" alt="" class="modal-wish-img" @click="showPhoto=false;">
-              </div>
-              
-              
-              </n-card>
-          </n-modal>
-      </div>
-    </div>
+        </div>
 
     </div> 
 </template>
 
 <script>
 import axios from 'axios';
-
 import { NEmpty, NSpace, NTag, NIcon, NButton } from 'naive-ui';
-// import { SearchSharp as SearchImg } from "@vicons/ionicons5";
-
 import { NModal, NCard } from 'naive-ui';
 import { SearchSharp as SearchImg } from "@vicons/ionicons5";
 
-
-
 export default {
-  
     name: 'IWillPresentItem',
-    // props: ['id','name', 'country', 'city', 'street', 'building', 'description','photo'],
     components: {
         NEmpty,
         NSpace,
         NTag,
         NIcon,
-        // SearchImg,
         NButton,
         NModal, 
         NCard,
@@ -223,34 +183,6 @@ export default {
         },
         selectWish(wish){
           this.currentWish = wish;
-        },
-        updatePlace(){
-            let formData = this.toFormData(this.currentPlace);
-
-            axios.post("http://localhost:8085/public/process.php?action=update", formData)
-            .then((response)=>{
-                this.currentPlace = {};
-                if(response.data.error){
-                    this.errorMsg = response.data.message;
-                }else {
-                    this.successMsg = response.data.message;
-                    this.getAllPlaces();
-                }
-            });
-        },
-        deletePlace(){
-            let formData = this.toFormData(this.currentPlace);
-
-            axios.post("http://localhost:8085/public/process.php?action=delete", formData)
-            .then((response)=>{
-                this.currentPlace = {};
-                if(response.data.error){
-                    this.errorMsg = response.data.message;
-                } else {
-                    // this.successMsg = response.data.message;
-                    this.$router.push('/'); 
-                }
-            });
         },
     },
     mounted() {

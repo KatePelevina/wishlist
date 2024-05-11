@@ -1,12 +1,12 @@
 <template>
-  <div :class="theme === 'light' ? 'light-theme' : 'dark-theme'">
+  <!-- <div :class="theme === 'light' ? 'light-theme' : 'dark-theme'"> -->
     <MyHeader />
     <div class="main">
-      <button @click="changeTheme()">Тема</button>
+      <!-- <button @click="changeTheme()">Тема</button> -->
       <router-view />
     </div>
     <my-footer />
-  </div>
+  <!-- </div> -->
   
 </template>
 
@@ -22,16 +22,16 @@ export default {
     MyHeader,
     MyFooter
   },
-  data() {
-    return {
-      theme: "light"
-    }
-  },
-  methods: {
-      changeTheme(){
-          this.theme = this.theme === "dark" ? "light" : "dark";
-      }
-  }
+  // data() {
+  //   return {
+  //     theme: "light"
+  //   }
+  // },
+  // methods: {
+  //     changeTheme(){
+  //         this.theme = this.theme === "dark" ? "light" : "dark";
+  //     }
+  // }
 }
 
 

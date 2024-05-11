@@ -10,7 +10,7 @@
 
       <div class="left-aside">
         <MyProfile />
-        <AddButton />
+        <!-- <AddButton /> -->
         <PelNavigation />
       </div>
 
@@ -30,7 +30,7 @@
           <n-switch v-model:value="active" @click="changeTheme()" />
         </n-space> -->
 
-        <div class="switch">
+        <!-- <div class="switch">
           <n-space>
           <n-switch v-model:value="active" size="large" @click="changeTheme()">
             <template #checked-icon>
@@ -41,7 +41,7 @@
             </template>
           </n-switch>
           </n-space>
-        </div>
+        </div> -->
         
 
         <RightAside />
@@ -60,7 +60,7 @@
 <script>
 import MyHeader from '@/components/layout/MyHeader.vue'
 import MyProfile from '@/components/layout/MyProfile.vue'
-import AddButton from '@/components/layout/AddButton.vue'
+// import AddButton from '@/components/layout/AddButton.vue'
 import PelNavigation from '@/components/layout/PelNavigation.vue'
 // import SearchInput from '@/components/layout/SearchInput.vue'
 // import MyWishListFolders from '@/views/wish-list/MyWishListFolders.vue'
@@ -68,8 +68,8 @@ import RightAside from '@/components/layout/RightAside.vue'
 import MyFooter from '@/components/layout/MyFooter.vue'
 
 import { defineComponent, ref } from "vue";
-import { NSwitch, NIcon } from 'naive-ui';
-import { Sunny, Moon } from "@vicons/ionicons5";
+// import { NSwitch, NIcon } from 'naive-ui';
+// import { Sunny, Moon } from "@vicons/ionicons5";
 
 
 
@@ -78,15 +78,15 @@ export default defineComponent ({
   components: {
     MyHeader,
     MyProfile,
-    AddButton,
+    // AddButton,
     PelNavigation,
     // SearchInput,
     // MyWishListFolders,
     RightAside,
     MyFooter,
 
-    NSwitch,
-    NIcon,
+    // NSwitch,
+    // NIcon,
     // Sunny, 
     // Moon
   },
@@ -108,8 +108,8 @@ export default defineComponent ({
   setup() {
     return {
       active: ref(false),
-      Sunny,
-      Moon
+      // Sunny,
+      // Moon
     };
   }
 })

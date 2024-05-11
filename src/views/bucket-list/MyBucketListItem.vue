@@ -32,36 +32,25 @@
         <div class="flex">
             <h1 class="wish-name">{{ wish.name }}</h1>
             <div v-if="wish.photo">
-                    <!-- <img v-if="wish.photo"  :src="'/img/' + wish.photo" alt="" class="wish-img" @click="showPhoto=true; selectWish(wish);" > -->
-                        <n-button @click="selectWish(wish); showPhoto=true;">
-                            <template #icon>
-                                <n-icon>
-                                    <search-img />
-                                </n-icon>
-                            </template>
-                        </n-button>
+                <n-button @click="selectWish(wish); showPhoto=true;">
+                    <template #icon>
+                        <n-icon>
+                            <search-img />
+                        </n-icon>
+                    </template>
+                </n-button>
             </div>
         </div>
 
         <div class="card-body">
             <div class="div-img">
-                <!-- <img v-if="wish.photo"  :src="'/img/' + wish.photo" alt="" class="wish-img" @click="showPhoto=true; selectWish(wish);" >
-                <n-empty v-else size="large" description="Нет фото" class="empty"></n-empty> -->
-
                 <div class="flex">
                     <n-space v-if=" wish.price" class="price">
                         <n-tag type="success" size="large">
                             Стоимость: {{ wish.price }} рублей
                         </n-tag>
                     </n-space>
-                    
-                    
                 </div>
-
-               
-                
-
-                
             </div>   
 
             <div v-if="wish.photo">
@@ -72,44 +61,30 @@
                     <n-empty @click="selectWish(wish); showAddPhotoModal=true;" size="large" description="Нет фото" class="empty"></n-empty>
                 </div>
             <div>
-                <!-- <div> -->
-                    <!-- <n-space v-if=" wish.price" class="price">
-                        <n-tag type="success" >
-                            Стоимость: {{ wish.price }} рублей
-                        </n-tag>
-                    </n-space> -->
-                <!-- </div> -->
-                <!-- <div>
-                    <n-space class="date">
-                        <n-tag type="info">
-                            Дата создания желания: {{wish.date}}
-                        </n-tag>
-                    </n-space>
-                </div> -->
                 
-                <div>
-                    <n-space class="visible">
-                        <n-tag type="info">
-                            <p>Кто видит желание: {{ statusOFvisible[wish.visible] }}</p>
-                        </n-tag>
-                        <n-tag type="info">
-                            <p>Статус: {{ statusToText[wish.done] }}</p>
-                        </n-tag>
-                    </n-space>
-                </div>
+            <div>
+                <n-space class="visible">
+                    <n-tag type="info">
+                        <p>Кто видит желание: {{ statusOFvisible[wish.visible] }}</p>
+                    </n-tag>
+                    <n-tag type="info">
+                        <p>Статус: {{ statusToText[wish.done] }}</p>
+                    </n-tag>
+                </n-space>
+            </div>
 
-                <div>
-                    <n-space v-if="wish.link">
-                        <n-tag type="info" size="large">
-                            <a :href="wish.link" class="link">Ссылка</a>
-                        </n-tag>
-                    </n-space>
+            <div>
+                <n-space v-if="wish.link">
+                    <n-tag type="info" size="large">
+                        <a :href="wish.link" class="link">Ссылка</a>
+                    </n-tag>
+                </n-space>
 
-                </div>
-                
-                <div>
-                    <n-button @click="done()" secondary type="success" class="btn" v-if="wish.done == 0">Иполнено</n-button>
-                </div>
+            </div>
+            
+            <div>
+                <n-button @click="done()" secondary type="success" class="btn" v-if="wish.done == 0">Иполнено</n-button>
+            </div>
             </div>      
         </div>
 
@@ -277,10 +252,6 @@ import { NSpace, NSelect, NTag } from 'naive-ui';
 
 
 import MsgComponent from '@/components/layout/MsgComponent.vue';
-// import BucketItemImageLoad from '@/views/BucketItemImageLoad.vue'
-// import WishCard from '@/components/WishCard.vue';
-
-// import { CashOutline as CashIcon } from "@vicons/ionicons5";
 import { SearchSharp as SearchImg } from "@vicons/ionicons5";
 
 import { NIcon } from "naive-ui";
@@ -306,14 +277,14 @@ export default defineComponent({
             currentWish: {},
             errorMsg: "",
             successMsg: "",
-            statusOFvisible: {
-                '0': 'вижу только я',
-                '1': 'видят все пользователи'
-            },
-            statusToText: {
-                '0': 'хочу',
-                '1': 'исполнено',
-            },
+            // statusOFvisible: {
+            //     '0': 'вижу только я',
+            //     '1': 'видят все пользователи'
+            // },
+            // statusToText: {
+            //     '0': 'хочу',
+            //     '1': 'исполнено',
+            // },
             file: ''
         }
     },
@@ -330,18 +301,15 @@ export default defineComponent({
       NSpace, 
       NSelect,
       NTag,
-        //   BucketItemImageLoad,
-        //   WishCard
-        NIcon,
-        // CashIcon,
-        SearchImg,
-        NDrawer, NDrawerContent 
+      NIcon,
+      SearchImg,
+      NDrawer, 
+      NDrawerContent 
     },
     methods: {
         async getWish() {
             let id = this.$route.params.id;
 
-            
             await axios.get('http://localhost:8085/public/process.php?action=get-bucketlist-item&id='+id)
             .then((response)=>{
                 this.wishes = response.data.wishes;
@@ -464,32 +432,6 @@ export default defineComponent({
             this.file = this.$refs.file.files[0];
             console.log(this.file);
         },
-
-        // async submitFile(){
-        //     let id = this.$route.params.id;
-
-        //     let formData = new FormData();
-        //     formData.append('file', this.file);
-        //     await axios.post( 'http://localhost:8085/public/process.php?action=bucket-wishlist-item-image-load',
-        //         formData,
-        //         {
-        //         headers: {
-        //             'Content-Type': 'multipart/form-data'
-        //         }
-        //         }
-        //     ).then(function(){
-        //         // this.$router('/image-load');
-        //         // location.reload();
-        //         console.log('SUCCESS!!');
-        //     })
-        //     .catch(function(){
-        //         console.log('FAILURE!!');
-        //     });
-        // },
-        // handleFileUpload(){
-        //     this.file = this.$refs.file.files[0];
-        //     console.log(this.file);
-        // },
     },
     mounted() {
         this.getWish()
@@ -514,11 +456,11 @@ export default defineComponent({
                 // },
                 {
                     label: "вижу только я",
-                    value: "1",
+                    value: "0",
                 },
                 {
                     label: "видят все пользователи",
-                    value: "2"
+                    value: "1"
                 }
             ],
             renderIcon() {

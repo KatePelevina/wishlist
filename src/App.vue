@@ -1,11 +1,9 @@
 <template>
-  <!-- <div  :class="theme === 'light' ? 'light-theme' : 'dark-theme'" v-if="$store.state.user"> -->
     <div  :class="theme === 'light' ? 'light-theme' : 'dark-theme'">
     <component :is="layuot"> 
       <router-view/>
     </component>
   </div>
-  <!-- <button @click="$store.dispatch('logout')">Logout</button> -->
 </template>
 
 
@@ -17,15 +15,14 @@
 
 import MainLayout from "@/layouts/MainLayout"
 import HeaderLayout from "@/layouts/HeaderLayout"
-// import { useRoute } from "vue-router";
 // import axios from 'axios'
 
 
 // import changeTheme from '@/components/changeTheme.vue'
 
-import { useRouter, useRoute} from 'vue-router';
-import { onBeforeMount  } from "vue";
-import firebase from 'firebase';
+// import { useRouter, useRoute} from 'vue-router';
+// import { onBeforeMount  } from "vue";
+// import firebase from 'firebase';
 
 export default {
   name: 'app',
@@ -43,21 +40,20 @@ export default {
       theme: "light"
     }
   },
-  setup() {
-    const router = useRouter();
-    const route = useRoute();
+  // setup() {
+  //   const router = useRouter();
+  //   const route = useRoute();
 
-    onBeforeMount(() => {
-      firebase.auth().onAuthStateChanged((user) => {
-        if(!user) {
-          router.replace('/login');
-        } else if (route.path == 'login' || route.path == '/signup') {
-          router.replace('/');
-        }
-      })
-    });
-
-  }
+  //   onBeforeMount(() => {
+  //     firebase.auth().onAuthStateChanged((user) => {
+  //       if(!user) {
+  //         router.replace('/');
+  //       } else if (route.path == 'login' || route.path == '/signup') {
+  //         router.replace('/my-wish-list-folders');
+  //       }
+  //     })
+  //   });
+  // }
 
   // setup() {
   //   const store = useStore();

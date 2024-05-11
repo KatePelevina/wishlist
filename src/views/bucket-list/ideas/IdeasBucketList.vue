@@ -1,23 +1,28 @@
 <template>
   <div class="page">
-    <h1>Идеи для твоего Bucket List</h1>
-    <p  v-if="wishes.length">Всего: {{ wishes.length }}</p>
 
+    <div class="title-box">
+      <h1>Идеи для твоего Bucket List</h1>
+      <p v-if="wishes.length">Всего: {{ wishes.length }}</p>
+    </div>
+    
     <my-input
       v-if="wishes.length"
       v-model="searchQuery"
       placeholder="Поиск..."
     />
 
-    <n-space vertical  v-if="wishes.length">
-      <n-select v-model:value="selectedSort" :options="options" />
-    </n-space>
+    <div class="sort">
+      <n-space vertical  v-if="wishes.length">
+        <n-select v-model:value="selectedSort" :options="options" />
+      </n-space>
+    </div>
+    
 
     <IdeasBucketlist 
       :wishes="sortedAndSearchedPosts"
     />
 
-    
   </div>
 </template>
   
@@ -29,7 +34,6 @@ import MyInput from '@/components/layout/MyInput.vue';
 
 import IdeasBucketlist from '@/components/wishes/IdeasBucketlist.vue';
 import { NSpace, NSelect } from 'naive-ui';
-// import ListComponent from '@/components/wishes/ListComponent.vue';
 
 export default defineComponent ({
   name: 'IdeasBucketList',
@@ -56,24 +60,17 @@ export default defineComponent ({
       .catch((error)=>{
       console.log(error)
       })
-  },
-  // toFormData(obj){
-  //     let fd = new FormData();
-  //     for(let i in obj){
-  //         fd.append(i,obj[i]);
-  //     }
-  //     return fd;
-  // },
+    }
   },
   mounted() {
     this.getAllPlaces()
   },
   computed: {
     sortedPosts() {
-    return [...this.wishes].sort((wish1, wish2) => wish1[this.selectedSort]?.localeCompare(wish2[this.selectedSort]))
+      return [...this.wishes].sort((wish1, wish2) => wish1[this.selectedSort]?.localeCompare(wish2[this.selectedSort]))
     },
     sortedAndSearchedPosts() {
-    return this.sortedPosts.filter(wish => wish.name.toLowerCase().includes(this.searchQuery.toLowerCase()))
+      return this.sortedPosts.filter(wish => wish.name.toLowerCase().includes(this.searchQuery.toLowerCase()))
     }
   },
   setup() {
@@ -97,14 +94,14 @@ export default defineComponent ({
         value: "date"
       },
       {
-        label: "По visible",
+        label: "По видимости",
         value: "visible"
       },
       ],
       visible: [
       {
         label: "видят все пользователи",
-        value: "2"
+        value: "0"
       },
       {
         label: "вижу только я",
@@ -117,7 +114,7 @@ export default defineComponent ({
           value: 0,
         },
         {
-          label: "Done",
+          label: "Выполнено",
           value: 1,
         }
       ]
@@ -269,4 +266,10 @@ export default defineComponent ({
   //  border-radius: 5px;
   //  color: $white;
   // }
+  .sort {
+    margin-bottom: 20px;
+  }
+  .title-box {
+    margin-bottom: 20px;
+  }
   </style>

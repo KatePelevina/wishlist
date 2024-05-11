@@ -1,7 +1,6 @@
 <template>
     <div class="page">
 
-
         <div class="flex">
             <h1>User Bucket List</h1>
             <img src="@/assets/location.svg" alt="icon" class="nav-item__icon" @click="$router.push(`/user-wish-list-folders/user=${this.$route.params.id}`)"> 
@@ -9,7 +8,6 @@
 
         <p v-for="user in users" :key="user.id">{{ user.firstName }} {{ user.secondName }}</p>
 
-    
         <my-input
             v-if="wishes.length"
             v-model="searchQuery"

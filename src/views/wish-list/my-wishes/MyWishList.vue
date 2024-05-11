@@ -112,6 +112,7 @@
                </n-modal>
            </div>
        </div>
+
     </div>
    </div>
 </template>
@@ -275,9 +276,8 @@ export default defineComponent ({
             }, time);
         },
         deleteFolder(time){
-        let id = this.$route.params.id;
+            let id = this.$route.params.id;
         
-
             axios.post("http://localhost:8085/public/process.php?action=delete-wishlist-folder&id="+id)
             .then((response)=>{
                 this.currentFolder = {};

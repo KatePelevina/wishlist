@@ -36,32 +36,6 @@
             $result['places'] = $places;
             
             break; 
-        case 'count-places':
-            $id = 1;
-    
-            $sql = $conn->query("SELECT COUNT(place_id) AS count FROM `users_places` WHERE `user_id`='1'");
-            
-            while($row = $sql->fetch_assoc()) {
-                $result['count'] = $row['count'];
-            }
-            
-            break;            
-        case 'all-places':
-            $sql = $conn->query("SELECT * FROM places");
-            $places = [];
-            while($row = $sql->fetch_assoc()) {
-                $places[] = $row;
-            }
-            $result['places'] = $places;
-
-            break;
-        case 'count-all-places':
-            $sql = $conn->query("SELECT COUNT(id) AS count FROM `places`");
-           
-            while($row = $sql->fetch_assoc()) {
-                $result['count'] = $row['count'];
-            }
-            break;
         case 'create':
             
             $name = $_POST['name'];
@@ -140,32 +114,10 @@
                 $result['error'] = true;
                 $result['message'] = "error!";
             } 
-
-        case 'update':
-            $id = $_POST['id'];
-            $name = $_POST['name'];
-            $country = $_POST['country'];
-            $city = $_POST['city'];
-            $street = $_POST['street'];
-            $building = $_POST['building'];
-            $description = $_POST['description'];
-            
-            $sql = $conn->query("UPDATE places SET name='$name',country='$country',city='$city',street='$street',building='$building',description='$description' WHERE id='$id'");
-            
-            if ($sql) {
-                $result['message'] = "Place updated successfully!";
-            } else {
-                $result['error'] = true;
-                $result['message'] = "Failed to update place!";
-            }
-            
-            break;
         case 'delete':
             $id = $_POST['id'];
             
             $sql = $conn->query("DELETE FROM wish WHERE id='$id'");
-
-            
 
             $sql = $conn->query("DELETE FROM users_wishlist WHERE wish_id='$id'");
             
@@ -196,7 +148,7 @@
             $result['users'] = $users;
 
             break;
-        case 'get-followers': //подписчики
+        case 'get-followers': //подписчики //+
             $id = 1;
             $limit = 8;
             $offset = $_POST['offset'] * $limit;
@@ -219,7 +171,7 @@
             $result['users'] = $users;
 
             break;
-        case 'count-followers':
+        case 'count-followers': //+
             $sql = $conn->query("SELECT COUNT(user_id) AS count FROM `users_users` WHERE test_id='1'");
         
             while($row = $sql->fetch_assoc()) {
@@ -236,7 +188,7 @@
             }
 
             break;
-        case 'get-subscriptions': //подписки
+        case 'get-subscriptions': //подписки //+
             $id = 1;
             $limit = 10;
             $offset = $_POST['offset'] * $limit;
@@ -278,7 +230,7 @@
     
                 break;
 
-        case 'count-subscriptions':
+        case 'count-subscriptions': //+
             $sql = $conn->query("SELECT COUNT(test_id) AS count FROM `users_users` WHERE user_id='1'");
            
             while($row = $sql->fetch_assoc()) {
@@ -296,7 +248,7 @@
 
             break;
 
-        case 'read-users':
+        case 'read-users': //+
 
             $limit = 10;
             $offset = $_POST['offset'] * $limit;
@@ -325,7 +277,7 @@
             }
             
             break;
-        case 'get-user':
+        case 'get-user': //+
             $id = $_GET['id'];
 
             $sql1 = $conn->query("SELECT * FROM users WHERE id='$id'");
@@ -379,7 +331,7 @@
             
 
             break;
-        case 'get-user-by-wish':
+        case 'get-user-by-wish': //+
             $id = $_GET['id'];
 
             $sql = $conn->query(
@@ -409,7 +361,7 @@
             $result['users'] = $users;
 
             break;
-        case 'get-presents':
+        case 'get-presents': //+
 
             $id = $_GET['id']; 
 
@@ -437,39 +389,6 @@
             }
 
             break;
-
-        case 'get-user-places':
-            $id = $_GET['id'];
-            $sql2 = $conn->query(
-                "SELECT *
-                FROM places
-                LEFT JOIN users_places
-                ON id = place_id
-                WHERE users_places.user_id = $id");
-                $places = [];
-                while($row = $sql2->fetch_assoc()) {
-                    $places[] = $row;
-                }
-                $result['places'] = $places;
-        case 'get-place-users':
-            $id = $_GET['id'];
-            $sql2 = $conn->query(
-                "SELECT *
-                FROM users
-                LEFT JOIN users_places
-                ON id = user_id
-                WHERE users_places.place_id = $id
-                AND user_id !='1'");
-
-            $users = [];
-            while($row = $sql2->fetch_assoc()) {
-                $users[] = $row;
-            }
-           
-            $result['users'] = $users;
-            
-            
-
         case 'get-user-followers':
             $id = $_GET['id'];
 
@@ -502,19 +421,8 @@
                 }
                 $result['subs'] = $subs;
     
-                break;
-            
-        case 'count-user-places':
-            $id = $_GET['id'];
-    
-            $sql = $conn->query("SELECT COUNT(place_id) AS count FROM `users_places` WHERE `user_id`=$id");
-            
-            while($row = $sql->fetch_assoc()) {
-                $result['count'] = $row['count'];
-            }
-            
-            break;             
-        case 'get-my-profile':
+                break;           
+        case 'get-my-profile': //+
             $id = 1;
 
             $sql = $conn->query("SELECT * FROM users WHERE id='$id'");
@@ -551,7 +459,7 @@
            
 
             break;
-        case 'update-user':
+        case 'update-user': //+
             $id = $_POST['id'];
             $firstName = $_POST['firstName'];
             $secondName = $_POST['secondName'];
@@ -569,7 +477,7 @@
             }
             
             break;
-        case 'update-user-img':
+        case 'update-user-img': //+
 
             if(!empty($_FILES['file']['name'] !== '')) {
                 $file = $_FILES['file'];
@@ -596,20 +504,6 @@
                 $result['error'] = true;
                 $result['message'] = "Failed to delete user!";
             }
-
-            break;
-    
-        case 'get-place':
-            $id = $_GET['id'];
-
-            $sql = $conn->query(
-            "SELECT * FROM places WHERE id = $id");
-            
-            $places = [];
-            while($row = $sql->fetch_assoc()) {
-                $places[] = $row;
-            }
-            $result['places'] = $places;
 
             break;
         case 'get-friend':
@@ -702,24 +596,6 @@
                 $result['users'] = $users;
     
                 break;
-        case 'get-sub-places':
-
-            $id = $_POST['id'];
-
-            $sql = $conn->query(
-            "SELECT *
-            FROM places
-            LEFT JOIN users_places
-            ON id = place_id
-            WHERE users_places.user_id = $id");
-            
-            $places = [];
-            while($row = $sql->fetch_assoc()) {
-                $places[] = $row;
-            }
-            $result['places'] = $places;
-
-            break;
     
         case 'add-visited':
             $id = $_GET['id'];
@@ -744,7 +620,7 @@
             }
           
             break;
-        case 'image-load-wishlist':
+        case 'image-load-wishlist': //+
             $id = $_GET['id'];
 
             if(!empty($_FILES['file']['name'] !== '')) {
@@ -760,7 +636,7 @@
             }
 
             break;
-        case 'image-load-bucketlist':
+        case 'image-load-bucketlist': //+
             $id = $_GET['id'];
 
             if(!empty($_FILES['file']['name'] !== '')) {
@@ -839,21 +715,7 @@
             $result['photos'] = $photos;
             
             break;
-        case 'image-get-place':
-            $id = $_GET['id'];
-
-            $sql = $conn->query("SELECT * FROM `photos` WHERE `place_id`=$id AND user_id=1");
-
-            $photos = [];
-            while($row = $sql->fetch_assoc()) {
-                $photos[] = $row;
-            }
-            $result['photos'] = $photos;
-            
-            break;
-
-
-        case 'get-wishlist':
+        case 'get-wishlist': //+
 
             
             $id = $_GET['id'];
@@ -893,7 +755,7 @@
                 $result['wishes'] = $wishes;
 
             break; 
-        case 'get-user-bucketlist-in-folder':
+        case 'get-user-bucketlist-in-folder': //+
             $id = $_GET['id'];
             
             $sql = $conn->query(
@@ -930,7 +792,7 @@
             }
             $result['wishes'] = $wishes;
             break; 
-        case 'get-all-my-bucketlist':
+        case 'get-all-my-bucketlist': //+
             $id = $_GET['id'];
 
             $sql = $conn->query(
@@ -950,7 +812,7 @@
             }
             $result['wishes'] = $wishes;
             break; 
-        case 'get-bucketlist':
+        case 'get-bucketlist': //+
 
             
             $id = $_GET['id'];
@@ -981,7 +843,7 @@
             }
                 
             break; 
-        case 'get-my-wishlist-want':
+        case 'get-my-wishlist-want': //+
             $sql = $conn->query(
                 "SELECT * FROM wish 
     
@@ -1019,7 +881,7 @@
                 $result['wishes'] = $wishes;
             
             break;
-        case 'get-wishlist-item':
+        case 'get-wishlist-item': //+
 
             $id = $_GET['id'];
 
@@ -1048,7 +910,7 @@
 
 
             break;
-        case 'test':
+        case 'test': //+
             $id = $_GET['id'];
 
             $sql = $conn->query(
@@ -1056,8 +918,6 @@
             LEFT JOIN users_wishlist ON wish.id = users_wishlist.wish_id
             LEFT JOIN users ON users.id = users_wishlist.user_id
             WHERE wish.id = $id");
-
-            
 
 
             $wishes = [];
@@ -1067,7 +927,7 @@
             $result['wishes'] = $wishes;
 
             break;
-        case 'get-bucketlist-item':
+        case 'get-bucketlist-item': //+
 
             $id = $_GET['id'];
 
@@ -1093,7 +953,7 @@
 
             break;
 
-        case 'get-wishlist-folders':
+        case 'get-wishlist-folders': //+
             $id = 1;
 
             
@@ -1148,7 +1008,7 @@
             $result['folders'] = $folders;
             
             break; 
-        case 'get-user-bucketlist-folders':
+        case 'get-user-bucketlist-folders': //+
             $id = $_GET['id'];
 
             $sql = $conn->query(
@@ -1202,7 +1062,7 @@
             
             break; 
 
-        case 'get-bucketlist-folders':
+        case 'get-bucketlist-folders': //+
             $id = 1;
 
             $sql = $conn->query(
@@ -1223,7 +1083,7 @@
             break; 
             
         
-        case 'wishlist-folder':
+        case 'wishlist-folder': //+
             $id = $_GET['id'];
 
             $sql = $conn->query(
@@ -1238,7 +1098,7 @@
             $result['folders'] = $folders;
 
             break;
-        case 'bucketlist-folder':
+        case 'bucketlist-folder': //+
             $id = $_GET['id'];
 
             $sql = $conn->query(
@@ -1254,7 +1114,7 @@
 
             break;
         
-        case 'ideas-wishlist':
+        case 'ideas-wishlist': //+
             // $sql = $conn->query(
             //     "SELECT * FROM wish");
             
@@ -1370,7 +1230,7 @@
 
             break; 
 
-        case 'ideas-bucketlist':
+        case 'ideas-bucketlist': //+
             $sql = $conn->query(
                 "SELECT * FROM bucket 
     
@@ -1468,7 +1328,7 @@
         
             break; 
         
-        case 'add-wishlist':
+        case 'add-wishlist': //+
 
             $name = $_POST['name'];
             $price = $_POST['price'];
@@ -1499,7 +1359,7 @@
         
             break; 
 
-        case 'add-wishlist-to-folder':
+        case 'add-wishlist-to-folder': //+
             
             $name = $_POST['name'];
             $description = $_POST['description'];
@@ -1554,7 +1414,7 @@
 
             break; 
 
-        case 'add-bucketlist-to-folder':
+        case 'add-bucketlist-to-folder': //+
             $name = $_POST['name'];
             $description = $_POST['description'];
             $folder_id = $_GET['id'];
@@ -1585,7 +1445,7 @@
             
             break;
 
-        case 'add-bucketlist':
+        case 'add-bucketlist': //+
             $name = $_POST['name'];
             $description = $_POST['description'];
             $folder_id = $_POST['folder_id'];
@@ -1652,7 +1512,7 @@
 
             break; 
 
-        case 'get-done-wishlist':
+        case 'get-done-wishlist': //+
             
 
             $sql = $conn->query(
@@ -1670,7 +1530,7 @@
             $result['wishes'] = $wishes;
             
             break; 
-        case 'get-done-wishlist-in-folder':
+        case 'get-done-wishlist-in-folder': //+
             $id = $_GET['id'];
 
             $sql = $conn->query(
@@ -1690,7 +1550,7 @@
             $result['wishes'] = $wishes;
             
             break;
-        case 'get-done-bucketlist-in-folder':
+        case 'get-done-bucketlist-in-folder': //+
             $id = $_GET['id'];
 
             $sql = $conn->query(
@@ -1727,7 +1587,7 @@
             
             break;
 
-        case 'get-done-bucketlist-for-folder':
+        case 'get-done-bucketlist-for-folder': //+
             
 
             $id = $_GET['id'];
@@ -1762,7 +1622,7 @@
             }
     
             break;
-        case 'get-count-done-wishlist':
+        case 'get-count-done-wishlist': //+
         
             
 
@@ -1779,7 +1639,7 @@
             }
     
             break;
-        case 'get-count-done-bucketlist':
+        case 'get-count-done-bucketlist': //+
     
         
 
@@ -1826,7 +1686,7 @@
                 $result['users'] = $users;
 
             break;
-        case 'get-user-bucketlist':
+        case 'get-user-bucketlist': //+
             $id = $_GET['id'];
             
             $sql2 = $conn->query(
@@ -1842,7 +1702,7 @@
                 $result['wishes'] = $wishes;
 
             break;
-        case 'get-user-from-folder-bucketlist':
+        case 'get-user-from-folder-bucketlist': //+
             $id = $_GET['id'];
 
             $sql2 = $conn->query(
@@ -1873,7 +1733,7 @@
 
             break;
 
-        case 'update-wishlist-item':
+        case 'update-wishlist-item': //+
             $id = $_POST['id'];
             $name = $_POST['name'];
             $price = $_POST['price'];
@@ -1909,7 +1769,7 @@
 
 
             break;
-        case 'delete-wishlist-item':
+        case 'delete-wishlist-item': //+
             $id = $_POST['id'];
             
             $sql = $conn->query("DELETE FROM wish WHERE id='$id'");
@@ -1927,7 +1787,7 @@
 
             break;
         
-        case 'update-bucketlist-item':
+        case 'update-bucketlist-item': //+
                 $id = $_POST['id'];
                 $name = $_POST['name'];
                 $price = $_POST['price'];
@@ -1945,7 +1805,7 @@
 
                 break;
 
-        case 'delete-bucketlist-item':
+        case 'delete-bucketlist-item': //+
                 $id = $_POST['id'];
                 
                 $sql = $conn->query("DELETE FROM bucket WHERE id='$id'");
@@ -1965,7 +1825,7 @@
                 break;
     
         
-        case 'update-wishlist-folder':
+        case 'update-wishlist-folder': //+
                 $id = $_POST['id'];
                 $name = $_POST['name'];
                 $description = $_POST['description'];
@@ -1980,7 +1840,7 @@
                 }
     
                 break;
-        case 'delete-wishlist-folder':
+        case 'delete-wishlist-folder': //+
                 $id = $_GET['id'];
                 
                 $sql = $conn->query("DELETE FROM `wishlist_folders` WHERE id='$id'");
@@ -1998,7 +1858,7 @@
     
             break;
 
-        case 'update-bucketlist-folder':
+        case 'update-bucketlist-folder': //+
             $id = $_POST['id'];
             $name = $_POST['name'];
             $description = $_POST['description'];
@@ -2015,7 +1875,7 @@
 
 
             break;
-        case 'delete-bucketlist-folder':
+        case 'delete-bucketlist-folder': //+
             $id = $_GET['id'];
             
             
@@ -2031,7 +1891,7 @@
             }
 
             break;
-        case 'done-wishlist-item':
+        case 'done-wishlist-item': //+
                 $id = $_GET['id'];
                 
                 $sql = $conn->query("UPDATE wish SET done='1' WHERE id='$id'");
@@ -2044,7 +1904,7 @@
                 }
 
             break;
-        case 'done-bucketlist-item':
+        case 'done-bucketlist-item': //+
                 $id = $_GET['id'];
                 
                 $sql = $conn->query("UPDATE bucket SET done='1' WHERE id='$id'");
@@ -2057,20 +1917,6 @@
                 }
 
             break;
-        // case 'get-user-wishlist-item':
-
-        //         $id = $_GET['id'];
-    
-        //         $sql = $conn->query(
-        //         "SELECT * FROM wish WHERE id = $id");
-                
-        //         $wishes = [];
-        //         while($row = $sql->fetch_assoc()) {
-        //             $wishes[] = $row;
-        //         }
-        //         $result['wishes'] = $wishes;
-    
-        //         break;
         case 'get-user-wishlist-item':
             // $id = $_GET['id'];
     
@@ -2132,7 +1978,7 @@
 
             break;
 
-        case 'add-userwish-to-my-wishlist':
+        case 'add-userwish-to-my-wishlist': //+
             $id = $_POST['id'];
             $name = $_POST['name'];
 
@@ -2178,7 +2024,7 @@
             }
 
             break;
-        case 'get-user-bucketlist-item':
+        case 'get-user-bucketlist-item': //+
             $id = $_GET['id'];
     
                 $sql = $conn->query(
@@ -2192,7 +2038,7 @@
     
                 break;
         
-        case 'add-userwish-to-my-bucketlist':
+        case 'add-userwish-to-my-bucketlist': //+
             $id = $_POST['id'];
             $name = $_POST['name'];
             $price = $_POST['price'];
@@ -2219,7 +2065,7 @@
             }
 
             break;
-        case 'get-i-will-present-wishes':
+        case 'get-i-will-present-wishes': //+
 
             $sql = $conn->query(
             "SELECT * FROM users
@@ -2326,7 +2172,7 @@
             $result['wishes'] = $wishes;
 
             break;
-        case 'get-all-wishlist':
+        case 'get-all-wishlist': //+
             
             $sql = $conn->query(
                 "SELECT * FROM wish 
@@ -2349,7 +2195,7 @@
             // $sql = $conn->query("SELECT `name` FROM wishlist_folders "); 
     
             break;
-        case 'get-all-bucketlist':
+        case 'get-all-bucketlist': //+
            
                 $sql2 = $conn->query(
                 "SELECT *
@@ -2390,7 +2236,7 @@
             break;
         
 
-        case 'add-to-i-will-present':
+        case 'add-to-i-will-present': //+
             $wish_id = $_GET['id'];
             $friend_id = $_POST['id'];
 
@@ -2404,7 +2250,7 @@
             }
 
             break;
-        case 'get-i-will-present-wishlist-item':
+        case 'get-i-will-present-wishlist-item': //+
             $id = $_GET['id'];
 
             $sql = $conn->query("SELECT * FROM wish WHERE id = $id");
@@ -2417,7 +2263,7 @@
             $result['wishes'] = $wishes;
 
             break;
-        case 'get-i-will-get-wishes':
+        case 'get-i-will-get-wishes': //+
             $sql = $conn->query(
                 "SELECT * FROM users
                 LEFT JOIN i_will_present ON users.id = i_will_present.user_id

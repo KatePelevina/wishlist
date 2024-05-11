@@ -8,17 +8,33 @@
     
 
     <div class="wrapper">
-
         <div class="first">
-            <div class="first-left">
-                <button @click="Logout">Logout</button>
+            <div>
+                <div v-if="name">
+                    <!-- <button @click="Logout">Logout</button> -->
+                    <h3>Привет, {{ name }}</h3>
+                    <h1 class="first-title">Peldreams</h1>
+                    <p class="first-subtitle">Сервис для создания WishList и BucketList</p>
+                </div>
+                <div v-else>
+                    <div>
+                        <h1 class="first-title">Peldreams</h1>
+                        <p class="first-subtitle">Сервис для создания WishList и BucketList</p>
 
-                <h3>Welcome, {{ name }}</h3>
-
-                <span class="span">сочиняй мечты</span>
-                <h1 class="first-title">PelDreams</h1>
+                        <router-link to="/signup">
+                            <n-button strong secondary type="success" size="large" class="signup-btn">Создать аккаунт</n-button>
+                        </router-link>
+                        <router-link to="/login">
+                            <n-button size="large">Войти в аккаунт</n-button>
+                        </router-link>
+                    </div>
+                </div>
                 
-                <p class="first-subtitle">Сервис для создания WishList и BucketList</p>
+
+                <!-- <span class="span">сочиняй мечты</span> -->
+                <!-- <h1 class="first-title">Peldreams</h1>
+                
+                <p class="first-subtitle">Сервис для создания WishList и BucketList</p> -->
 
                 
 <!-- 
@@ -38,33 +54,73 @@
 
                 <!-- </div> -->
 
-                <div v-if="!loggedIn">
-                    <router-link to="/login">
-                        Login
-                    </router-link>
-
-                    <router-link to="/signup">
-                        Register
-                    </router-link>
-                </div>
+                
                 
                 
             </div>
-            <div class="first-right">
+            <!-- <div class="first-right"> -->
                 <!-- <img src="@/assets/mockup.svg" alt="" class="first-right__img"> -->
-                <img src="@/assets/girl.svg" alt="" class="first-right__img">
-                
-            </div>
+                <!-- <img src="@/assets/girl.svg" alt="" class="first-right__img"> -->
+            <!-- </div> -->
         </div>
+    </div>
 
-        <section class="wishes">
+        <section class="team">
+            <div class="wrapper">
+                <div class="team__inner">
+                    <div class="team__item team__item--1 wow animate__animated animate__fadeInRight">
+                        <img class="team__item-img" src="@/assets/photo.jpg" alt="name">
+                        <p class="team__item-text team__item-text--right">Я точно знаю, что мой подарок понравится</p>
+                    </div>
+                    <div class="team__item team__item--2 wow animate__animated animate__fadeInLeft">
+                        <img class="team__item-img" src="@/assets/photo.jpg" alt="name">
+                        <p class="team__item-text team__item-text--left">Я добавил в свой Bucket List крутые идеи</p>
+                    </div>
+                    <div class="team__item team__item--3 wow animate__animated animate__fadeInRight">
+                        <img class="team__item-img" src="@/assets/photo.jpg" alt="name">
+                        <p class="team__item-text team__item-text--right">Мои коллеги знают на что скидываться к моему ДР</p>
+                    </div>
+                    <div class="team__item team__item--4 wow animate__animated animate__fadeInLeft">
+                        <img class="team__item-img" src="@/assets/photo.jpg" alt="name">
+                        <p class="team__item-text team__item-text--right">Я пошел регстрироваться!</p>
+                    </div>
+                    <div class="team__item team__item--5 wow animate__animated animate__fadeInRight">
+                        <img class="team__item-img" src="@/assets/photo.jpg" alt="name">
+                        <p class="team__item-text team__item-text--right">Мой парень подарил помаду нужного оттенка! Вау!</p>
+                    </div>
+                    <div class="team__box">
+                        <h3 class="team__title title">Благодаря Peldreams</h3>
+                    </div>
+                </div>
+            </div>
+        </section>
+    
+    <div class="wrapper">
+        <div class="list">
             <div class="titles">
                 <h2>Зачем создавать список желаний?</h2>
-                <p>Благодаря списку ты </p>
+                <p>Благодаря списку ты:</p>
             </div>
+            <ul>
+                <li>- Получишь желанный подарок</li>
+                <li>- Не получишь ненужный подарок</li>
+                <li>- Не получишь одинаковые подарки</li>
+                <li>- Подарок, а не сертификат</li>
+                <li>- Почувствуешь себя ребенком, который пишет письмо Деду Морозу</li>
+                <li>- Сможешь посмотреть желания человека, для котого ты - Тайный Санта</li>
+                <li>- Твои друзья, коллеги, родственники будут знать, что подарить и не потратят деньги впустую</li>
+            </ul>
+        </div>
+    </div>
+
+        <!-- <section class="wishes"> -->
+            <!-- <div class="titles">
+                <h2>Зачем создавать список желаний?</h2>
+                <p>Благодаря списку ты </p>
+            </div> -->
             
 
-            <div>
+            <!-- <div> -->
                 <!-- <p>получишь желанный подарок</p> -->
                 <!-- <img class="width" src="https://img.freepik.com/free-photo/holidays-celebration-women-concept-portrait-happy-charismatic-blond-girl-shaking-gift-box-wondering-whats-inside-as-celebrating-birthday-receive-bday-presents-pink-background_1258-100311.jpg?w=1800&t=st=1675423714~exp=1675424314~hmac=93e10dd8647fdf8dc21c4582d820c627bb5ddedfefe2867c753cf3996136f4be" alt=""> -->
                 <!-- <div class="girls">
@@ -74,60 +130,84 @@
                     <img class="girl" src="@/assets/girl.svg">
                 </div>
                 -->
-            </div>
+            <!-- </div> -->
 
-            <div class="item">
-                <div class="item-left">
-                    <span>#1</span>
-                    <h4>Получишь желанный подарок</h4>
-                    <p>Lorem ipsum dolor sit amet consectetur, adipisicing elit. Iusto inventore repellendus voluptatem at incidunt a libero doloremque eveniet recusandae? Voluptas sapiente explicabo quisquam et excepturi repellendus placeat deleniti, soluta blanditiis.</p>
-                </div>
-                <div class="item-right">
+            <!-- <div class="item"> -->
+                
+                    <!-- <span>#1</span>
+                    <h4>Получишь желанный подарок</h4> -->
+               
+                <!-- <div class="item-right">
                     <div class="item-right__img">
                         <img src="@/assets/girl.svg">                   
                     </div>
-                </div>
-            </div>
+                </div> -->
+            <!-- </div> -->
 
-            <div class="item">
-                <div class="item-right">
+            <!-- <div class="item"> -->
+                <!-- <div class="item-right">
                     <div class="item-right__img">
                         <img src="@/assets/girl.svg">                   
                     </div>
-                </div>
-                <div class="item-left">
-                    <span>#2</span>
-                    <h4>не получишь ненужный подарок</h4>
-                    <p>стоп-лист - что не надо дарить ( не хочу, уже есть) </p>
-                </div>
-            </div>
+                </div> -->
+                
+                    <!-- <span>#2</span>
+                    <h4>не получишь ненужный подарок</h4> -->
+                    <!-- <p>стоп-лист - что не надо дарить ( не хочу, уже есть) </p> -->
+               
+            <!-- </div> -->
 
-            <div class="item">
-                <div class="item-left">
+            <!-- <div class="item">
                     <span>#3</span>
-                    <h4>не получишь одинаковые подарки</h4>
-                    <p>Опция: забронировать подарок</p>
-                </div>
-                <div class="item-right">
+                    <h4>не получишь одинаковые подарки</h4> -->
+                    <!-- <p>Опция: забронировать подарок</p> -->
+                
+                <!-- <div class="item-right">
                     <div class="item-right__img">
                         <img src="@/assets/girl.svg">                   
                     </div>
-                </div>
+                </div> -->
+            <!-- </div>
+
+            <div class="item"> -->
+                <!-- <div class="item-right">
+                    <div class="item-right__img">
+                        <img src="@/assets/girl.svg">                   
+                    </div>
+                </div> -->
+               
+                    <!-- <span>#4</span>
+                    <p>Подарок, а не сертификат</p> -->
+                    <!-- <p>получишь желанную косметику в подарочной упаковке от своего мужчины, а не подарочный сертификат, который нужно идти использовать в магазин</p> -->
+                    <!-- <p>Можно вставить ссылку в интернет-магазин</p> -->
+<!--                 
             </div>
 
-            <div class="item">
-                <div class="item-right">
+            <div class="item"> -->
+                <!-- <div class="item-right">
                     <div class="item-right__img">
                         <img src="@/assets/girl.svg">                   
                     </div>
-                </div>
-                <div class="item-left">
-                    <span>#4</span>
-                    <h4>Подарок, а не сертификат</h4>
-                    <p>получишь желанную косметику в подарочной упаковке от своего мужчины, а не подарочный сертификат, который нужно идти использовать в магазин</p>
-                    <p>Можно вставить ссылку в интернет-магазин</p>
-                </div>
-            </div>
+                </div> -->
+                
+                    <!-- <span>#5</span>
+                    <p>почувствуешь себя ребенком, который пишет письмо Деду Морозу или посмотреть желания человека для котого ты - Тайный Санта</p>
+
+                 -->
+            <!-- </div> -->
+
+            <!-- <div class="item"> -->
+                <!-- <div class="item-right">
+                    <div class="item-right__img">
+                        <img src="@/assets/girl.svg">                   
+                    </div>
+                </div> -->
+                
+                    <!-- <span>#6</span>
+                    <p>твои друзья, коллеги, родственники будут знать, что подарить и не потратят деньги впустую</p>
+
+               
+            </div> -->
 
             <!-- <div class="flex">
                 <img class="width" src="https://img.freepik.com/free-photo/enthusiastic-excited-happy-emotive-blond-girl-applause-clasping-hands-thrill-amazement-as-seeing-something-really-wonderful-cool-smiling-as-dream-came-true-pink-background_1258-96879.jpg?w=1800&t=st=1675425326~exp=1675425926~hmac=d92b70fb6a63148c69fa6381bb5cbe0994e777d49704bd7cdeeb71d93fed3d79" alt="">
@@ -160,16 +240,16 @@
             
             
            
-            <div class="flex">
+            <!-- <div class="item">
                 <p>почувствуешь себя ребенком, который пишет письмо Деду Морозу или посмотреть желания человека для котого ты - Тайный Санта</p>
                 <img class="width" src="https://img.freepik.com/free-photo/portrait-dreamy-thoughtful-girl-thinking-what-order-using-application-make-reservation-loo_1258-93652.jpg?t=st=1675424250~exp=1675424850~hmac=16404d3ee47c69c3f5b6c47a7842ab834854a1a66c89f22e8f38fdc67507eedd" alt="">
             </div>
             
 
-            <div class="flex">
+            <div class="item">
                 <img class="width" src="https://img.freepik.com/free-photo/enthusiastic-happy-attractive-blond-woman-white-cute-dress-open-mouth-excited-cheerful-looking-pointing-upper-right-corner-as-best-prices-discounts-ever-stand-pink-background_1258-93688.jpg?w=2000&t=st=1675423974~exp=1675424574~hmac=8d89ad7c5c8a146c3090cc1788aa0ba155974f14a6aa0eab52b58cfd4a78a342" alt="">
                 <p>твои друзья, коллеги, родственники будут знать, что подарить и не потратят деньги впустую</p>
-            </div>
+            </div> -->
             
             <!-- <div class="flex">
                 
@@ -177,7 +257,7 @@
             </div> -->
            
             
-        </section>
+        <!-- </section> -->
 
         <!-- <section>
             <h2>Как создавать список желаний?</h2>
@@ -207,53 +287,29 @@
         
 
         
-    </div>
+    
 
     <!-- <section class="baloon"></section> -->
 
 
-    <section class="team">
-        <div class="wrapper">
-            <div class="team__inner">
-                <div class="team__item team__item--1 wow animate__animated animate__fadeInRight">
-                    <img class="team__item-img" src="@/assets/photo.jpg" alt="name">
-                    <p class="team__item-text team__item-text--right">Я точно знаю, что мой подарок понравится</p>
-                </div>
-                <div class="team__item team__item--2 wow animate__animated animate__fadeInLeft">
-                    <img class="team__item-img" src="@/assets/photo.jpg" alt="name">
-                    <p class="team__item-text team__item-text--left">Я добавил в свой Bucket List крутые идеи</p>
-                </div>
-                <div class="team__item team__item--3 wow animate__animated animate__fadeInRight">
-                    <img class="team__item-img" src="@/assets/photo.jpg" alt="name">
-                    <p class="team__item-text team__item-text--right">Мои коллеги знают на что скидываться к моему ДР</p>
-                </div>
-                <div class="team__item team__item--4 wow animate__animated animate__fadeInLeft">
-                    <img class="team__item-img" src="@/assets/photo.jpg" alt="name">
-                    <p class="team__item-text team__item-text--right">Я пошел регстрироваться!</p>
-                </div>
-                <div class="team__item team__item--5 wow animate__animated animate__fadeInRight">
-                    <img class="team__item-img" src="@/assets/photo.jpg" alt="name">
-                    <p class="team__item-text team__item-text--right">Мой парень подарил помаду нужного оттенка! Вау!</p>
-                </div>
-                <div class="team__box">
-                    <h3 class="team__title title">Благодаря PelDreams</h3>
-                </div>
-            </div>
-        </div>
-    </section>
+    
 
 </template>
 
 <script>
-import { authComputed } from '../vuex/helpers.js';
+// import { authComputed } from '../vuex/helpers.js';
 
 import { ref, onBeforeMount } from 'vue';
 import firebase from 'firebase';
+import { NButton } from 'naive-ui';
 
 export default {
     name: 'LandingView',
-    computed: {
-        ...authComputed
+    // computed: {
+    //     ...authComputed
+    // },
+    components: {
+        NButton
     },
     setup() {
 
@@ -272,6 +328,7 @@ export default {
             .auth()
             .signOut()
             .then(() => console.log("Signed out"))
+            .then( () => location.reload())
             .catch(err => alert(err.message));
         }
         
@@ -299,6 +356,8 @@ export default {
         display: flex;
         justify-content: space-around;
         align-items: center;
+        text-align: center;
+        
     }
     .first-right {
         background-color: $active;
@@ -329,6 +388,7 @@ export default {
         font-weight: bold;
         font-size: 80px;
         margin-bottom: 30px;
+        color: $active;
     }
     .first-subtitle {
         margin-bottom: 30px;
@@ -395,6 +455,7 @@ export default {
 
 .titles {
     text-align: center;
+    margin-bottom: 10px;
 }
 
 .girl {
@@ -416,6 +477,10 @@ export default {
     // padding: 30px 15px;
     // border-radius: 10px;
     margin: 50px 0;
+    flex-basis: 50%;
+    background-color: #fff;
+    padding: 30px 15px;
+    border-radius: 10px;
 }
 .item-left {
     flex-basis: 50%;
@@ -528,4 +593,28 @@ export default {
     border-radius: 10px;
 
 }
+.signup-btn {
+    margin-right: 20px;
+}
+.wishes {
+    width: 80%;
+    margin: 0 auto;
+}
+.item {
+    width: 100%;
+    margin: 0 auto;
+}
+.item-left {
+    width: 100%;
+}
+.list {
+    width: 60%;
+    margin: 0 auto;
+    background-color: #fff;
+    border-radius: 10px;
+    padding: 50px;
+    margin-bottom: 50px;
+    margin-top: 50px;
+}
+
 </style>

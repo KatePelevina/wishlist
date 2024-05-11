@@ -1,67 +1,15 @@
 <template>
     <div class="page">
   
-    
-      <!-- <p>Всего: {{ wishes.length }}</p> -->
-    
-      
-          <!-- <div class="card" v-for="place in places" :key="place.id" @click="$router.push(`/place/${place.id}`)">
-              <div class="card-header">
-                  
-                  <div class="card-header__right">
-                      <a href="#"><img src="@/assets/dots.svg" alt="dots-icon"></a>
-                      <img src="@/assets/dots.svg" alt="dots-icon">
-                  </div>
-              </div>
-              <div class="card-body">
-                  <div class="card-body__right">
-                    <div class="card-body__right-img">
-                      <img src="@/assets/paris.jpg" alt="">
-                    </div>
-                  </div>
-                  <div class="card-body__left">
-                      <div>
-                          <p class="card-title">Сумка</p>
-                          <p class="card-text">300$</p>
-                          <p class="card-text"></p>     
-                      </div>
-                      <p>{{ place.description }}</p>
-                      <div class="flex">
-                          <p>11 декабря 2021</p>
-                          <p>Имя автора</p>
-                      </div>
-                      <button>Добавить в свой WishList</button>
-                  </div>
-                  
-              </div>
-          </div> -->
-    
-          <!-- <h1>Все желания из моего Wish List</h1> -->
   
-          <!-- <div class="items">
-            <div class="item" v-for="wish in wishes" :key="wish.id">
-                <div class="box" @click="$router.push(`/my-wish-list-item/${wish.id}`)">
-                    <div class="box-inner">
-                        <span v-if="wish.price" class="span">{{ wish.price }}</span>
-                        <img :src="'/img/' + wish.photo" alt="">
-                    </div>
-                </div>
-                <div class="flex">
-                  <div>
-                    <p class="box-inner__hover">{{wish.name}}</p>
-                  </div>
-                </div>
+        <div class="flex">
+            <div class="flex-left">
+                <p class="ddddd">Количество желаний: {{ wishes.length  }}</p>
             </div>
-          </div> -->
-  
-          <div class="flex">
-              <div class="flex-left">
-                  <p class="ddddd">Количество желаний: {{ wishes.length  }}</p>
-              </div>
-              <div class="div-button flex-right">
-                  <n-button @click="showModal=true" class="btn" strong secondary type="success">+ Новое желание</n-button>
-              </div>
-          </div>
+            <div class="div-button flex-right">
+                <n-button @click="showModal=true" class="btn" strong secondary type="success">+ Новое желание</n-button>
+            </div>
+        </div>
   
   
           <div class="select">
@@ -137,25 +85,25 @@
               value: ref(null),
               options: [
                   {
-                  label: "Сортировать",
-                  value: "",
-                  disabled: true
+                    label: "Сортировать",
+                    value: "",
+                    disabled: true
                   },
                   {
-                  label: "По названию",
-                  value: "name",
+                    label: "По названию",
+                    value: "name",
                   },
                   {
-                  label: "По дате создания",
-                  value: "date"
+                    label: "По дате создания",
+                    value: "date"
                   },
                   {
-                  label: "По price",
-                  value: "price",
+                    label: "По цене",
+                    value: "price",
                   },
                   {
-                  label: "По visible",
-                  value: "visible"
+                    label: "По видимости",
+                    value: "visible"
                   }
               ]
           };

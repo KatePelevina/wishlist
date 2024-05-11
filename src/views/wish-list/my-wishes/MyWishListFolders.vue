@@ -10,6 +10,11 @@
             </n-drawer-content>
         </n-drawer>
 
+        <!-- <button @click="$router.push(`/`)">reload</button>
+        <button @click="Logout" v-if="name">Logout</button>
+
+        <h3>Welcome, {{ name }}</h3> -->
+
         <div class="flex color">
             <div class="popover">
                 <n-popover trigger="hover">
@@ -122,6 +127,9 @@ import { defineComponent, ref } from "vue";
 import MsgComponent from '@/components/layout/MsgComponent.vue';
 import { NDrawer, NDrawerContent }  from 'naive-ui';
 
+import { onBeforeMount } from 'vue';
+import firebase from 'firebase';
+
 
 export default defineComponent ({
     name: 'MyWishListFolders',
@@ -198,6 +206,11 @@ export default defineComponent ({
             }
             return fd;
         },
+        // reload(time) {
+        //     setTimeout(function(){
+        //         self.$router.push(`/`);
+        //     }, time)
+        // }
     },
     mounted() {
         this.getFolders()
@@ -217,6 +230,26 @@ export default defineComponent ({
         active.value = true;
         placement.value = place;
         };
+
+        const name = ref("");
+
+        onBeforeMount(() => {
+            const user = firebase.auth().currentUser;
+
+            if(user) {
+                name.value = user.email.split('@')[0];
+            }
+        });
+
+        const Logout = () => {
+            firebase
+            .auth()
+            .signOut()
+            .then(() => console.log("Signed out"))
+            .then( () => location.reload())
+            .catch(err => alert(err.message));
+        }
+
         return {
             value: ref(null),
             // active: ref(false),
@@ -238,6 +271,9 @@ export default defineComponent ({
                 value: "date"
                 }
             ],
+
+            name,
+            Logout
         };
     }
 });

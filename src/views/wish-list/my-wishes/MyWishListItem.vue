@@ -203,18 +203,13 @@
 <script>
 import axios from 'axios';
 import { defineComponent, ref } from "vue";
-
 import { NEmpty } from 'naive-ui';
 import { NSpace, NSelect } from 'naive-ui';
 import { NModal, NButton, NCard } from 'naive-ui';
 import { NTag } from 'naive-ui';
 import { NBreadcrumb, NBreadcrumbItem } from 'naive-ui';
 import { NInput, NInputNumber  } from 'naive-ui';
-
 import MsgComponent from '@/components/layout/MsgComponent.vue'
-// import WishItemImageLoad from '@/views/WishItemImageLoad.vue';
-// import WishCard from '@/components/WishCard.vue';
-
 import { NIcon } from "naive-ui";
 import { SearchSharp as SearchImg } from "@vicons/ionicons5";
 import { NDrawer, NDrawerContent }  from 'naive-ui';
@@ -256,10 +251,6 @@ export default defineComponent ({
         SearchImg,
         NDrawer,
         NDrawerContent
-        // WishItemImageLoad,
-        // NUpload,
-        // NUploadDragger
-    //   WishCard
     },
     methods: {
         updateWish(){

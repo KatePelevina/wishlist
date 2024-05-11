@@ -1,70 +1,6 @@
 <template>
     <div>
   
-    
-      <!-- <p>Всего: {{ wishes.length }}</p> -->
-    
-      
-          <!-- <div class="card" v-for="place in places" :key="place.id" @click="$router.push(`/place/${place.id}`)">
-              <div class="card-header">
-                  
-                  <div class="card-header__right">
-                      <a href="#"><img src="@/assets/dots.svg" alt="dots-icon"></a>
-                      <img src="@/assets/dots.svg" alt="dots-icon">
-                  </div>
-              </div>
-              <div class="card-body">
-                  <div class="card-body__right">
-                    <div class="card-body__right-img">
-                      <img src="@/assets/paris.jpg" alt="">
-                    </div>
-                  </div>
-                  <div class="card-body__left">
-                      <div>
-                          <p class="card-title">Сумка</p>
-                          <p class="card-text">300$</p>
-                          <p class="card-text"></p>     
-                      </div>
-                      <p>{{ place.description }}</p>
-                      <div class="flex">
-                          <p>11 декабря 2021</p>
-                          <p>Имя автора</p>
-                      </div>
-                      <button>Добавить в свой WishList</button>
-                  </div>
-                  
-              </div>
-          </div> -->
-    
-          <!-- <h1>Все желания из моего Wish List</h1> -->
-  
-          <!-- <div class="items">
-            <div class="item" v-for="wish in wishes" :key="wish.id">
-                <div class="box" @click="$router.push(`/my-wish-list-item/${wish.id}`)">
-                    <div class="box-inner">
-                        <span v-if="wish.price" class="span">{{ wish.price }}</span>
-                        <img :src="'/img/' + wish.photo" alt="">
-                    </div>
-                </div>
-                <div class="flex">
-                  <div>
-                    <p class="box-inner__hover">{{wish.name}}</p>
-                  </div>
-                </div>
-            </div>
-          </div> -->
-  
-  
-          <!-- <div class="flex rrrr">
-              <div class="flex-left">
-                  <p class="ddddd">Кол-во желаний: {{ wishes.length }}</p> 
-              </div>
-              <div class="flex-right">
-                  <p class="ddddd">Кол-во исполненных: {{ done_count  }}</p>
-                  
-              </div>
-          </div> -->
-  
           <div class="flex">
             <div class="progress ddddd percent flex-item">
               <p>Исполнено: {{ done_count  }} / {{ wishes.length }}</p>
@@ -85,25 +21,6 @@
               :border-radius="4"
               />
           </n-space>
-  
-  
-          <!-- <div class="flex"> -->
-              
-              <!-- <div class="div-button flex-right">
-                  <n-button @click="showModal=true" class="btn" strong secondary type="success">+ Новое желание</n-button>
-              </div> -->
-          <!-- </div> -->
-  
-          <!-- <my-select
-          v-model="selectedSort"
-          :options="sortOptions" 
-          /> -->
-  
-          <!-- <div class="select">
-            <n-space vertical>
-              <n-select v-model:value="selectedSort" :options="options" />
-            </n-space>
-          </div> -->
           
   
           <my-input
@@ -163,7 +80,6 @@
   
     import WishListComponent from '@/components/wishes/WishListComponent.vue';
     import MyInput from '@/components/layout/MyInput.vue';
-    // import MySelect from '@/components/layout/MySelect.vue';
   
     
     export default defineComponent ({
@@ -178,9 +94,7 @@
         NModal, 
         NCard,
         NInput, 
-        NInputNumber 
-        // MySelect
-       
+        NInputNumber        
       },
       data() {
           return {
@@ -202,12 +116,6 @@
                  bucket_list: '0'
              },
              page: ''
-            // sortOptions: [
-            //       {value: 'name', name: 'По name'},
-            //       {value: 'date', name: 'По date'},
-            //       {value: 'price', name: 'По price'},
-            //       {value: 'visible', name: 'По visible'},
-            // ],
           }
       },
       methods: {
@@ -282,40 +190,40 @@
                 value: ref(null),
                 options: [
                     {
-                    label: "Сортировать",
-                    value: "",
-                    disabled: true
+                      label: "Сортировать",
+                      value: "",
+                      disabled: true
                     },
                     {
-                    label: "По названию",
-                    value: "name",
+                      label: "По названию",
+                      value: "name",
                     },
                     {
-                    label: "По дате создания",
-                    value: "date"
+                      label: "По дате создания",
+                      value: "date"
                     },
                     {
-                    label: "По price",
-                    value: "price",
+                      label: "По price",
+                      value: "price",
                     },
                     {
-                    label: "По visible",
-                    value: "visible"
+                      label: "По видимости",
+                      value: "visible"
                     }
                 ],
                 visible: [
                     {
-                    label: "Кто видит желание",
-                    value: "",
-                    disabled: true
+                      label: "Кто видит желание",
+                      value: "",
+                      disabled: true
                     },
                     {
-                    label: "вижу только я",
-                    value: "1",
+                      label: "вижу только я",
+                      value: "0",
                     },
                     {
-                    label: "видят все пользователи",
-                    value: "2"
+                      label: "видят все пользователи",
+                      value: "1"
                     }
                 ],
             };

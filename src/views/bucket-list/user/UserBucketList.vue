@@ -1,97 +1,44 @@
 <template>
     <div class="page">
 
-   
+        <UserPage />
 
-    <!-- <div class="flex">
-        <h1>Wish List | Сумки</h1>
-        <button>Поделиться</button>
-    </div>
-    
-    <select name="" id="" placeholder="Забронировано">
-        <option value="1">Свободно</option>
-        <option value="2">Забронировано</option>
-    </select> -->
 
-    <!-- <bucket-list /> -->
-    
-    <!-- <div class="items" v-if="wishes.length">
-        <div class="item" v-for="(wish,index) in wishes" :key="index">
-            <div class="box" @click="$router.push(`/user-bucket-list-item/${wish.id}`)">
-                <div class="box-inner">
-                    <span v-if="wish.price" class="span">{{ wish.price }} руб</span>
-                    <img :src="'/img/' + wish.photo" alt="">
-                </div>
+        <div class="flex-left color">
+            <div class="popover">
+            <n-popover trigger="hover">
+                <template #trigger>
+                    <n-space @click="$router.push(`/user-bucket-list-folders/user=${this.$route.params.id}`)">
+                    <n-icon size="25" @click="showInfo=true">
+                        <svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" viewBox="0 0 512 512"><path d="M408 96H252.11a23.89 23.89 0 0 1-13.31-4L211 73.41A55.77 55.77 0 0 0 179.89 64H104a56.06 56.06 0 0 0-56 56v24h416c0-30.88-25.12-48-56-48z" fill="currentColor"></path><path d="M423.75 448H88.25a56 56 0 0 1-55.93-55.15L16.18 228.11v-.28A48 48 0 0 1 64 176h384.1a48 48 0 0 1 47.8 51.83v.28l-16.22 164.74A56 56 0 0 1 423.75 448zm56.15-221.45z" fill="currentColor"></path></svg>                  
+                    </n-icon>
+                    </n-space>
+                </template>
+                <span>Просмотр желаний в папках</span>
+            </n-popover>
             </div>
-            <p class="box-inner__hover">{{ wish.name }}</p>
+            <h1>User BUCKETLIST</h1>
+            <!-- <img src="@/assets/location.svg" alt="icon" class="nav-item__icon" @click="$router.push(`/user-bucket-list-folders/user=${this.$route.params.id}`)">  -->
         </div>
-    </div>
-    <div v-else>
-        <p>пока ничего нет</p>
-    </div> -->
+
+
+        <div class="select" v-if="wishes.length">
+            <n-space vertical>
+                <n-select v-model:value="selectedSort" :options="options" />
+            </n-space>
+        </div>
+
+        <div class="search">
+            <my-input
+            v-model="searchQuery"
+            placeholder="Поиск..."
+            />
+        </div>
     
 
-
-
-
-    
-    <UserPage />
-
-    <!-- <p v-for="user in users" :key="user.id">{{ user.firstName }} {{ user.secondName }}</p> -->
-
-    <div class="flex-left color">
-        <div class="popover">
-        <n-popover trigger="hover">
-            <template #trigger>
-                <n-space @click="$router.push(`/user-bucket-list-folders/user=${this.$route.params.id}`)">
-                  <n-icon size="25" @click="showInfo=true">
-                    <svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" viewBox="0 0 512 512"><path d="M408 96H252.11a23.89 23.89 0 0 1-13.31-4L211 73.41A55.77 55.77 0 0 0 179.89 64H104a56.06 56.06 0 0 0-56 56v24h416c0-30.88-25.12-48-56-48z" fill="currentColor"></path><path d="M423.75 448H88.25a56 56 0 0 1-55.93-55.15L16.18 228.11v-.28A48 48 0 0 1 64 176h384.1a48 48 0 0 1 47.8 51.83v.28l-16.22 164.74A56 56 0 0 1 423.75 448zm56.15-221.45z" fill="currentColor"></path></svg>                  
-                  </n-icon>
-                </n-space>
-            </template>
-            <span>Просмотр желаний в папках</span>
-        </n-popover>
-        </div>
-        <h1>User BUCKETLIST</h1>
-        <!-- <img src="@/assets/location.svg" alt="icon" class="nav-item__icon" @click="$router.push(`/user-bucket-list-folders/user=${this.$route.params.id}`)">  -->
-    </div>
-
-
-    <div class="select" v-if="wishes.length">
-        <n-space vertical>
-            <n-select v-model:value="selectedSort" :options="options" />
-        </n-space>
-    </div>
-
-    <div class="search">
-        <my-input
-        v-model="searchQuery"
-        placeholder="Поиск..."
+        <UserBucketList 
+            :wishes="sortedAndSearchedPosts"
         />
-    </div>
-    
-
-    <UserBucketList 
-        :wishes="sortedAndSearchedPosts"
-    />
-
-
-   
-
-    <!-- <div class="items" v-if="wishes.length">
-        <div class="item" v-for="(wish,index) in wishes" :key="index">
-            <div class="box" @click="$router.push(`/user-bucket-list-item/${wish.id}`)">
-                <div class="box-inner">
-                    <span v-if="wish.price" class="span">{{ wish.price }} руб</span>
-                    <img :src="'/img/' + wish.photo" alt="">
-                </div>
-            </div>
-            <p class="box-inner__hover">{{ wish.name }}</p>
-            <p class="box-inner__hover">{{ wish.date }}</p>
-            <p class="box-inner__hover">{{ wish.visible }}</p>
-            <p class="box-inner__hover">done:{{ wish.done }}</p>
-        </div>
-    </div> -->
 
     </div>
 </template>
@@ -163,24 +110,24 @@ export default defineComponent ({
             options: [
                 {
                 label: "Сортировать по",
-                value: "",
-                disabled: true
+                    value: "",
+                    disabled: true
                 },
                 {
-                label: "По названию",
-                value: "name",
+                    label: "По названию",
+                    value: "name",
                 },
                 {
-                label: "По цене",
-                value: "price"
+                    label: "По цене",
+                    value: "price"
                 },
                 {
-                label: "По дате создания",
-                value: "date"
+                    label: "По дате создания",
+                    value: "date"
                 },
                 {
-                label: "По visible",
-                value: "visible"
+                    label: "По видимости",
+                    value: "visible"
                 },
             ]            
         };

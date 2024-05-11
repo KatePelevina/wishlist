@@ -99,8 +99,8 @@
 
                 <form>
                     <!-- <input type="text" placeholder="Название папки" v-model="newFolder.name" required> -->
-                    <n-input v-model:value="newFolder.name" type="text" placeholder="Название папки"/>
-                    <n-input v-model:value="newFolder.description" type="text" placeholder="Описание папки"/>
+                    <n-input v-model:value="newFolder.name" type="text" placeholder="Название папки" class="folder-name-input"/>
+                    <n-input v-model:value="newFolder.description" type="text" placeholder="Описание папки" class="folder-desc-input"/>
 
 
                     <n-button strong secondary type="success" @click="showModal=false; addFolder(); activate('top')" class="add-btn">Создать папку</n-button>
@@ -376,5 +376,11 @@ export default defineComponent ({
 }
 .popover {
     cursor: pointer;
+}
+.folder-name-input {
+    margin-bottom: 10px;
+}
+.folder-desc-input {
+    margin-bottom: 10px;
 }
 </style>

@@ -8,7 +8,6 @@
                 <n-popover trigger="hover">
                     <template #trigger>
                         <n-space @click="$router.push(`/user-bucket-list/user=${this.$route.params.id}`)">
-                            <!-- <n-switch v-model:value="active" /> -->
                             <n-icon size="25" @click="showInfo=true">
                                 <svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" viewBox="0 0 512 512"><path fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="48" d="M160 144h288"></path><path fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="48" d="M160 256h288"></path><path fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="48" d="M160 368h288"></path><circle cx="80" cy="144" r="16" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="32"></circle><circle cx="80" cy="256" r="16" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="32"></circle><circle cx="80" cy="368" r="16" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="32"></circle></svg>                            
                             </n-icon>
@@ -19,7 +18,6 @@
             </div>
 
             <h1>User BUCKETLIST Folders</h1>
-            <!-- <img src="@/assets/location.svg" alt="icon" class="nav-item__icon" @click="$router.push(`/user-bucket-list/user=${this.$route.params.id}`)">  -->
         </div>
 
         <div class="select" v-if="folders.length">
@@ -69,10 +67,6 @@ export default defineComponent({
             folders: [],
             selectedSort: '',
             searchQuery: '',
-            // sortOptions: [
-            //     {value: 'name', name: 'По названию'},
-            //     {value: 'date', name: 'По дате создания'},
-            // ],
         }
     },
     methods: {
@@ -105,25 +99,25 @@ export default defineComponent({
             value: ref(null),
             options: [
                 {
-                label: "Сортировать по",
-                value: "",
-                disabled: true
+                    label: "Сортировать по",
+                    value: "",
+                    disabled: true
                 },
                 {
-                label: "По названию",
-                value: "name",
+                    label: "По названию",
+                    value: "name",
                 },
                 {
-                label: "По цене",
-                value: "price"
+                    label: "По цене",
+                    value: "price"
                 },
                 {
-                label: "По дате создания",
-                value: "date"
+                    label: "По дате создания",
+                    value: "date"
                 },
                 {
-                label: "По visible",
-                value: "visible"
+                    label: "По видимости",
+                    value: "visible"
                 },
             ]            
         };

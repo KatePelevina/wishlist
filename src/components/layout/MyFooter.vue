@@ -2,7 +2,7 @@
     <div>
         <footer class="footer">
             <div class="footer-inner wrapper">
-                Footer
+                Peldreams
             </div>
         </footer>
     </div>
@@ -15,6 +15,7 @@
     color: $white;
     // margin-top: 50px;
     padding: 15px;
+    text-align: center;
 }
 
 </style>

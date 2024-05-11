@@ -1,29 +1,6 @@
 <template>
     <div class="page">
         
-        <!-- <div class="card" v-for="(wish,index) in wishes" :key="index">
-
-            <p class="card-title">{{ wish.name }}</p>
-
-            <div class="card-body flex">
-                <div class="card-body__left">
-                    <img :src="'/img/' + wish.photo" alt="" class="card-body__right-img">
-                </div>
-                <div class="card-body__right">
-                    <p class="card-text">Дата создания: {{wish.date}}</p>
-                    <p class="card-text">{{ wish.price }}</p>
-                </div>
-            </div>
-            <p class="card-description">{{ wish.description }}</p>
-            <div class="card-link">
-                <a :href="wish.link" class="link">Ссылка</a>
-            </div>
-            <div class="flex">
-                <button class="button">Я подарю</button>
-                <button class="btn" @click="showModal=true; selectWish(wish);">+ Добавить в свой Bucket List</button>
-            </div>
-        </div> -->
-
         <div class="card" v-for="(user,index) in users" :key="index">
             <img class="photo" :src="'/img/' + user.img" />
             <p>{{ user.nickname }}</p>
@@ -37,7 +14,6 @@
                         <n-empty v-else size="large" description="Нет фото" class="empty"></n-empty>
                     </div>  
                     <div class="card-body__right">
-                        <!-- <p class="card-text">Дата создания: {{wish.date}}</p> -->
                         <p v-if="wish.price" class="card-text">{{ wish.price }}</p>
                     </div>
                 </div>
@@ -51,7 +27,6 @@
 
                 </div>
 
-                <!-- <button @click="showForm=true">Скинуться</button> -->
 
             </div>
 
@@ -101,31 +76,6 @@
                 </n-card>
             </n-modal>
         </div>
-        </div>
-
-        <!-- скинуться -->
-        <div v-if="showForm">
-            <div class="modal modal-inner">
-                <n-modal v-model:show="showForm">
-                    <n-card
-                    style="width: 700px"
-                    :bordered="false"
-                    size="huge"
-                    role="dialog"
-                    aria-modal="true"
-                    >
-                    
-                    
-                    <div>
-                        <p>скинуться</p>
-                        <input type="text" placeholder="Сумма">
-                        <button>скинуться</button>
-                    </div>
-                    
-                    
-                    </n-card>
-                </n-modal>
-            </div>
         </div>
 
         <!-- Edit User Model -->
@@ -209,15 +159,6 @@ export default {
                 }
                 });
         },
-        // async getUser() {
-        //     let id = this.$route.params.id;
-
-        //     await axios.get('http://localhost:8085/public/process.php?action=get-user-by-bucket&id='+id)
-        //     .then((response)=>{
-        //         this.users = response.data.users;
-        //         // console.log(this.users);
-        //     })
-        // },
         toFormData(obj){
           let fd = new FormData();
           for(let i in obj){
@@ -231,7 +172,6 @@ export default {
     },
     mounted() {
         this.getWish()
-        // this.getUser() 
     }
 
 }

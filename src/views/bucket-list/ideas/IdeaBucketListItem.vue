@@ -11,48 +11,27 @@
                 <h3 class="card-title">{{ wish.name }}</h3>
                 <div class="card-body__header">
                     <div class="card-body__image">
-                        <!-- <img class="card-body__img" src="@/assets/bag.webp" alt=""> -->
                         <img :src="'/img/' + wish.photo" alt="" class="card-body__img">
                     </div>
                     <div class="card-body__text">
                         <p>@EkaterinaFilatova1993 хочет</p>
-                        
-                        
                         <p class="card-price">{{ wish.price }} руб</p>
                     </div>
                 </div>
-                <div class="card-body__body">
-
-                </div>
-
-                
                 <div class="card-body__content">
-                    
                     <p class="card-description">{{ wish.description }}</p>
                     <div class="card-link">
                         <a :href="wish.link" class="link">Ссылка</a>
-                        <!-- <a href="https://www.farfetch.com/bg/shopping/women/furla-foldover-leather-satchel-bag-item-18010435.aspx?storeid=9681">https://www.farfetch.com/bg/shopping/women/furla-foldover-leather-satchel-bag-item-18010435.aspx?storeid=9681</a> -->
                     </div>
-                    
-                    
-                    
-                    
-                    <!-- <button>Я исполню</button>
-                    <button>Забронировать</button>
-                    <button>Зарезервировать</button> -->
                     <div class="flex">
                         <button class="button">Я подарю</button>
                         <button class="btn" @click="showModal=true; selectWish(wish); openForm()">+ Добавить в свой Bucket List</button>
                     </div>
-                    
-                    
                 </div>
             </div>
         </div>
 
-
-
-        <!--  User Model -->
+        <!--  Add to my WishList Model -->
         <div v-if="showModal">
             <div class="modal">
                 <n-modal v-model:show="showModal">
@@ -98,6 +77,7 @@
                 </n-modal>
             </div>
         </div>
+
     </div>
 </template>
 
@@ -137,7 +117,6 @@ export default defineComponent({
         async getWish() {
             let id = this.$route.params.id;
 
-            
             await axios.get('http://localhost:8085/public/process.php?action=get-bucketlist-item&id='+id)
             .then((response)=>{
                 this.wishes = response.data.wishes;
@@ -199,17 +178,17 @@ export default defineComponent({
             value: ref(null),
             visible: [
                 {
-                label: "Кто видит желание",
-                value: "",
-                disabled: true
+                    label: "Кто видит желание",
+                    value: "",
+                    disabled: true
                 },
                 {
-                label: "вижу только я",
-                value: "1",
+                    label: "вижу только я",
+                    value: "0",
                 },
                 {
-                label: "видят все пользователи",
-                value: "2"
+                    label: "видят все пользователи",
+                    value: "1"
                 }
             ],
             folderSelector: [

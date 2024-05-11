@@ -7,22 +7,12 @@
             <p class="header-link">PelDreams</p>
           </a> -->
           <router-link  to="/">
-            PelDreams
+            Peldreams
           </router-link>
         </div>
 
-        <nav>
+        <nav v-if="name">
           <ul class="navtest">
-            <!-- <li class="navtest-item">
-              <router-link v-if="loggedIn" to="/my-wish-list-folders">Wish List</router-link>
-            </li>
-            <li class="navtest-item">
-              <router-link v-if="loggedIn" to="/my-bucket-list-folders">Bucket List</router-link>
-            </li> -->
-           
-            <!-- <li class="navtest-item">
-              <router-link to="/find-user">find-user</router-link>
-            </li> -->
             <li class="navtest-item">
               <router-link to="/ideas-wish-list">ideaWish</router-link>
             </li>
@@ -35,8 +25,10 @@
        
 
         <div class="header-inner__right">
-          <p>Welcome, {{ name }}</p>
-          <button @click="Logout">Logout</button>
+          <p>{{ name }}</p>
+          <!-- <button @click="Logout">Logout</button> -->
+          <button @click="Logout" v-if="name" class="logout-btn">Выйти</button>
+
 
           <!-- <a href="#" class="header-link">Катя Пелевина</a> -->
           <!-- <router-link v-if="!loggedIn"  to="/login" class="btn">
@@ -53,7 +45,7 @@
 </template>
 
 <script>
-import { authComputed } from '../../vuex/helpers.js';
+// import { authComputed } from '../../vuex/helpers.js';
 import { ref, onBeforeMount } from 'vue';
 import firebase from 'firebase';
 
@@ -64,40 +56,41 @@ export default {
       showModal: false,
     }
   },
-  computed: {
-    ...authComputed
-  },
-  methods: {
-    logout() {
-      this.$store.dispatch('logout')
-    }
-  },
+  // computed: {
+  //   ...authComputed
+  // },
+  // methods: {
+  //   logout() {
+  //     this.$store.dispatch('logout')
+  //   }
+  // },
   setup() {
 
-const name = ref("");
+    const name = ref("");
 
-onBeforeMount(() => {
-    const user = firebase.auth().currentUser;
+    onBeforeMount(() => {
+        const user = firebase.auth().currentUser;
 
-    if(user) {
-        name.value = user.email.split('@')[0];
+        if(user) {
+            name.value = user.email.split('@')[0];
+        }
+    });
+
+    const Logout = () => {
+        firebase
+        .auth()
+        .signOut()
+        .then(() => console.log("Signed out"))
+        .then( () => location.reload())
+        .catch(err => alert(err.message));
     }
-});
-
-const Logout = () => {
-    firebase
-    .auth()
-    .signOut()
-    .then(() => console.log("Signed out"))
-    .catch(err => alert(err.message));
-}
 
 
-return { 
-    name,
-    Logout
-}
-}
+    return { 
+        name,
+        Logout
+      }
+    }
 }
 </script>
 
@@ -174,5 +167,14 @@ ul {
 
 a.btn {
     color: $active;
+}
+.logout-btn {
+  padding: 5px 15px;
+  border: none;
+  border-radius: 5px;
+  background-color: $bg;
+  color: $active;
+  font-weight: bold;
+  width: 100%;
 }
 </style>
