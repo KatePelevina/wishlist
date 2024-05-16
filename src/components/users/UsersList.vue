@@ -24,7 +24,7 @@
         </div>
     </div>
     <div v-else>
-        <n-empty size="large" class="empty"></n-empty>
+        <n-empty size="large" class="empty">Пока ничего нет</n-empty>
     </div>
 </template>
 
